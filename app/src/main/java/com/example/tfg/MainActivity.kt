@@ -2,6 +2,11 @@ package com.example.tfg
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.example.tfg.casa.HomeFragment
+import com.example.tfg.descubrir.DescubrirFragment
+import com.example.tfg.perfil.PerfilFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -10,12 +15,40 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var datos = intent.extras
-        var email = datos?.getString(cadenas.EMAIL)
-        var pass = datos?.getString(cadenas.PASS)
+        bottomBar.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.navigation_home->{
+                    val homeFragment = HomeFragment.newInstance()
+                    openFragment(homeFragment)
+                    it.setChecked(true)
+                    true
+                }
+                R.id.navigation_descubrir->{
+                    val descubrirFragment = DescubrirFragment.newInstance()
+                    openFragment(descubrirFragment)
+                    it.setChecked(true)
+                    true
+                }
+                R.id.navigation_perfil->{
+                    val perfilFragment = PerfilFragment.newInstance()
+                    openFragment(perfilFragment)
+                    it.setChecked(true)
+                    true
+                }
+            }
+            false
+        }
 
-        pepe.text = email
+        if (savedInstanceState == null) {
+            bottomBar.setSelectedItemId(R.id.navigation_home); // change to whichever id should be default
+        }
+    }
 
+    private fun openFragment(fragment: Fragment){
+        val transaction =  supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
 }
