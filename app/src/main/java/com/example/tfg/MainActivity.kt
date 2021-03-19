@@ -18,19 +18,19 @@ class MainActivity : AppCompatActivity() {
         bottomBar.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.navigation_home->{
-                    val homeFragment = HomeFragment.newInstance()
+                    val homeFragment = HomeFragment()
                     openFragment(homeFragment)
                     it.setChecked(true)
                     true
                 }
                 R.id.navigation_descubrir->{
-                    val descubrirFragment = DescubrirFragment.newInstance()
+                    val descubrirFragment = DescubrirFragment()
                     openFragment(descubrirFragment)
                     it.setChecked(true)
                     true
                 }
                 R.id.navigation_perfil->{
-                    val perfilFragment = PerfilFragment.newInstance()
+                    val perfilFragment = PerfilFragment()
                     openFragment(perfilFragment)
                     it.setChecked(true)
                     true

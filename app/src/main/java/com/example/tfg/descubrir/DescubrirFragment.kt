@@ -10,10 +10,8 @@ import com.example.tfg.casa.HomeFragment
 
 
 class DescubrirFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.fragment_descubrir, container, false)
-
-    companion object {
-        fun newInstance(): DescubrirFragment = DescubrirFragment()
+    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View? {
+        val root = inflater.inflate(R.layout.fragment_descubrir, container, false)
+        return root
     }
 }
