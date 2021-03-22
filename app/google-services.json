@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "727330932180",
+    "project_id": "tfg-rgg",
+    "storage_bucket": "tfg-rgg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:727330932180:android:5c50ec3d3e262967870241",
+        "android_client_info": {
+          "package_name": "com.example.tfg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "727330932180-27v8nlrf0tdb6kav16siu1vilq10u9me.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tfg",
+            "certificate_hash": "a67185f44231bca19fd497d4761870c9200821ba"
+          }
+        },
+        {
+          "client_id": "727330932180-gcejh5ks4cqhv971l0kbat91mts9glk5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0f0mF09qhfCLpOmRFLQapbqiGwHZWcx0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "727330932180-gcejh5ks4cqhv971l0kbat91mts9glk5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

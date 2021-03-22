@@ -3,29 +3,75 @@ package com.example.tfg.perfil
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.res.ResourcesCompat
+import com.example.tfg.LoginActivity
 import com.example.tfg.R
+import com.example.tfg.casa.HomeFragment
+import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
+import www.sanju.motiontoast.MotionToast
 
 class PerfilFragment : Fragment() {
+
 
     override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_perfil, container, false)
 
-        val cambiarTema: Button = root.findViewById(R.id.cambiarTema)
+        /* Declaración de varibles */
+        val btnCambiarTema: Button = root.findViewById(R.id.cambiarTema)
+        val btnEditPerfil: Button = root.findViewById(R.id.editPerfil)
 
+        btnCambiarTema.setOnClickListener { dialogoCambioTema() }
+        btnEditPerfil.setOnClickListener { checkPerfil() }
 
-        cambiarTema.setOnClickListener { dialogoCambioTema() }
+        val fotoPerfil: ImageView = root.findViewById(R.id.userFoto)
+        val nombreUser: TextView = root.findViewById(R.id.tvUserName)
+        if (FirebaseAuth.getInstance().currentUser!=null){
+            Picasso.get().load(FirebaseAuth.getInstance().currentUser.photoUrl).into(fotoPerfil)
+            nombreUser.text = FirebaseAuth.getInstance().currentUser.displayName
+        }
 
         return root
     }
 
+    /*
+    *
+    * Función checkPerfil()
+    *   Función que comprueba si está logeado el usuario, y dependiendo de esto, redirige a una actividad
+    *   o fragmento diferente
+    * */
+    private fun checkPerfil() {
+        val user = FirebaseAuth.getInstance().getCurrentUser()
+        if (user == null){
+            val i: Intent = Intent(context as Context, com.example.tfg.login.LoginActivity::class.java)
+            startActivity(i)
+        }else{
+            val editPerfilFragment = EditPerfilFragment()
+            activity?.getSupportFragmentManager()?.beginTransaction()
+                ?.replace(R.id.container,editPerfilFragment)
+                ?.addToBackStack(null)
+                ?.commit();
+
+        }
+    }
+
+    /*
+    * Función dialogoCambioTema()
+    *   Función que abre un diálogo al usuario para poder cambiar entre modo claro y modo oscuro en
+    *   la aplicación
+    * */
     private fun dialogoCambioTema() {
         val context = context as Context
         val builder = AlertDialog.Builder(context)

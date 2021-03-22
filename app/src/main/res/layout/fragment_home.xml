@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:fontFamily="@font/notosans_bold"
+            android:textColor="?android:attr/textColorPrimary"
             android:text="Inicio"
             android:textSize="20sp"
             android:textStyle="bold"
