@@ -1,13 +1,17 @@
 package com.example.tfg.casa
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import com.arlib.floatingsearchview.FloatingSearchView.OnQueryChangeListener
 import com.example.tfg.R
+import com.example.tfg.perfil.PerfilFragment
 import kotlinx.android.synthetic.main.fragment_home.*
+import www.sanju.motiontoast.MotionToast
 
 
 class HomeFragment : Fragment() {
@@ -16,6 +20,7 @@ class HomeFragment : Fragment() {
 
         setUp()
 
+        PerfilFragment().comprobarTema(activity as Activity, context as Context)
         return root
     }
 
