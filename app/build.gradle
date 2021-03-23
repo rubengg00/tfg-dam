@@ -57,6 +57,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     //Librería Picasso para fotos
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.google.firebase:firebase-firestore:22.1.1'
 
 
     testImplementation 'junit:junit:4.+'

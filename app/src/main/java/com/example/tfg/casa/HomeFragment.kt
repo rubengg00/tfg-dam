@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.example.tfg.R
+import com.example.tfg.perfil.EditPerfilFragment
 import com.example.tfg.perfil.PerfilFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import www.sanju.motiontoast.MotionToast
@@ -20,7 +21,7 @@ class HomeFragment : Fragment() {
 
         setUp()
 
-        PerfilFragment().comprobarTema(activity as Activity, context as Context)
+        EditPerfilFragment().comprobarTema(activity as Activity, context as Context)
         return root
     }
 
