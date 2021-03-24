@@ -3,23 +3,17 @@ package com.example.tfg.casa
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.transition.TransitionInflater
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.R
-import com.example.tfg.casa.categoria.PelisPorCatFragment
+import com.example.tfg.pelicula.PelisPorCatFragment
 import com.example.tfg.perfil.EditPerfilFragment
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.coroutines.*
-import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
 
@@ -55,7 +49,6 @@ class HomeFragment : Fragment() {
         recview.adapter = miAdapter
 
         miAdapter.setOnClickListener(View.OnClickListener {
-            Toast.makeText(context as Context, listaCategoria.get(recview.getChildAdapterPosition(it)).titulo, Toast.LENGTH_SHORT).show()
             val pelisPorCatFragment = PelisPorCatFragment()
 
             var bundle: Bundle = Bundle()

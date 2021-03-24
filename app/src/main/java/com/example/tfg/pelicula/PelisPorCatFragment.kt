@@ -1,6 +1,9 @@
-package com.example.tfg.casa.categoria
+package com.example.tfg.pelicula
 
+import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,11 +11,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.R
-import com.example.tfg.casa.CategoriaAdapter
 import com.google.firebase.firestore.FirebaseFirestore
+import www.sanju.motiontoast.MotionToast
 
 
 class PelisPorCatFragment : Fragment() {
@@ -53,6 +57,18 @@ class PelisPorCatFragment : Fragment() {
         miAdapter = PeliculaAdapter(listaPelis,context as Context)
         recview.layoutManager = GridLayoutManager(context as Context, 2, GridLayoutManager.VERTICAL, false)
         recview.adapter = miAdapter
+
+        miAdapter.setOnClickListener(View.OnClickListener {
+            val i: Intent = Intent(context as Context, DetailPeliculaActivity::class.java)
+            var bundle: Bundle = Bundle()
+            i.putExtra("titulo", listaPelis.get(recview.getChildAdapterPosition(it)).titulo)
+            i.putExtra("fecha", listaPelis.get(recview.getChildAdapterPosition(it)).fecha)
+            i.putExtra("duracion", listaPelis.get(recview.getChildAdapterPosition(it)).duracion)
+            i.putExtra("categoria", listaPelis.get(recview.getChildAdapterPosition(it)).categoria)
+            i.putExtra("sinopsis", listaPelis.get(recview.getChildAdapterPosition(it)).sinopsis)
+            i.putExtra("caratula", listaPelis.get(recview.getChildAdapterPosition(it)).caratula)
+            startActivity(i)
+        })
     }
 
     private fun rellenadoDatos(nombreCat: String?) {
@@ -82,8 +98,18 @@ class PelisPorCatFragment : Fragment() {
                             enlace = doc.getString("enlace").toString()
                         }
                     }
-                    var peli = Pelicula(titulo,fecha,sinopsis,categoria,caratula,platNom,enlace)
+                    var peli = Pelicula(titulo,fecha,sinopsis,duracion,categoria,caratula,platNom,enlace)
                     listaPelis.add(peli)
+                }
+                if (listaPelis.isEmpty()){
+                    MotionToast.createToast(
+                        activity as Activity,
+                        "No hay resultados!",
+                        "No hay peliculas de "+nombreCat,
+                        MotionToast.TOAST_WARNING,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(context as Context,R.font.helvetica_regular))
                 }
                 crearAdapter()
             }

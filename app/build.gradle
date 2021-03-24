@@ -65,6 +65,10 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5'
     implementation 'com.google.firebase:firebase-storage:19.2.1'
+    //Librería ReadMoreTextView
+    implementation 'com.borjabravo:readmoretextview:2.1.0'
+    //Librería AutoFitTextView
+    implementation 'me.grantland:autofittextview:0.2.+'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
