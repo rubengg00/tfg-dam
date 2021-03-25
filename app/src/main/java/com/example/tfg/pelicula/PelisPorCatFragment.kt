@@ -54,8 +54,9 @@ class PelisPorCatFragment : Fragment() {
 
     private fun crearAdapter() {
         recview.setHasFixedSize(true)
-        miAdapter = PeliculaAdapter(listaPelis,context as Context)
-        recview.layoutManager = GridLayoutManager(context as Context, 2, GridLayoutManager.VERTICAL, false)
+        miAdapter = PeliculaAdapter(listaPelis, context as Context)
+        recview.layoutManager =
+            GridLayoutManager(context as Context, 2, GridLayoutManager.VERTICAL, false)
         recview.adapter = miAdapter
 
         miAdapter.setOnClickListener(View.OnClickListener {
@@ -93,26 +94,52 @@ class PelisPorCatFragment : Fragment() {
                     db.collection("categorias").document(nombreCat.toString())
                         .collection("peliculas").document(doc.getString("titulo").toString())
                         .collection("plataformas").get().addOnSuccessListener {
-                        for (doc in it) {
-                            platNom = doc.getString("nombre").toString()
-                            enlace = doc.getString("enlace").toString()
+                            for (doc in it) {
+                                platNom = doc.getString("nombre").toString()
+                                enlace = doc.getString("enlace").toString()
+                            }
                         }
-                    }
-                    var peli = Pelicula(titulo,fecha,sinopsis,duracion,categoria,caratula,platNom,enlace)
+                    var peli = Pelicula(
+                        titulo,
+                        fecha,
+                        sinopsis,
+                        duracion,
+                        categoria,
+                        caratula,
+                        platNom,
+                        enlace
+                    )
                     listaPelis.add(peli)
                 }
-                if (listaPelis.isEmpty()){
+                if (listaPelis.isEmpty()) {
                     MotionToast.createToast(
                         activity as Activity,
                         "No hay resultados!",
-                        "No hay peliculas de "+nombreCat,
+                        "No hay peliculas de " + nombreCat,
                         MotionToast.TOAST_WARNING,
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(context as Context,R.font.helvetica_regular))
+                        ResourcesCompat.getFont(context as Context, R.font.helvetica_regular)
+                    )
                 }
                 crearAdapter()
             }
+
+
+        db.collection("categorias").get().addOnSuccessListener {
+            for (doc in it) {
+                val nombreCat = doc.getString("titulo").toString()
+                Log.d("nombreCat", nombreCat)
+                db.collection("categorias").document(nombreCat).collection("peliculas").get()
+                    .addOnSuccessListener {
+                        for (doc in it) {
+                            Log.d("titulo", doc.getString("titulo").toString())
+                        }
+                    }
+            }
+
+        }
+
     }
 
 

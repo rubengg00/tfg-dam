@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_perfil.*
-import org.w3c.dom.Text
 
 class PerfilFragment : Fragment() {
 
@@ -27,7 +26,7 @@ class PerfilFragment : Fragment() {
 
         /* Declaración de varibles */
         val btnEditPerfil: Button = root.findViewById(R.id.editPerfil)
-        val fotoPerfil: ImageView = root.findViewById(R.id.userFotoEdit)
+        val fotoPerfil: ImageView = root.findViewById(R.id.userFoto)
         val nombreUser: TextView = root.findViewById(R.id.tvUserName)
         val tvBio: TextView = root.findViewById(R.id.tvBio)
 

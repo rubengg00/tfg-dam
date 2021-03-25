@@ -14,6 +14,7 @@ import com.example.tfg.R
 import com.example.tfg.pelicula.PelisPorCatFragment
 import com.example.tfg.perfil.EditPerfilFragment
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlin.system.exitProcess
 
 class HomeFragment : Fragment() {
 

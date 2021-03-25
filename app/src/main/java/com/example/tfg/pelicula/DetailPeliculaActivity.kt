@@ -23,7 +23,7 @@ class DetailPeliculaActivity : AppCompatActivity() {
     lateinit var tvDuracion: TextView
     lateinit var tvCategoria: TextView
     lateinit var tvSinopsis: TextView
-    lateinit var tvPlataforma: TextView
+    lateinit var tvPlataforma: ImageView
     lateinit var caratula: ImageView
     var platNombre: String = ""
     var enlace: String = ""
@@ -60,8 +60,8 @@ class DetailPeliculaActivity : AppCompatActivity() {
                     .collection("peliculas").document(titulo)
                     .collection("plataformas").get().addOnSuccessListener {
                         for (doc in it) {
-                            platNombre = doc.getString("nombre").toString()
-                            tvPlataforma.text = platNombre
+                            platNombre = doc.getString("logo").toString()
+                            Picasso.get().load(platNombre).into(tvPlataforma)
                             Log.d("plataforma", platNombre)
                             enlace = doc.getString("enlace").toString()
                             tvPlataforma.setOnClickListener {
@@ -74,14 +74,14 @@ class DetailPeliculaActivity : AppCompatActivity() {
 
             }
         }
-        
+
         //Declaración de variables
         tvTitulo = findViewById(R.id.tvTituloDet)
         tvFecha = findViewById(R.id.tvFechaDet)
         tvDuracion = findViewById(R.id.tvDuracionDet)
         tvCategoria = findViewById(R.id.tvCatDet)
         tvSinopsis = findViewById(R.id.tvSinDet)
-        tvPlataforma = findViewById(R.id.tvPlatDet)
+        tvPlataforma = findViewById(R.id.ivFotoPlat)
         Picasso.get().load(caratula).into(ivCaratulaDet)
 
         tvTitulo.text = titulo

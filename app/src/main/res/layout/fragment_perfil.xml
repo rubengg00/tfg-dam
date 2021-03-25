@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/userFotoEdit"
+            android:id="@+id/userFoto"
             android:layout_width="99dp"
             android:layout_height="93dp"
             android:layout_marginTop="16dp"
@@ -41,37 +41,37 @@
             android:id="@+id/editPerfil"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="90dp"
+            android:background="@drawable/esquinas_redondeadas"
             android:backgroundTint="#7C33F6"
             android:text="Editar Perfil"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            android:background="@drawable/esquinas_redondeadas"/>
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <TextView
             android:id="@+id/tvUserName"
-            android:layout_width="0dp"
-            android:layout_height="23dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="169dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
             android:textAlignment="center"
             android:textColor="?android:attr/textColorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userFotoEdit" />
+            app:layout_constraintTop_toBottomOf="@+id/userFoto" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="343dp"
             android:layout_height="55dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="50dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvUserName">
+            app:layout_constraintTop_toBottomOf="@+id/tvUserName">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -153,8 +153,9 @@
             android:textColor="?android:attr/textColorPrimary"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
+            app:layout_constraintTop_toBottomOf="@+id/tvUserName"
+            app:layout_constraintVertical_bias="0.297" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

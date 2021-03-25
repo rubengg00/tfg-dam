@@ -43,7 +43,7 @@ class EditPerfilFragment : Fragment(), View.OnClickListener {
         etNombre = root.findViewById(R.id.etNombreAct)
         etBio = root.findViewById(R.id.etBioAct)
 
-        val fotoPerfil: ImageView = root.findViewById(R.id.userFotoEdit)
+        val fotoPerfil: ImageView = root.findViewById(R.id.userFotoPlat)
         Picasso.get().load(FirebaseAuth.getInstance().currentUser.photoUrl).into(fotoPerfil)
 
         /*Establecemos los valores del usuario en los campos*/
