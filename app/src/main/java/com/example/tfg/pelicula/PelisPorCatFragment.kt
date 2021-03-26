@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.R
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import www.sanju.motiontoast.MotionToast
 
 
@@ -29,11 +30,7 @@ class PelisPorCatFragment : Fragment() {
 
     lateinit var recview: RecyclerView
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_pelis_por_cat, container, false)
 
         //Recogemos los datos del Bundle
@@ -124,21 +121,6 @@ class PelisPorCatFragment : Fragment() {
                 }
                 crearAdapter()
             }
-
-
-        db.collection("categorias").get().addOnSuccessListener {
-            for (doc in it) {
-                val nombreCat = doc.getString("titulo").toString()
-                Log.d("nombreCat", nombreCat)
-                db.collection("categorias").document(nombreCat).collection("peliculas").get()
-                    .addOnSuccessListener {
-                        for (doc in it) {
-                            Log.d("titulo", doc.getString("titulo").toString())
-                        }
-                    }
-            }
-
-        }
 
     }
 
