@@ -66,28 +66,42 @@ class PerfilFragment : Fragment() {
         return root
     }
 
+    //-----------------------------------------------------------------------------------------------
     private fun rellenadoDatos() {
-        var titulo = ""
-        var contador = 0
 
         db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
-            .collection("listas").get().addOnSuccessListener {
+            .collection("listas").orderBy("nombre").get().addOnSuccessListener {
                 for (doc in it){
-                    titulo = doc.getString("nombre").toString()
+                    var titulo = doc.getString("nombre").toString()
                     db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
                         .collection("listas").document(titulo).collection("peliculas").get().addOnSuccessListener {
-                            contador = it.size()
+                            var contador = it.size().toString()
+                            var lista = Lista(
+                                titulo,
+                                contador
+                            )
+                            añadidoLista(lista)
                         }
-                    var lista = Lista(
-                        titulo,
-                        contador
-                    )
-                    listaListas.add(lista)
                 }
-                crearAdapter()
         }
 
     }
+
+    private fun añadidoLista(lista: Lista) {
+        listaListas.add(lista)
+        crearAdapter()
+    }
+
+    private fun contadorPelis(nombre: String){
+        var total = ""
+        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
+            .collection("listas").document(nombre).collection("peliculas").get().addOnSuccessListener {
+                total = it.size().toString()
+                Log.d("total de lista ${nombre}: ",total.toString())
+            }
+
+    }
+    //-----------------------------------------------------------------------------------------------
 
     private fun crearAdapter() {
         recview.setHasFixedSize(true)

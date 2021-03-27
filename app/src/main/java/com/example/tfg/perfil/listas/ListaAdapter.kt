@@ -38,7 +38,7 @@ class ListaAdapter (private val miLista: ArrayList<Lista>, val c: Context):
     override fun onBindViewHolder(holder: MiViewHolder, position: Int) {
         val item = miLista[position]
         holder.tvNombreLista.text = item.nombre
-        holder.tvTotalPelis.text = item.total.toString()
+        holder.tvTotalPelis.text = item.total
     }
 
     override fun onClick(v: View?) {
