@@ -183,12 +183,12 @@
                     android:text="Button" />
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/btnAddLista"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     android:layout_weight="1"
-                    android:text="Button" />
+                    android:text="Agregar" />
             </LinearLayout>
 
         </LinearLayout>

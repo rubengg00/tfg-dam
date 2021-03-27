@@ -36,11 +36,7 @@ class BusquedaFragment : Fragment() {
     var flag = false
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_busqueda, container, false)
 
         search = root.findViewById(R.id.search)
@@ -53,7 +49,6 @@ class BusquedaFragment : Fragment() {
         crearAdapter()
 
 
-
         search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -64,24 +59,15 @@ class BusquedaFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
                 if (s.toString() != null) {
-                    cargadoDatos(s.toString())
+                    val texto = s.toString().capitalize()
+                    cargadoDatos(texto)
                     recview.adapter!!.notifyDataSetChanged()
-                } else {
+                }
+                if (s.toString().isEmpty()){
                     listaPelis.clear()
                     cargadoDatos("")
                     recview.adapter!!.notifyDataSetChanged()
                 }
-
-//                else{
-//                    MotionToast.createToast(
-//                        activity as Activity,
-//                        "No hay resultados!",
-//                        "No hay peliculas",
-//                        MotionToast.TOAST_WARNING,
-//                        MotionToast.GRAVITY_BOTTOM,
-//                        MotionToast.LONG_DURATION,
-//                        ResourcesCompat.getFont(context as Context, R.font.helvetica_regular))
-//                }
             }
 
         })

@@ -69,6 +69,10 @@ dependencies {
     implementation 'com.borjabravo:readmoretextview:2.1.0'
     //Librería AutoFitTextView
     implementation 'me.grantland:autofittextview:0.2.+'
+    //Librería Clereable EditText
+    implementation 'com.github.Cielsk:clearable-edittext:0.0.5'
+    //Librería Material Dialogs
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

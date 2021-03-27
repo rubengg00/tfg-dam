@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
+        <com.cielyang.android.clearableedittext.ClearableEditText
             android:id="@+id/search"
             android:layout_width="332dp"
             android:layout_height="48dp"
