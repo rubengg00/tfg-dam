@@ -24,7 +24,7 @@ class ListaFragment : Fragment() {
     lateinit var tvNombre: TextView
     private val db = FirebaseFirestore.getInstance()
 
-    lateinit var miAdapter: PeliculaAdapter
+    lateinit var miAdapter: PeliculaListaAdapter
     var listaPelis = ArrayList<Pelicula>()
 
     lateinit var recview: RecyclerView
@@ -51,7 +51,7 @@ class ListaFragment : Fragment() {
         return root
     }
 
-    private fun buscadoPelis(nombre: String?) {
+    fun buscadoPelis(nombre: String?) {
         if (nombre != null) {
             db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
                 .collection("listas").document(nombre).collection("peliculas").get()
@@ -68,7 +68,7 @@ class ListaFragment : Fragment() {
         }
     }
 
-    private fun buscadoCaratula(nombre: String, categoria: String?) {
+    fun buscadoCaratula(nombre: String, categoria: String?) {
         var titulo = ""
         var fecha = ""
         var sinopsis = ""
@@ -112,7 +112,7 @@ class ListaFragment : Fragment() {
 
     private fun crearAdapter() {
         recview.setHasFixedSize(true)
-        miAdapter = PeliculaAdapter(listaPelis, context as Context)
+        miAdapter = PeliculaListaAdapter(listaPelis, context as Context, tvNombre.text.toString())
         recview.layoutManager =
             GridLayoutManager(context as Context, 2, GridLayoutManager.VERTICAL, false)
         recview.adapter = miAdapter
