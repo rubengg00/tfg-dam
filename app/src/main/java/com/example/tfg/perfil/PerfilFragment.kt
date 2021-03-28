@@ -17,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.R
 import com.example.tfg.pelicula.Pelicula
 import com.example.tfg.pelicula.PeliculaAdapter
+import com.example.tfg.pelicula.PelisPorCatFragment
 import com.example.tfg.perfil.listas.Lista
 import com.example.tfg.perfil.listas.ListaAdapter
+import com.example.tfg.perfil.listas.ListaFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
@@ -31,6 +33,9 @@ class PerfilFragment : Fragment() {
     lateinit var recview: RecyclerView
     lateinit var miAdapter: ListaAdapter
     var listaListas = ArrayList<Lista>()
+
+    var flag = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +58,10 @@ class PerfilFragment : Fragment() {
             establecerBio()
             establecerListas()
             crearAdapter()
-            rellenadoDatos()
+            if (!flag){
+                flag = true
+                rellenadoDatos()
+            }
         } else {
             nombreUser.visibility = View.GONE
             tvBio.visibility = View.GONE
@@ -67,14 +75,19 @@ class PerfilFragment : Fragment() {
     }
 
     //-----------------------------------------------------------------------------------------------
+    /*
+    * Función rellenadoDatos()
+    *   Rellena el RecyclerView con las listas del usuario
+    * */
     private fun rellenadoDatos() {
 
         db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
             .collection("listas").orderBy("nombre").get().addOnSuccessListener {
-                for (doc in it){
+                for (doc in it) {
                     var titulo = doc.getString("nombre").toString()
                     db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
-                        .collection("listas").document(titulo).collection("peliculas").get().addOnSuccessListener {
+                        .collection("listas").document(titulo).collection("peliculas").get()
+                        .addOnSuccessListener {
                             var contador = it.size().toString()
                             var lista = Lista(
                                 titulo,
@@ -83,31 +96,48 @@ class PerfilFragment : Fragment() {
                             añadidoLista(lista)
                         }
                 }
-        }
+            }
 
     }
-
+    /*
+    * Función añadidoLista(lista: Lista)
+    *   Recibe el objeto de tipo Lista, y lo agrega a la lista, llamando luego a la función
+    *   crearAdapter()
+    * */
     private fun añadidoLista(lista: Lista) {
         listaListas.add(lista)
         crearAdapter()
     }
 
-    private fun contadorPelis(nombre: String){
-        var total = ""
-        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
-            .collection("listas").document(nombre).collection("peliculas").get().addOnSuccessListener {
-                total = it.size().toString()
-                Log.d("total de lista ${nombre}: ",total.toString())
-            }
 
-    }
     //-----------------------------------------------------------------------------------------------
 
+    /*
+    * Función crearAdapter()
+    *   Crear el adapter para el RecyclerView y establece el evento onClick sobre los elementos
+    * */
     private fun crearAdapter() {
         recview.setHasFixedSize(true)
         miAdapter = ListaAdapter(listaListas, context as Context)
         recview.layoutManager = LinearLayoutManager(context as Context)
         recview.adapter = miAdapter
+
+        miAdapter.setOnClickListener(View.OnClickListener {
+            val listaFragment = ListaFragment()
+
+            var bundle: Bundle = Bundle()
+            bundle.putString("nombre", listaListas.get(recview.getChildAdapterPosition(it)).nombre)
+            listaFragment.arguments = bundle
+
+            activity?.getSupportFragmentManager()?.beginTransaction()
+                ?.setCustomAnimations(
+                    R.anim.slide_bottom_up,
+                    R.anim.slide_bottom_down
+                )
+                ?.replace(R.id.container,listaFragment)
+                ?.addToBackStack(null)
+                ?.commit();
+        })
     }
 
     /*

@@ -150,7 +150,8 @@ class DetailPeliculaActivity : AppCompatActivity() {
 
         val data = hashMapOf(
             "titulo" to tvTitulo.text.toString(),
-            "categoria" to tvCategoria.text.toString()
+            "categoria" to tvCategoria.text.toString(),
+            "fecha" to tvFechaDet.text.toString()
         )
 
         val contextView = findViewById<View>(R.id.btnAddLista)

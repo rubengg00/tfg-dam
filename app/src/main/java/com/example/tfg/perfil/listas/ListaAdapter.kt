@@ -15,16 +15,15 @@ import com.squareup.picasso.Picasso
 class ListaAdapter (private val miLista: ArrayList<Lista>, val c: Context):
     RecyclerView.Adapter<ListaAdapter.MiViewHolder>(), View.OnClickListener{
 
+    //Listener
+    lateinit var listener: View.OnClickListener
 
     class MiViewHolder(v: View): RecyclerView.ViewHolder(v) {
         val tvNombreLista: TextView = v.findViewById(R.id.tvNombreLista)
         val tvTotalPelis: TextView = v.findViewById(R.id.tvTotalPelis)
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ListaAdapter.MiViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): ListaAdapter.MiViewHolder {
         val inflate = LayoutInflater.from(parent.context)
         val v = inflate.inflate(R.layout.custom_listas_layout, parent, false)
         v.setOnClickListener(this)
@@ -41,8 +40,15 @@ class ListaAdapter (private val miLista: ArrayList<Lista>, val c: Context):
         holder.tvTotalPelis.text = item.total
     }
 
-    override fun onClick(v: View?) {
+    fun setOnClickListener(listener: View.OnClickListener){
+        this.listener = listener
+    }
 
+
+    override fun onClick(v: View?) {
+        if (listener != null){
+            listener.onClick(v)
+        }
     }
 
 
