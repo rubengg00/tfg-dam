@@ -11,23 +11,30 @@ import android.transition.TransitionInflater
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.res.ResourcesCompat
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.list.listItems
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.example.tfg.R
 import com.example.tfg.login.LoginActivity
+import com.example.tfg.pelicula.recomendaciones.Recomendacion
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail_pelicula.*
+import kotlinx.android.synthetic.main.custom_dialog_recomendation.*
 import kotlinx.android.synthetic.main.fragment_perfil.*
 import www.sanju.motiontoast.MotionToast
+import java.sql.Timestamp
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 class DetailPeliculaActivity : AppCompatActivity() {
 
@@ -39,10 +46,14 @@ class DetailPeliculaActivity : AppCompatActivity() {
     lateinit var tvPlataforma: ImageView
     lateinit var caratula: ImageView
     lateinit var btnAdd: Button
+    lateinit var btnRecom: Button
     var platNombre: String = ""
     var enlace: String = ""
 
     private val db = FirebaseFirestore.getInstance()
+    private val nodoRaiz = FirebaseDatabase.getInstance()
+    lateinit var reference: DatabaseReference
+    lateinit var btnAddRecom: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,14 +77,64 @@ class DetailPeliculaActivity : AppCompatActivity() {
         setUpDetallePelicula()
 
         btnAdd = findViewById(R.id.btnAddLista)
+        btnRecom = findViewById(R.id.btnRecom)
 
         btnAdd.setOnClickListener {
-            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            if (FirebaseAuth.getInstance().currentUser == null) {
                 val i: Intent = Intent(this, LoginActivity::class.java)
                 startActivity(i)
             } else {
                 agregarALista()
             }
+        }
+
+        btnRecom.setOnClickListener{
+            if (FirebaseAuth.getInstance().currentUser == null){
+                val i: Intent = Intent(this, LoginActivity::class.java)
+                startActivity(i)
+            }else{
+                añadirReseña()
+                Toast.makeText(this, "OLEEE", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+
+    private fun añadirReseña() {
+        var datos = intent.extras
+        var nomUsuario = ""
+        var fotoUsuario = ""
+        var caratul = ""
+        var titul = ""
+        var categori = ""
+        var fech = ""
+        var reseña = ""
+        var emoji = ""
+        var id_recomendacion = System.currentTimeMillis()
+
+
+        MaterialDialog(this).show {
+            customView(R.layout.custom_dialog_recomendation)
+            positiveButton(R.string.recomendacion){dialog->
+                var radioGrupo: RadioGroup = findViewById(R.id.rGroup)
+
+                var seleccionado = rGroup.checkedRadioButtonId
+                var emojiSeleccionado: RadioButton = findViewById(seleccionado)
+
+                nomUsuario = FirebaseAuth.getInstance().currentUser.displayName
+                fotoUsuario = FirebaseAuth.getInstance().currentUser.photoUrl.toString()
+                caratul = datos?.getString("caratula").toString()
+                titul = datos?.getString("titulo").toString()
+                categori = datos?.getString("categoria").toString()
+                fech = datos?.getString("fecha").toString()
+                emoji = emojiSeleccionado.text.toString()
+                reseña = findViewById<TextView>(R.id.edComentario).text.toString()
+
+                var recomendacion: Recomendacion = Recomendacion(nomUsuario, fotoUsuario, caratul, titul, categori, fech, reseña, emoji)
+
+                nodoRaiz.reference.child("recomendaciones").child(id_recomendacion.toString()).setValue(recomendacion)
+            }
+
         }
 
 

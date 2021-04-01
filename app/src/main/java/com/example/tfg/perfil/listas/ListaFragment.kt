@@ -1,5 +1,6 @@
 package com.example.tfg.perfil.listas
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,15 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.R
-import com.example.tfg.descubrir.busqueda.BusquedaFragment
 import com.example.tfg.pelicula.DetailPeliculaActivity
 import com.example.tfg.pelicula.Pelicula
-import com.example.tfg.pelicula.PeliculaAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import www.sanju.motiontoast.MotionToast
 
 class ListaFragment : Fragment() {
 
@@ -129,4 +130,6 @@ class ListaFragment : Fragment() {
             startActivity(i)
         })
     }
+
+
 }

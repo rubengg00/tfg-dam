@@ -73,6 +73,7 @@ dependencies {
     implementation 'com.github.Cielsk:clearable-edittext:0.0.5'
     //Librería Material Dialogs
     implementation 'com.afollestad.material-dialogs:core:3.3.0'
+    implementation 'com.google.firebase:firebase-database:19.7.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
