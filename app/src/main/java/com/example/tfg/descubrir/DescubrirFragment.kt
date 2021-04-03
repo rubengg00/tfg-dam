@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.tfg.R
 import com.example.tfg.descubrir.busqueda.BusquedaFragment
 import com.example.tfg.pelicula.PeliculaAdapter
@@ -42,11 +43,6 @@ class DescubrirFragment : Fragment() {
         btnBuscar = root.findViewById(R.id.btnBus)
         recview = root.findViewById(R.id.rcRecomendaciones)
         mDatabase = FirebaseDatabase.getInstance().getReference("recomendaciones")
-//        tvTitulo = root.findViewById(R.id.tvMovRec)
-//        tvFecha = root.findViewById(R.id.tvFechaRec)
-//        imagen = root.findViewById(R.id.ivMovRec)
-//        reseña = root.findViewById(R.id.tvReseRec)
-//        emoji = root.findViewById(R.id.tvEmojiRec)
 
         btnBuscar.setOnClickListener {
             val busquedaFragment = BusquedaFragment()
@@ -89,13 +85,16 @@ class DescubrirFragment : Fragment() {
                 Picasso.get().load(model.caratula).into(holder.imagen)
                 holder.reseña.text = model.reseña
                 holder.emoji.text = model.emoticono
+                holder.nomusu.text = model.nomUsuario
+                Picasso.get().load(model.fotoUsuario).into(holder.imUsu)
             }
 
         }
 
         recview.setHasFixedSize(true)
-        recview.layoutManager =
-            GridLayoutManager(context as Context, 2, GridLayoutManager.VERTICAL, false)
+        var manager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        manager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
+        recview.layoutManager =manager
         recview.adapter = FirebaseRecyclerAdapter
     }
 
@@ -106,6 +105,8 @@ class DescubrirFragment : Fragment() {
         val imagen: ImageView = v.findViewById(R.id.ivMovRec)
         val reseña: TextView = v.findViewById(R.id.tvReseRec)
         val emoji: TextView = v.findViewById(R.id.tvEmojiRec)
+        val nomusu: TextView = v.findViewById(R.id.tvNomUsu)
+        val imUsu: ImageView = v.findViewById(R.id.ivUsuPerfil)
     }
 
     override fun onStart() {

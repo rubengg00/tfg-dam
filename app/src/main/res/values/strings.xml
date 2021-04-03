@@ -5,6 +5,6 @@
     <string name="choose_theme_text">Escoge el tema</string>
     <string name="opcion_positivia">Sí</string>
     <string name="opcion_negativa">No</string>
-    <string name="texto_dialog">¿Qué te ha parecido %s?</string>
+    <string name="texto_dialog">¿Recomiendas esta película?</string>
     <string name="recomendacion">Recomendar</string>
 </resources>

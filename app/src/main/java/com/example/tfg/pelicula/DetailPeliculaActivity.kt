@@ -94,7 +94,6 @@ class DetailPeliculaActivity : AppCompatActivity() {
                 startActivity(i)
             }else{
                 añadirReseña()
-                Toast.makeText(this, "OLEEE", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -102,7 +101,7 @@ class DetailPeliculaActivity : AppCompatActivity() {
 
     private fun añadirReseña() {
         var datos = intent.extras
-        var nomUsuario = ""
+
         var fotoUsuario = ""
         var caratul = ""
         var titul = ""
@@ -116,12 +115,12 @@ class DetailPeliculaActivity : AppCompatActivity() {
         MaterialDialog(this).show {
             customView(R.layout.custom_dialog_recomendation)
             positiveButton(R.string.recomendacion){dialog->
+                var nomUsuario = ""
                 var radioGrupo: RadioGroup = findViewById(R.id.rGroup)
-
+                var texto: TextView = findViewById(R.id.tvTextOpinion)
                 var seleccionado = rGroup.checkedRadioButtonId
                 var emojiSeleccionado: RadioButton = findViewById(seleccionado)
 
-                nomUsuario = FirebaseAuth.getInstance().currentUser.displayName
                 fotoUsuario = FirebaseAuth.getInstance().currentUser.photoUrl.toString()
                 caratul = datos?.getString("caratula").toString()
                 titul = datos?.getString("titulo").toString()
@@ -130,9 +129,20 @@ class DetailPeliculaActivity : AppCompatActivity() {
                 emoji = emojiSeleccionado.text.toString()
                 reseña = findViewById<TextView>(R.id.edComentario).text.toString()
 
-                var recomendacion: Recomendacion = Recomendacion(nomUsuario, fotoUsuario, caratul, titul, categori, fech, reseña, emoji)
+                db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).get().addOnSuccessListener {
+                    if (it.getString("nickname").toString() == ""){
+                        nomUsuario = FirebaseAuth.getInstance().currentUser.displayName
+                        var recomendacion: Recomendacion = Recomendacion(nomUsuario, fotoUsuario, caratul, titul, categori, fech, reseña, emoji)
+                        nodoRaiz.reference.child("recomendaciones").child(id_recomendacion.toString()).setValue(recomendacion)
+                        Log.d("nombre", nomUsuario)
+                    }else{
+                        nomUsuario = it.getString("nickname").toString()
+                        var recomendacion: Recomendacion = Recomendacion(nomUsuario, fotoUsuario, caratul, titul, categori, fech, reseña, emoji)
+                        nodoRaiz.reference.child("recomendaciones").child(id_recomendacion.toString()).setValue(recomendacion)
+                        Log.d("nombre", nomUsuario)
+                    }
+                }
 
-                nodoRaiz.reference.child("recomendaciones").child(id_recomendacion.toString()).setValue(recomendacion)
             }
 
         }
@@ -287,16 +297,6 @@ class DetailPeliculaActivity : AppCompatActivity() {
             }
         }
     }
-
-
-//        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
-//            .collection("listas").document(tvTitulo.text.toString()).set(data)
-//
-//        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
-//            .collection("listas").get().addOnSuccessListener {
-//                val size = it.size()
-//                Log.d("Peliculas en lista", size.toString())
-//            }
 
 
 }
