@@ -3,6 +3,7 @@ package com.example.tfg.pelicula.recomendaciones
 data class Recomendacion(
     var nomUsuario: String,
     var fotoUsuario: String,
+    var email: String,
     var caratula: String,
     var titulo: String,
     var categoria: String,

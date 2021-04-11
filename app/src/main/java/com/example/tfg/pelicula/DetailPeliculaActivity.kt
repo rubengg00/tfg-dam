@@ -109,6 +109,7 @@ class DetailPeliculaActivity : AppCompatActivity() {
         var fech = ""
         var reseña = ""
         var emoji = ""
+        var email = ""
         var id_recomendacion = System.currentTimeMillis()
 
 
@@ -128,16 +129,18 @@ class DetailPeliculaActivity : AppCompatActivity() {
                 fech = datos?.getString("fecha").toString()
                 emoji = emojiSeleccionado.text.toString()
                 reseña = findViewById<TextView>(R.id.edComentario).text.toString()
+                email = FirebaseAuth.getInstance().currentUser.email
 
                 db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).get().addOnSuccessListener {
                     if (it.getString("nickname").toString() == ""){
                         nomUsuario = FirebaseAuth.getInstance().currentUser.displayName
-                        var recomendacion: Recomendacion = Recomendacion(nomUsuario, fotoUsuario, caratul, titul, categori, fech, reseña, emoji)
+                        Log.d("email", email)
+                        var recomendacion: Recomendacion = Recomendacion(nomUsuario, fotoUsuario,email, caratul, titul, categori, fech, reseña, emoji)
                         nodoRaiz.reference.child("recomendaciones").child(id_recomendacion.toString()).setValue(recomendacion)
                         Log.d("nombre", nomUsuario)
                     }else{
                         nomUsuario = it.getString("nickname").toString()
-                        var recomendacion: Recomendacion = Recomendacion(nomUsuario, fotoUsuario, caratul, titul, categori, fech, reseña, emoji)
+                        var recomendacion: Recomendacion = Recomendacion(nomUsuario, fotoUsuario,email, caratul, titul, categori, fech, reseña, emoji)
                         nodoRaiz.reference.child("recomendaciones").child(id_recomendacion.toString()).setValue(recomendacion)
                         Log.d("nombre", nomUsuario)
                     }
