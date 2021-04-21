@@ -7,4 +7,5 @@
     <string name="opcion_negativa">No</string>
     <string name="texto_dialog">¿Recomiendas esta película?</string>
     <string name="recomendacion">Recomendar</string>
+    <string name="crear">Crear</string>
 </resources>
