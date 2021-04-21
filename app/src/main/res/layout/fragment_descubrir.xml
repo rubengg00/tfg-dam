@@ -26,7 +26,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcRecomendaciones"
             android:layout_width="378dp"
-            android:layout_height="548dp"
+            android:layout_height="483dp"
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
             android:overScrollMode="never"

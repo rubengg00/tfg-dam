@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "727330932180",
+    "firebase_url": "https://tfg-rgg-default-rtdb.firebaseio.com",
     "project_id": "tfg-rgg",
     "storage_bucket": "tfg-rgg.appspot.com"
   },
@@ -19,6 +20,14 @@
           "android_info": {
             "package_name": "com.example.tfg",
             "certificate_hash": "a67185f44231bca19fd497d4761870c9200821ba"
+          }
+        },
+        {
+          "client_id": "727330932180-enliom1fmr0bh9hveh12nnqqaet2tmjk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tfg",
+            "certificate_hash": "954821c8ce4d4cd9fa4aea84ae5b68a06c067744"
           }
         },
         {

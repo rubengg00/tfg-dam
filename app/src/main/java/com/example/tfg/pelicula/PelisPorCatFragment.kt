@@ -1,11 +1,9 @@
 package com.example.tfg.pelicula
 
 import android.app.Activity
-import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +14,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.R
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import www.sanju.motiontoast.MotionToast
 
 
