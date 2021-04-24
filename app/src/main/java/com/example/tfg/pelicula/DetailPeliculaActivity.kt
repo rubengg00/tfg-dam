@@ -1,29 +1,31 @@
 package com.example.tfg.pelicula
 
 import android.app.Activity
+import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import android.widget.AdapterView.OnItemClickListener
+import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
-import com.afollestad.materialdialogs.list.listItems
 import com.example.tfg.R
 import com.example.tfg.login.LoginActivity
 import com.example.tfg.pelicula.recomendaciones.Recomendacion
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
+import de.mrapp.android.bottomsheet.BottomSheet
 import kotlinx.android.synthetic.main.activity_detail_pelicula.*
 import kotlinx.android.synthetic.main.custom_dialog_recomendation.*
-import kotlinx.android.synthetic.main.custom_dialog_lista.*
 
 
 class DetailPeliculaActivity : AppCompatActivity() {
@@ -123,41 +125,41 @@ class DetailPeliculaActivity : AppCompatActivity() {
 
                 db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
                     .get().addOnSuccessListener {
-                    if (it.getString("nickname").toString() == "") {
-                        nomUsuario = FirebaseAuth.getInstance().currentUser.displayName
-                        Log.d("email", email)
-                        var recomendacion: Recomendacion = Recomendacion(
-                            nomUsuario,
-                            fotoUsuario,
-                            email,
-                            caratul,
-                            titul,
-                            categori,
-                            fech,
-                            reseña,
-                            emoji
-                        )
-                        nodoRaiz.reference.child("recomendaciones")
-                            .child(id_recomendacion.toString()).setValue(recomendacion)
-                        Log.d("nombre", nomUsuario)
-                    } else {
-                        nomUsuario = it.getString("nickname").toString()
-                        var recomendacion: Recomendacion = Recomendacion(
-                            nomUsuario,
-                            fotoUsuario,
-                            email,
-                            caratul,
-                            titul,
-                            categori,
-                            fech,
-                            reseña,
-                            emoji
-                        )
-                        nodoRaiz.reference.child("recomendaciones")
-                            .child(id_recomendacion.toString()).setValue(recomendacion)
-                        Log.d("nombre", nomUsuario)
+                        if (it.getString("nickname").toString() == "") {
+                            nomUsuario = FirebaseAuth.getInstance().currentUser.displayName
+                            Log.d("email", email)
+                            var recomendacion: Recomendacion = Recomendacion(
+                                nomUsuario,
+                                fotoUsuario,
+                                email,
+                                caratul,
+                                titul,
+                                categori,
+                                fech,
+                                reseña,
+                                emoji
+                            )
+                            nodoRaiz.reference.child("recomendaciones")
+                                .child(id_recomendacion.toString()).setValue(recomendacion)
+                            Log.d("nombre", nomUsuario)
+                        } else {
+                            nomUsuario = it.getString("nickname").toString()
+                            var recomendacion: Recomendacion = Recomendacion(
+                                nomUsuario,
+                                fotoUsuario,
+                                email,
+                                caratul,
+                                titul,
+                                categori,
+                                fech,
+                                reseña,
+                                emoji
+                            )
+                            nodoRaiz.reference.child("recomendaciones")
+                                .child(id_recomendacion.toString()).setValue(recomendacion)
+                            Log.d("nombre", nomUsuario)
+                        }
                     }
-                }
 
             }
 
@@ -217,197 +219,207 @@ class DetailPeliculaActivity : AppCompatActivity() {
 
     private fun agregarALista() {
 
-//        var lista: MutableList<String> = mutableListOf()
-//
-        var elementosLista = mutableListOf("")
-
-        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).collection("listas").get().addOnSuccessListener {
-            for (doc in it){
-                Log.d("nombre de lista", doc.getString("nombre").toString())
-                elementosLista.add(elementosLista.size-1, doc.getString("nombre").toString())
-            }
-        }
-        elementosLista.add("➕ Crear nueva lista")
-//        lista.add("➕ Crear nueva lista")
-
-
-
-        val dataFavs = hashMapOf(
-            "nombre" to "💜 Películas favoritas"
-        )
-
-        val dataPendientes = hashMapOf(
-            "nombre" to "⏰ Películas pendientes"
-        )
-
-        val dataVistas = hashMapOf(
-            "nombre" to "👁 Películas vistas"
-        )
-
         val data = hashMapOf(
             "titulo" to tvTitulo.text.toString(),
             "categoria" to tvCategoria.text.toString(),
             "fecha" to tvFechaDet.text.toString()
         )
-
         val contextView = findViewById<View>(R.id.btnAddLista)
+
+        var builder: BottomSheet.Builder = BottomSheet.Builder(this)
+        builder.setTitle("Seleccione la lista")
+        var id = 1
+        var lista: MutableMap<Int, String> = HashMap()
+
+        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
+            .collection("listas").get().addOnSuccessListener {
+                for (doc in it) {
+                    builder.addItem(1, doc.getString("nombre").toString())
+                    lista[id] = doc.getString("nombre").toString()
+                    id++
+                    var bottomSheet: BottomSheet = builder.create()
+                    bottomSheet.show()
+                }
+        }
+
+        builder.setOnItemClickListener { parent, view, position, id ->
+
+            var posicion = position + 1
+            Log.d("nombre por ID", (lista.get(posicion)).toString())
+
+            Log.d("nombre", id.toString())
+            db.collection("usuarios")
+                .document(FirebaseAuth.getInstance().currentUser.email)
+                .collection("listas").document((lista.get(posicion)).toString())
+                .collection("peliculas")
+                .document(tvTitulo.text.toString())
+                .set(data)
+            Snackbar.make(
+                contextView,
+                "Agregado a ${(lista.get(posicion)).toString()}",
+                Snackbar.LENGTH_SHORT
+            ).show()
+        }
+
 
         val activity: Activity = Activity()
 
 
-        MaterialDialog(this).title(null, "Seleccione la lista").show {
-            listItems(items = elementosLista) { dialog, index, text ->
-                if (text == "➕ Crear nueva lista"){
-                    MaterialDialog(windowContext).title(null, "Agregue el nombre de la lista")
-                        .show {
-                            customView(R.layout.custom_dialog_lista)
-                            positiveButton(R.string.crear) { dialog ->
-                                var nombreLista = ""
-                                var texto: EditText = findViewById(R.id.edListaPersonalizada)
-                                nombreLista = texto.text.toString()
-                                Log.d("nombre de la lista", nombreLista)
-
-                                val dataListaPersonalizada = hashMapOf(
-                                    "nombre" to nombreLista
-                                )
-
-                                db.collection("usuarios")
-                                    .document(FirebaseAuth.getInstance().currentUser.email)
-                                    .collection("listas").document(nombreLista)
-                                    .set(dataListaPersonalizada)
-
-                                db.collection("usuarios")
-                                    .document(FirebaseAuth.getInstance().currentUser.email)
-                                    .collection("listas").document(nombreLista)
-                                    .collection("peliculas")
-                                    .document(tvTitulo.text.toString())
-                                    .set(data)
-
-                                Snackbar.make(
-                                    contextView,
-                                    "Agregado a ${nombreLista}",
-                                    Snackbar.LENGTH_SHORT
-                                ).show()
-
-                            }
-                        }
-                }else{
-                    val dataList = hashMapOf(
-                        "nombre" to text
-                    )
-
-                    db.collection("usuarios")
-                        .document(FirebaseAuth.getInstance().currentUser.email)
-                        .collection("listas").document(text.toString()).set(dataList)
-
-                    db.collection("usuarios")
-                        .document(FirebaseAuth.getInstance().currentUser.email)
-                        .collection("listas").document(text.toString()).collection("peliculas")
-                        .document(tvTitulo.text.toString())
-                        .set(data)
-
-                    Snackbar.make(
-                        contextView,
-                        "Agregado a ${text.toString()}",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-
-                }
-//                when (index) {
-//                    0 -> {
-//                        db.collection("usuarios")
-//                            .document(FirebaseAuth.getInstance().currentUser.email)
-//                            .collection("listas").document(text.toString()).set(dataFavs)
+//        MaterialDialog(this).title(null, "Seleccione la lista").show {
+//            listItems(items = elementosLista) { dialog, index, text ->
+//                if (text == "➕ Crear nueva lista"){
+//                    MaterialDialog(windowContext).title(null, "Agregue el nombre de la lista")
+//                        .show {
+//                            customView(R.layout.custom_dialog_lista)
+//                            positiveButton(R.string.crear) { dialog ->
+//                                var nombreLista = ""
+//                                var texto: EditText = findViewById(R.id.edListaPersonalizada)
+//                                nombreLista = texto.text.toString()
+//                                Log.d("nombre de la lista", nombreLista)
 //
-//                        db.collection("usuarios")
-//                            .document(FirebaseAuth.getInstance().currentUser.email)
-//                            .collection("listas").document(text.toString()).collection("peliculas")
-//                            .document(tvTitulo.text.toString())
-//                            .set(data)
+//                                val dataListaPersonalizada = hashMapOf(
+//                                    "nombre" to nombreLista
+//                                )
 //
-//                        Snackbar.make(
-//                            contextView,
-//                            "Agregado a ${text.toString()}",
-//                            Snackbar.LENGTH_SHORT
-//                        ).show()
+//                                db.collection("usuarios")
+//                                    .document(FirebaseAuth.getInstance().currentUser.email)
+//                                    .collection("listas").document(nombreLista)
+//                                    .set(dataListaPersonalizada)
 //
-//                        db.collection("usuarios")
-//                            .document(FirebaseAuth.getInstance().currentUser.email)
-//                            .collection("listas").get().addOnSuccessListener {
-//                                val size = it.size()
-//                                Log.d("Listas", size.toString())
+//                                db.collection("usuarios")
+//                                    .document(FirebaseAuth.getInstance().currentUser.email)
+//                                    .collection("listas").document(nombreLista)
+//                                    .collection("peliculas")
+//                                    .document(tvTitulo.text.toString())
+//                                    .set(data)
+//
+//                                Snackbar.make(
+//                                    contextView,
+//                                    "Agregado a ${nombreLista}",
+//                                    Snackbar.LENGTH_SHORT
+//                                ).show()
+//
 //                            }
+//                        }
+//                }else{
+//                    val dataList = hashMapOf(
+//                        "nombre" to text
+//                    )
+//
+//                    db.collection("usuarios")
+//                        .document(FirebaseAuth.getInstance().currentUser.email)
+//                        .collection("listas").document(text.toString()).set(dataList)
+//
+//                    db.collection("usuarios")
+//                        .document(FirebaseAuth.getInstance().currentUser.email)
+//                        .collection("listas").document(text.toString()).collection("peliculas")
+//                        .document(tvTitulo.text.toString())
+//                        .set(data)
+//
+//                    Snackbar.make(
+//                        contextView,
+//                        "Agregado a ${text.toString()}",
+//                        Snackbar.LENGTH_SHORT
+//                    ).show()
+//
+//                }
+////                when (index) {
+////                    0 -> {
+////                        db.collection("usuarios")
+////                            .document(FirebaseAuth.getInstance().currentUser.email)
+////                            .collection("listas").document(text.toString()).set(dataFavs)
+////
+////                        db.collection("usuarios")
+////                            .document(FirebaseAuth.getInstance().currentUser.email)
+////                            .collection("listas").document(text.toString()).collection("peliculas")
+////                            .document(tvTitulo.text.toString())
+////                            .set(data)
+////
+////                        Snackbar.make(
+////                            contextView,
+////                            "Agregado a ${text.toString()}",
+////                            Snackbar.LENGTH_SHORT
+////                        ).show()
+////
+////                        db.collection("usuarios")
+////                            .document(FirebaseAuth.getInstance().currentUser.email)
+////                            .collection("listas").get().addOnSuccessListener {
+////                                val size = it.size()
+////                                Log.d("Listas", size.toString())
+////                            }
+////                    }
+////                    1 -> {
+////                        db.collection("usuarios")
+////                            .document(FirebaseAuth.getInstance().currentUser.email)
+////                            .collection("listas").document(text.toString()).set(dataPendientes)
+////
+////                        db.collection("usuarios")
+////                            .document(FirebaseAuth.getInstance().currentUser.email)
+////                            .collection("listas").document(text.toString()).collection("peliculas")
+////                            .document(tvTitulo.text.toString())
+////                            .set(data)
+////
+////                        Snackbar.make(
+////                            contextView,
+////                            "Agregado a ${text.toString()}",
+////                            Snackbar.LENGTH_SHORT
+////                        ).show()
+////
+////                    }
+////                    2 -> {
+////                        db.collection("usuarios")
+////                            .document(FirebaseAuth.getInstance().currentUser.email)
+////                            .collection("listas").document(text.toString()).set(dataVistas)
+////
+////                        db.collection("usuarios")
+////                            .document(FirebaseAuth.getInstance().currentUser.email)
+////                            .collection("listas").document(text.toString()).collection("peliculas")
+////                            .document(tvTitulo.text.toString())
+////                            .set(data)
+////
+////                        Snackbar.make(
+////                            contextView,
+////                            "Agregado a ${text.toString()}",
+////                            Snackbar.LENGTH_SHORT
+////                        ).show()
+////                    }
+////                    3 -> {
+////                        MaterialDialog(windowContext).title(null, "Agregue el nombre de la lista")
+////                            .show {
+////                                customView(R.layout.custom_dialog_lista)
+////                                positiveButton(R.string.crear) { dialog ->
+////                                    var nombreLista = ""
+////                                    var texto: EditText = findViewById(R.id.edListaPersonalizada)
+////                                    nombreLista = texto.text.toString()
+////                                    Log.d("nombre de la lista", nombreLista)
+////
+////                                    val dataListaPersonalizada = hashMapOf(
+////                                        "nombre" to nombreLista
+////                                    )
+////
+////                                    db.collection("usuarios")
+////                                        .document(FirebaseAuth.getInstance().currentUser.email)
+////                                        .collection("listas").document(nombreLista)
+////                                        .set(dataListaPersonalizada)
+////
+////                                    db.collection("usuarios")
+////                                        .document(FirebaseAuth.getInstance().currentUser.email)
+////                                        .collection("listas").document(nombreLista)
+////                                        .collection("peliculas")
+////                                        .document(tvTitulo.text.toString())
+////                                        .set(data)
+////
+////                                    Snackbar.make(
+////                                        contextView,
+////                                        "Agregado a ${nombreLista}",
+////                                        Snackbar.LENGTH_SHORT
+////                                    ).show()
+////
+////                                }
+////                            }
 //                    }
-//                    1 -> {
-//                        db.collection("usuarios")
-//                            .document(FirebaseAuth.getInstance().currentUser.email)
-//                            .collection("listas").document(text.toString()).set(dataPendientes)
-//
-//                        db.collection("usuarios")
-//                            .document(FirebaseAuth.getInstance().currentUser.email)
-//                            .collection("listas").document(text.toString()).collection("peliculas")
-//                            .document(tvTitulo.text.toString())
-//                            .set(data)
-//
-//                        Snackbar.make(
-//                            contextView,
-//                            "Agregado a ${text.toString()}",
-//                            Snackbar.LENGTH_SHORT
-//                        ).show()
-//
-//                    }
-//                    2 -> {
-//                        db.collection("usuarios")
-//                            .document(FirebaseAuth.getInstance().currentUser.email)
-//                            .collection("listas").document(text.toString()).set(dataVistas)
-//
-//                        db.collection("usuarios")
-//                            .document(FirebaseAuth.getInstance().currentUser.email)
-//                            .collection("listas").document(text.toString()).collection("peliculas")
-//                            .document(tvTitulo.text.toString())
-//                            .set(data)
-//
-//                        Snackbar.make(
-//                            contextView,
-//                            "Agregado a ${text.toString()}",
-//                            Snackbar.LENGTH_SHORT
-//                        ).show()
-//                    }
-//                    3 -> {
-//                        MaterialDialog(windowContext).title(null, "Agregue el nombre de la lista")
-//                            .show {
-//                                customView(R.layout.custom_dialog_lista)
-//                                positiveButton(R.string.crear) { dialog ->
-//                                    var nombreLista = ""
-//                                    var texto: EditText = findViewById(R.id.edListaPersonalizada)
-//                                    nombreLista = texto.text.toString()
-//                                    Log.d("nombre de la lista", nombreLista)
-//
-//                                    val dataListaPersonalizada = hashMapOf(
-//                                        "nombre" to nombreLista
-//                                    )
-//
-//                                    db.collection("usuarios")
-//                                        .document(FirebaseAuth.getInstance().currentUser.email)
-//                                        .collection("listas").document(nombreLista)
-//                                        .set(dataListaPersonalizada)
-//
-//                                    db.collection("usuarios")
-//                                        .document(FirebaseAuth.getInstance().currentUser.email)
-//                                        .collection("listas").document(nombreLista)
-//                                        .collection("peliculas")
-//                                        .document(tvTitulo.text.toString())
-//                                        .set(data)
-//
-//                                    Snackbar.make(
-//                                        contextView,
-//                                        "Agregado a ${nombreLista}",
-//                                        Snackbar.LENGTH_SHORT
-//                                    ).show()
-//
-//                                }
-//                            }
-                    }
-                }
-            }
-        }
+//                }
+    }
+
+
+}
