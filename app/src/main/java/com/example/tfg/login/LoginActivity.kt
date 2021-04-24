@@ -16,6 +16,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_login.*
 import www.sanju.motiontoast.MotionToast
 
@@ -33,6 +34,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     //Para la validación de Google
     private lateinit var clienteGoogle: GoogleSignInClient
+
+    private val db = FirebaseFirestore.getInstance()
+
+
     //----------------------------------------------------------------------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,6 +94,16 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
             ResourcesCompat.getFont(this,R.font.helvetica_regular))
+
+        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).collection("listas").document("💜 Películas favoritas").set(
+            hashMapOf("nombre" to "💜 Películas favoritas")
+        )
+        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).collection("listas").document("⏰ Películas pendientes").set(
+            hashMapOf("nombre" to "⏰ Películas pendientes")
+        )
+        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).collection("listas").document("👁 Películas vistas").set(
+            hashMapOf("nombre" to "👁 Películas vistas")
+        )
     }
     //----------------------------------------------------------------------------------------------
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

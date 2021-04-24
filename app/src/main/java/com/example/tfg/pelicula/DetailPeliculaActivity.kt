@@ -219,11 +219,7 @@ class DetailPeliculaActivity : AppCompatActivity() {
 
 //        var lista: MutableList<String> = mutableListOf()
 //
-        var elementosLista = mutableListOf(
-            "💜 Películas favoritas",
-            "⏰ Películas pendientes",
-            "👁 Películas vistas"
-        )
+        var elementosLista = mutableListOf("")
 
         db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).collection("listas").get().addOnSuccessListener {
             for (doc in it){
