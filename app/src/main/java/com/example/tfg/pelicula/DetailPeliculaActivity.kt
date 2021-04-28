@@ -240,25 +240,68 @@ class DetailPeliculaActivity : AppCompatActivity() {
                     var bottomSheet: BottomSheet = builder.create()
                     bottomSheet.show()
                 }
-        }
+                builder.addDivider()
+                builder.addItem(4, "➕ Crear nueva lista")
+            }
 
         builder.setOnItemClickListener { parent, view, position, id ->
 
-            var posicion = position + 1
-            Log.d("nombre por ID", (lista.get(posicion)).toString())
+            if (id.toString() == "4") {
+                Log.d("Es la lista", "para crear otras listas")
 
-            Log.d("nombre", id.toString())
-            db.collection("usuarios")
-                .document(FirebaseAuth.getInstance().currentUser.email)
-                .collection("listas").document((lista.get(posicion)).toString())
-                .collection("peliculas")
-                .document(tvTitulo.text.toString())
-                .set(data)
-            Snackbar.make(
-                contextView,
-                "Agregado a ${(lista.get(posicion)).toString()}",
-                Snackbar.LENGTH_SHORT
-            ).show()
+                MaterialDialog(this).title(null, "Agregue el nombre de la lista")
+                    .show {
+                        customView(R.layout.custom_dialog_lista)
+                        positiveButton(R.string.crear) { dialog ->
+                            var nombreLista = ""
+                            var texto: EditText = findViewById(R.id.edListaPersonalizada)
+                            nombreLista = texto.text.toString()
+                            Log.d("nombre de la lista", nombreLista)
+
+                            val dataListaPersonalizada = hashMapOf(
+                                "nombre" to nombreLista
+                            )
+
+                            db.collection("usuarios")
+                                .document(FirebaseAuth.getInstance().currentUser.email)
+                                .collection("listas").document(nombreLista)
+                                .set(dataListaPersonalizada)
+
+                            db.collection("usuarios")
+                                .document(FirebaseAuth.getInstance().currentUser.email)
+                                .collection("listas").document(nombreLista)
+                                .collection("peliculas")
+                                .document(tvTitulo.text.toString())
+                                .set(data)
+
+                            Snackbar.make(
+                                contextView,
+                                "Agregado a ${nombreLista}",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+
+                        }
+                    }
+            } else {
+                var posicion = position + 1
+                Log.d("nombre por ID", id.toString())
+
+                Log.d("nombre", id.toString())
+                db.collection("usuarios")
+                    .document(FirebaseAuth.getInstance().currentUser.email)
+                    .collection("listas").document((lista.get(posicion)).toString())
+                    .collection("peliculas")
+                    .document(tvTitulo.text.toString())
+                    .set(data)
+
+                Snackbar.make(
+                    contextView,
+                    "Agregado a ${(lista.get(posicion)).toString()}",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+
+
         }
 
 

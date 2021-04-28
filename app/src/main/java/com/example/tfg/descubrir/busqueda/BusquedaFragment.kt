@@ -59,6 +59,7 @@ class BusquedaFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
                 if (s.toString() != null) {
+                    listaPelis.clear()
                     val texto = s.toString().capitalize()
                     cargadoDatos(texto)
                     recview.adapter!!.notifyDataSetChanged()
