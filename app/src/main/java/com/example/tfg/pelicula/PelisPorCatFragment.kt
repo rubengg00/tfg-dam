@@ -27,7 +27,11 @@ class PelisPorCatFragment : Fragment() {
 
     lateinit var recview: RecyclerView
 
-    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val root = inflater.inflate(R.layout.fragment_pelis_por_cat, container, false)
 
         //Recogemos los datos del Bundle

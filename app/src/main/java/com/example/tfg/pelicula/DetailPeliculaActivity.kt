@@ -12,6 +12,7 @@ import android.view.WindowManager
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.example.tfg.R
@@ -26,6 +27,7 @@ import com.squareup.picasso.Picasso
 import de.mrapp.android.bottomsheet.BottomSheet
 import kotlinx.android.synthetic.main.activity_detail_pelicula.*
 import kotlinx.android.synthetic.main.custom_dialog_recomendation.*
+import www.sanju.motiontoast.MotionToast
 
 
 class DetailPeliculaActivity : AppCompatActivity() {
@@ -104,6 +106,8 @@ class DetailPeliculaActivity : AppCompatActivity() {
         var email = ""
         var id_recomendacion = System.currentTimeMillis()
 
+        val contextView = findViewById<View>(R.id.btnAddLista)
+
 
         MaterialDialog(this).show {
             customView(R.layout.custom_dialog_recomendation)
@@ -161,6 +165,11 @@ class DetailPeliculaActivity : AppCompatActivity() {
                         }
                     }
 
+                Snackbar.make(
+                    contextView,
+                    "¡Película recomendada!",
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
 
         }
