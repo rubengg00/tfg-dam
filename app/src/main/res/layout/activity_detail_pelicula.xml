@@ -173,6 +173,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
                 android:orientation="horizontal">
 
                 <Button
@@ -181,7 +182,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     android:layout_weight="1"
-                    android:text="Recomendar" />
+                    android:text="Recomendar"
+                    android:textAllCaps="false"
+                    android:backgroundTint="#42A5F6"/>
 
                 <Button
                     android:id="@+id/btnAddLista"
@@ -189,7 +192,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     android:layout_weight="1"
-                    android:text="Agregar" />
+                    android:text="+ Guardar"
+                    android:textAllCaps="false"
+                    android:backgroundTint="#EE534F"/>
             </LinearLayout>
 
         </LinearLayout>

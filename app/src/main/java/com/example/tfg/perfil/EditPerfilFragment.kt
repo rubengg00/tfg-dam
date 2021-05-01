@@ -14,7 +14,9 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.ResourcesCompat
+import com.afollestad.materialdialogs.MaterialDialog
 import com.example.tfg.R
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
@@ -65,7 +67,16 @@ class EditPerfilFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v){
             btnLogOut->{
-                logOut()
+                MaterialDialog(context as Context).show {
+                    title(null, "Cerrar sesión")
+                    message(null, "¿Deseas cerrar la sesión?")
+                    negativeButton(R.string.opcion_positivia) { dialog ->
+                        logOut()
+                    }
+                    positiveButton(R.string.opcion_negativa){dialog->{
+                        dialog.dismiss()
+                    }}
+                }
             }
             btnCambiarTema->{
                 dialogoCambioTema()

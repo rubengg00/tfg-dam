@@ -96,10 +96,8 @@
                         android:text="TextView"
                         android:textStyle="italic"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" /><![CDATA[
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    />
-                ]]>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
@@ -121,19 +119,22 @@
                     android:layout_weight="1"
                     app:srcCompat="@drawable/user_perfil" />
 
-                <TextView
+                <me.grantland.widget.AutofitTextView
                     android:id="@+id/tvNomUsu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
+                    android:maxLines="1"
                     android:text="TextView"
                     android:textColor="#7C33F6"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvEmojiRec"
-                    android:layout_width="10dp"
+                    android:layout_width="25dp"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:text="TextView"
                     android:textColor="?android:attr/textColorPrimary"

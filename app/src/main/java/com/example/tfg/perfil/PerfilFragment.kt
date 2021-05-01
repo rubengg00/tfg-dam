@@ -54,7 +54,13 @@ class PerfilFragment : Fragment() {
 
         if (FirebaseAuth.getInstance().currentUser != null) {
             Picasso.get().load(FirebaseAuth.getInstance().currentUser.photoUrl).into(fotoPerfil)
-            nombreUser.text = FirebaseAuth.getInstance().currentUser.displayName
+            db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).get().addOnSuccessListener {
+                if (it.getString("nickname").toString() == ""){
+                    nombreUser.text = FirebaseAuth.getInstance().currentUser.displayName
+                }else{
+                    nombreUser.text = it.getString("nickname").toString()
+                }
+            }
             establecerBio()
             establecerListas()
             crearAdapter()

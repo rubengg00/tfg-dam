@@ -2,6 +2,7 @@ package com.example.tfg.pelicula
 
 import android.app.Activity
 import android.app.PendingIntent.getActivity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -108,14 +109,16 @@ class DetailPeliculaActivity : AppCompatActivity() {
 
         val contextView = findViewById<View>(R.id.btnAddLista)
 
+        var nomUsuario = ""
+
+
 
         MaterialDialog(this).show {
             customView(R.layout.custom_dialog_recomendation)
             positiveButton(R.string.recomendacion) { dialog ->
-                var nomUsuario = ""
-                var radioGrupo: RadioGroup = findViewById(R.id.rGroup)
-                var texto: TextView = findViewById(R.id.tvTextOpinion)
-                var seleccionado = rGroup.checkedRadioButtonId
+
+                var radioGrupo: RadioGroup = findViewById<RadioGroup>(R.id.rGroup)
+                var seleccionado = radioGrupo.checkedRadioButtonId
                 var emojiSeleccionado: RadioButton = findViewById(seleccionado)
 
                 fotoUsuario = FirebaseAuth.getInstance().currentUser.photoUrl.toString()
@@ -127,49 +130,56 @@ class DetailPeliculaActivity : AppCompatActivity() {
                 reseña = findViewById<TextView>(R.id.edComentario).text.toString()
                 email = FirebaseAuth.getInstance().currentUser.email
 
-                db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
-                    .get().addOnSuccessListener {
-                        if (it.getString("nickname").toString() == "") {
-                            nomUsuario = FirebaseAuth.getInstance().currentUser.displayName
-                            Log.d("email", email)
-                            var recomendacion: Recomendacion = Recomendacion(
-                                nomUsuario,
-                                fotoUsuario,
-                                email,
-                                caratul,
-                                titul,
-                                categori,
-                                fech,
-                                reseña,
-                                emoji
-                            )
-                            nodoRaiz.reference.child("recomendaciones")
-                                .child(id_recomendacion.toString()).setValue(recomendacion)
-                            Log.d("nombre", nomUsuario)
-                        } else {
-                            nomUsuario = it.getString("nickname").toString()
-                            var recomendacion: Recomendacion = Recomendacion(
-                                nomUsuario,
-                                fotoUsuario,
-                                email,
-                                caratul,
-                                titul,
-                                categori,
-                                fech,
-                                reseña,
-                                emoji
-                            )
-                            nodoRaiz.reference.child("recomendaciones")
-                                .child(id_recomendacion.toString()).setValue(recomendacion)
-                            Log.d("nombre", nomUsuario)
+                if (reseña.trim().isEmpty() || radioGrupo.checkedRadioButtonId == -1){
+                    Toast.makeText(context, "Rellene los campos", Toast.LENGTH_LONG).show()
+                }else{
+                    db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
+                        .get().addOnSuccessListener {
+                            if (it.getString("nickname").toString() == "") {
+                                nomUsuario = FirebaseAuth.getInstance().currentUser.displayName
+                                Log.d("email", email)
+                                var recomendacion: Recomendacion = Recomendacion(
+                                    nomUsuario,
+                                    fotoUsuario,
+                                    email,
+                                    caratul,
+                                    titul,
+                                    categori,
+                                    fech,
+                                    reseña,
+                                    emoji
+                                )
+                                nodoRaiz.reference.child("recomendaciones")
+                                    .child(id_recomendacion.toString()).setValue(recomendacion)
+                                Log.d("nombre", nomUsuario)
+                            } else {
+                                nomUsuario = it.getString("nickname").toString()
+                                var recomendacion: Recomendacion = Recomendacion(
+                                    nomUsuario,
+                                    fotoUsuario,
+                                    email,
+                                    caratul,
+                                    titul,
+                                    categori,
+                                    fech,
+                                    reseña,
+                                    emoji
+                                )
+                                nodoRaiz.reference.child("recomendaciones")
+                                    .child(id_recomendacion.toString()).setValue(recomendacion)
+                                Log.d("nombre", nomUsuario)
+                            }
                         }
-                    }
 
-                Snackbar.make(
-                    contextView,
-                    "¡Película recomendada!",
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                    Snackbar.make(
+                        contextView,
+                        "¡Película recomendada!",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+
+
+
             }
 
         }

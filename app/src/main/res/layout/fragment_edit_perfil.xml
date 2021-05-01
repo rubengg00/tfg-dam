@@ -54,7 +54,7 @@
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="60dp"
         android:text="Cerrar sesión"
         android:textAllCaps="false"
         android:textColor="#FF5353"
@@ -65,10 +65,10 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="357dp"
-        android:layout_height="175dp"
+        android:layout_width="351dp"
+        android:layout_height="227dp"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="100dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,54 +77,60 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="227dp">
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="1dp"
-                android:text="Nombre"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/etNombreAct"
-                android:layout_width="342dp"
-                android:layout_height="47dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:hint="Nombre a mostrar"
-                android:inputType="textPersonName"
-                android:textColor="?android:attr/textColorPrimary"
-                app:endIconMode="clear_text"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etNom"
+                android:layout_width="350dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                app:counterEnabled="true"
+                app:counterMaxLength="15"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="7dp"
-                android:text="Biografía"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etNombreAct" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/etBioAct"
-                android:layout_width="342dp"
-                android:layout_height="47dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:hint="Actualizar texto de perfil"
-                android:inputType="textPersonName"
-                android:textColor="?android:attr/textColorPrimary"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNombreAct"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Nickname"
+                    android:inputType="textPersonName"
+                    android:maxLength="15" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etBiografia"
+                android:layout_width="350dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                app:counterEnabled="true"
+                app:counterMaxLength="60"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+                app:layout_constraintHorizontal_bias="0.493"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etNom">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etBioAct"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Biografía"
+                    android:inputType="textPersonName"
+                    android:maxLength="60" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
