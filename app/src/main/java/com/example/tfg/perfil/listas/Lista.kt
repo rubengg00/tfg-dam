@@ -1,3 +1,15 @@
 package com.example.tfg.perfil.listas
 
-data class Lista(var nombre: String, var total: String)
+class Lista{
+
+    var nombre: String? = null
+    var total: String? = null
+
+    constructor(){}
+
+    constructor(nombre: String? ,total: String?){
+        this.nombre = nombre
+        this.total = total
+    }
+
+}

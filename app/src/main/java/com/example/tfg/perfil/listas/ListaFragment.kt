@@ -22,6 +22,7 @@ import www.sanju.motiontoast.MotionToast
 
 class ListaFragment : Fragment() {
 
+
     lateinit var tvNombre: TextView
     private val db = FirebaseFirestore.getInstance()
 

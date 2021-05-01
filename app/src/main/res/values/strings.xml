@@ -8,4 +8,5 @@
     <string name="texto_dialog">¿Recomiendas esta película?</string>
     <string name="recomendacion">Recomendar</string>
     <string name="crear">Crear</string>
+    <string name="modificar">Guardar</string>
 </resources>
