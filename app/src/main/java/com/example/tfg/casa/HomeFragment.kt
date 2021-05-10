@@ -6,15 +6,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.R
 import com.example.tfg.pelicula.PelisPorCatFragment
 import com.example.tfg.perfil.EditPerfilFragment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlin.system.exitProcess
+import com.google.firebase.ktx.Firebase
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
 
@@ -22,6 +25,7 @@ class HomeFragment : Fragment() {
     var listaCategoria = ArrayList<Categoria>()
 
     lateinit var recview: RecyclerView
+    lateinit var tvSaludos: TextView
     var flag = false
 
     private val db = FirebaseFirestore.getInstance()
@@ -30,6 +34,7 @@ class HomeFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
         recview = root.findViewById(R.id.rvListas)
+        tvSaludos = root.findViewById(R.id.tvSaludos)
 
         EditPerfilFragment().comprobarTema(activity as Activity, context as Context)
 
@@ -39,8 +44,41 @@ class HomeFragment : Fragment() {
         }
         crearAdapter()
 
+        cargarSaludos()
 
         return root
+    }
+
+    private fun cargarSaludos() {
+        val c: Calendar = Calendar.getInstance()
+        val timeOfDay: Int = c.get(Calendar.HOUR_OF_DAY)
+        var usu = FirebaseAuth.getInstance().currentUser
+
+        if(timeOfDay >= 6 && timeOfDay < 12){
+            if (usu != null){
+                tvSaludos.text = "Buenos días ${usu.displayName}"
+            }else{
+                tvSaludos.text = "Buenos días"
+            }
+        }else if(timeOfDay >= 12 && timeOfDay < 19){
+            if (usu != null){
+                tvSaludos.text = "Buenas tardes ${usu.displayName}"
+            }else{
+                tvSaludos.text = "Buenas tardes"
+            }
+        }else if(timeOfDay >= 19 && timeOfDay < 24){
+            if (usu != null){
+                tvSaludos.text = "Buenas noches ${usu.displayName}"
+            }else{
+                tvSaludos.text = "Buenas noches"
+            }
+        }else{
+            if (usu != null){
+                tvSaludos.text = "Buenas noches ${usu.displayName}"
+            }else{
+                tvSaludos.text = "Buenas noches"
+            }
+        }
     }
 
     private fun crearAdapter() {

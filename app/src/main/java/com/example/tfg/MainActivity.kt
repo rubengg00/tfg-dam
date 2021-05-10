@@ -13,38 +13,28 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
         bottomBar.setOnNavigationItemSelectedListener {
-            when(it.itemId){
-                R.id.navigation_home->{
+            when (it.itemId) {
+                R.id.navigation_home -> {
                     val homeFragment = HomeFragment()
                     openFragment(homeFragment)
-                    it.setChecked(true)
-                    if (bottomBar.height != null){
-                        Log.d("Altura del bottom bar", bottomBar.height.toString())
-                    }
+                    it.isChecked = true
                     true
                 }
-                R.id.navigation_descubrir->{
+                R.id.navigation_descubrir -> {
                     val descubrirFragment = DescubrirFragment()
                     openFragment(descubrirFragment)
-                    it.setChecked(true)
-                    if (bottomBar.height != null){
-                        Log.d("Altura del bottom bar", bottomBar.height.toString())
-                    }
+                    it.isChecked = true
                     true
                 }
-                R.id.navigation_perfil->{
+                R.id.navigation_perfil -> {
                     val perfilFragment = PerfilFragment()
                     openFragment(perfilFragment)
-                    it.setChecked(true)
+                    it.isChecked = true
                     true
                 }
             }
@@ -52,17 +42,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (savedInstanceState == null) {
-            bottomBar.setSelectedItemId(R.id.navigation_home); // change to whichever id should be default
+            // Por defecto, al abrir la aplicación se abrirá desde el fragmento Home
+            bottomBar.selectedItemId = R.id.navigation_home;
         }
     }
 
-    private fun openFragment(fragment: Fragment){
-        val transaction =  supportFragmentManager.beginTransaction()
+    private fun openFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }
-
 
 
 }

@@ -59,25 +59,28 @@ class BusquedaFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
                 if (s.toString() != null) {
+                    val texto = s.toString().capitalize().trim()
                     listaPelis.clear()
-                    val texto = s.toString().capitalize()
                     cargadoDatos(texto)
-                    recview.adapter!!.notifyDataSetChanged()
                 }
-                if (s.toString().isEmpty()){
+                if (s.toString().isEmpty() || s.toString().isBlank() || s.toString() == ""){
                     listaPelis.clear()
                     cargadoDatos("")
-                    recview.adapter!!.notifyDataSetChanged()
                 }
+                Log.d("adios", "hola")
             }
 
-        })
 
+        })
         return root
     }
 
 
     fun cargadoDatos(cadena: String) {
+
+        listaPelis.clear()
+
+
         var titulo = ""
         var fecha = ""
         var sinopsis = ""
@@ -87,7 +90,6 @@ class BusquedaFragment : Fragment() {
         var platNom = ""
         var enlace = ""
 
-        listaPelis.clear()
 
         db.collection("categorias").get().addOnSuccessListener {
             for (doc in it) {
@@ -123,8 +125,10 @@ class BusquedaFragment : Fragment() {
                                 )
                                 listaPelis.add(peli)
                             }
-                            crearAdapter()
+                            Log.d("hola",doc.getString("titulo").toString())
                         }
+                        crearAdapter()
+
                     }
             }
         }
@@ -136,6 +140,7 @@ class BusquedaFragment : Fragment() {
         recview.layoutManager =
             GridLayoutManager(context as Context, 2, GridLayoutManager.VERTICAL, false)
         recview.adapter = miAdapter
+        recview.adapter?.notifyDataSetChanged()
 
         miAdapter.setOnClickListener(View.OnClickListener {
             val i: Intent = Intent(context as Context, DetailPeliculaActivity::class.java)

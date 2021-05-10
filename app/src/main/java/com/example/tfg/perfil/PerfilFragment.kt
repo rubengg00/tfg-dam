@@ -36,6 +36,7 @@ class PerfilFragment : Fragment() {
     lateinit var miAdapter: ListaAdapter
     lateinit var FirestoreRecyclerAdapter: FirestoreRecyclerAdapter<Lista, PerfilFragment.ListaViewHolder>
 
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
