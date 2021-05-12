@@ -28,42 +28,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="74dp"
-            android:text="Mis Plataformas"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btnAddYourPlat"
-            android:layout_width="140dp"
-            android:layout_height="70dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/esquinas_redondeadas"
-            android:text="Añade tus plataformas"
-            android:textAllCaps="false"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
         <LinearLayout
             android:id="@+id/linearLayout3"
             android:layout_width="403dp"
             android:layout_height="137dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnAddYourPlat">
+            app:layout_constraintTop_toBottomOf="@+id/tvSaludos">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvNovedades"
@@ -109,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="18dp"
                         android:layout_marginTop="5dp"
-                        android:text="en tus plataformas"
+                        android:text="de las plataformas"
                         android:textColor="?android:attr/textColorPrimary"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView10" />
@@ -159,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="18dp"
                         android:layout_marginTop="7dp"
-                        android:text="en tus plataformas"
+                        android:text="de las plataformas"
                         android:textColor="?android:attr/textColorPrimary"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/lo_mejor" />
@@ -193,15 +169,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/tvSaludos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="122dp"
-            android:layout_marginEnd="92dp"
+            android:layout_width="337dp"
+            android:layout_height="51dp"
+            android:layout_marginTop="19dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:maxLines="1"
             android:text="TextView"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

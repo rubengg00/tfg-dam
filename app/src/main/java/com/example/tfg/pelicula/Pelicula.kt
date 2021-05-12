@@ -8,5 +8,6 @@ data class Pelicula(
     var categoria: String,
     var caratula: String,
     var platNombre: String,
-    var enlace: String
+    var enlace: String,
+    var trailer: String
 )

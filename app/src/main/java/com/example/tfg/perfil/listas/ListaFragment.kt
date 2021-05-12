@@ -79,6 +79,8 @@ class ListaFragment : Fragment() {
         var platNom = ""
         var enlace = ""
         var caratula = ""
+        var trailer = ""
+
         if (categoria != null) {
             db.collection("categorias").document(categoria).collection("peliculas").document(nombre)
                 .get().addOnSuccessListener {
@@ -88,6 +90,7 @@ class ListaFragment : Fragment() {
                     duracion = it.getString("duracion").toString()
                     cat = categoria
                     caratula = it.getString("caratula").toString()
+                    trailer = it.getString("trailer").toString()
                     db.collection("categorias").document(categoria)
                         .collection("peliculas").document(nombre)
                         .collection("plataformas").get().addOnSuccessListener {
@@ -104,7 +107,8 @@ class ListaFragment : Fragment() {
                         cat,
                         caratula,
                         platNom,
-                        enlace
+                        enlace,
+                        trailer
                     )
                     listaPelis.add(peli)
                     crearAdapter()

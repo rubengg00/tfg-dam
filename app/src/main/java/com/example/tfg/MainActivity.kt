@@ -14,6 +14,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // SplashScreen
+        Thread.sleep(1000)
+        setTheme(R.style.Theme_TFG)
+
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -45,6 +50,7 @@ class MainActivity : AppCompatActivity() {
             // Por defecto, al abrir la aplicación se abrirá desde el fragmento Home
             bottomBar.selectedItemId = R.id.navigation_home;
         }
+
     }
 
     private fun openFragment(fragment: Fragment) {

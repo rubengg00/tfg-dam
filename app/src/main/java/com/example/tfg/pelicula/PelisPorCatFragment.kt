@@ -66,6 +66,7 @@ class PelisPorCatFragment : Fragment() {
             i.putExtra("categoria", listaPelis.get(recview.getChildAdapterPosition(it)).categoria)
             i.putExtra("sinopsis", listaPelis.get(recview.getChildAdapterPosition(it)).sinopsis)
             i.putExtra("caratula", listaPelis.get(recview.getChildAdapterPosition(it)).caratula)
+            i.putExtra("trailer", listaPelis.get(recview.getChildAdapterPosition(it)).trailer)
             startActivity(i)
         })
     }
@@ -79,6 +80,7 @@ class PelisPorCatFragment : Fragment() {
         var caratula = ""
         var platNom = ""
         var enlace = ""
+        var trailer = ""
 
         db.collection("categorias").document(nombreCat.toString()).collection("peliculas").get()
             .addOnSuccessListener {
@@ -89,6 +91,7 @@ class PelisPorCatFragment : Fragment() {
                     duracion = doc.getString("duracion").toString()
                     categoria = doc.getString("categoria").toString()
                     caratula = doc.getString("caratula").toString()
+                    trailer = doc.getString("trailer").toString()
                     db.collection("categorias").document(nombreCat.toString())
                         .collection("peliculas").document(doc.getString("titulo").toString())
                         .collection("plataformas").get().addOnSuccessListener {
@@ -105,7 +108,8 @@ class PelisPorCatFragment : Fragment() {
                         categoria,
                         caratula,
                         platNom,
-                        enlace
+                        enlace,
+                        trailer
                     )
                     listaPelis.add(peli)
                 }

@@ -101,7 +101,7 @@
                     android:id="@+id/textView20"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Plataformas"
+                    android:text="Plataforma"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -172,7 +172,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="70dp"
                 android:layout_marginRight="10dp"
                 android:orientation="horizontal">
 
@@ -182,9 +182,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     android:layout_weight="1"
+                    android:backgroundTint="#42A5F6"
                     android:text="Recomendar"
-                    android:textAllCaps="false"
-                    android:backgroundTint="#42A5F6"/>
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/btnAddLista"
@@ -192,9 +192,46 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     android:layout_weight="1"
+                    android:backgroundTint="#EE534F"
                     android:text="+ Guardar"
-                    android:textAllCaps="false"
-                    android:backgroundTint="#EE534F"/>
+                    android:textAllCaps="false" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="394dp"
+                android:layout_height="70dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="-150dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tráiler"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="?android:attr/textColorPrimary"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivTrailer"
+                        android:layout_width="66dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/youtube"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="2dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>

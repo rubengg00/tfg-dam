@@ -89,6 +89,7 @@ class BusquedaFragment : Fragment() {
         var caratula = ""
         var platNom = ""
         var enlace = ""
+        var trailer = ""
 
 
         db.collection("categorias").get().addOnSuccessListener {
@@ -104,6 +105,7 @@ class BusquedaFragment : Fragment() {
                                 duracion = doc.getString("duracion").toString()
                                 categoria = doc.getString("categoria").toString()
                                 caratula = doc.getString("caratula").toString()
+                                trailer = doc.getString("trailer").toString()
                                 db.collection("categorias").document(nombreCat.toString())
                                     .collection("peliculas")
                                     .document(doc.getString("titulo").toString())
@@ -121,7 +123,8 @@ class BusquedaFragment : Fragment() {
                                     categoria,
                                     caratula,
                                     platNom,
-                                    enlace
+                                    enlace,
+                                    trailer
                                 )
                                 listaPelis.add(peli)
                             }

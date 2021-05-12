@@ -39,6 +39,7 @@ class DetailPeliculaActivity : AppCompatActivity() {
     lateinit var tvCategoria: TextView
     lateinit var tvSinopsis: TextView
     lateinit var tvPlataforma: ImageView
+    lateinit var tvTrailer: ImageView
     lateinit var caratula: ImageView
     lateinit var btnAdd: Button
     lateinit var btnRecom: Button
@@ -189,6 +190,15 @@ class DetailPeliculaActivity : AppCompatActivity() {
 
     private fun setUpDetallePelicula() {
 
+        //Declaración de variables
+        tvTitulo = findViewById(R.id.tvTituloDet)
+        tvFecha = findViewById(R.id.tvFechaDet)
+        tvDuracion = findViewById(R.id.tvDuracionDet)
+        tvCategoria = findViewById(R.id.tvCatDet)
+        tvSinopsis = findViewById(R.id.tvSinDet)
+        tvPlataforma = findViewById(R.id.ivFotoPlat)
+        tvTrailer = findViewById(R.id.ivTrailer)
+
         //Recogemos los datos del Intent
         var datos = intent.extras
         var titulo = datos?.getString("titulo")
@@ -197,7 +207,13 @@ class DetailPeliculaActivity : AppCompatActivity() {
         var categoria = datos?.getString("categoria")
         var sinopsis = datos?.getString("sinopsis")
         var caratula = datos?.getString("caratula")
+        var trailer = datos?.getString("trailer")
 
+        tvTrailer.setOnClickListener{
+            val i: Intent = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(trailer)
+            startActivity(i)
+        }
 
         if (categoria != null) {
             if (titulo != null) {
@@ -220,14 +236,8 @@ class DetailPeliculaActivity : AppCompatActivity() {
             }
         }
 
-        //Declaración de variables
-        tvTitulo = findViewById(R.id.tvTituloDet)
-        tvFecha = findViewById(R.id.tvFechaDet)
-        tvDuracion = findViewById(R.id.tvDuracionDet)
-        tvCategoria = findViewById(R.id.tvCatDet)
-        tvSinopsis = findViewById(R.id.tvSinDet)
-        tvPlataforma = findViewById(R.id.ivFotoPlat)
         Picasso.get().load(caratula).into(ivCaratulaDet)
+
 
         tvTitulo.text = titulo
         tvFecha.text = fecha
