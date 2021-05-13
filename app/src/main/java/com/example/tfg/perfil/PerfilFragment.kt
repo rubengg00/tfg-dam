@@ -1,5 +1,6 @@
 package com.example.tfg.perfil
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_perfil.*
+import www.sanju.motiontoast.MotionToast
 
 class PerfilFragment : Fragment() {
 
@@ -151,6 +154,14 @@ class PerfilFragment : Fragment() {
                                     message(null, "¿Deseas borrar la lista?")
                                     negativeButton(R.string.opcion_positivia) { dialog ->
                                         listaBorrada(viewHolder.adapterPosition)
+                                        MotionToast.createToast(activity as Activity,
+                                            "Borrada 👍",
+                                            "Lista borrada correctamente",
+                                            MotionToast.TOAST_SUCCESS,
+                                            MotionToast.GRAVITY_BOTTOM,
+                                            MotionToast.LONG_DURATION,
+                                            ResourcesCompat.getFont(context,R.font.helvetica_regular))
+                                        establecerListas()
                                     }
                                     positiveButton(R.string.opcion_negativa) { dialog ->
                                         FirestoreRecyclerAdapter.notifyItemChanged(viewHolder.adapterPosition);
@@ -158,46 +169,11 @@ class PerfilFragment : Fragment() {
                                     }
                                 }
                             }
-
-                            if (direction == ItemTouchHelper.LEFT) {
-                                MaterialDialog(context as Context).title(null, "Editando lista")
-                                    .show {
-                                        customView(R.layout.custom_dialog_lista)
-
-                                        var texto: EditText =
-                                            findViewById(R.id.edListaPersonalizada)
-                                        texto.setText(
-                                            FirestoreRecyclerAdapter.snapshots.getSnapshot(
-                                                viewHolder.adapterPosition
-                                            ).getString("nombre").toString()
-                                        )
-                                        var oldNom = texto.text.toString()
-
-                                        positiveButton(R.string.modificar) { dialog ->
-                                            listaEditada(
-                                                viewHolder.adapterPosition,
-                                                texto.text.toString(),
-                                                oldNom
-                                            )
-                                        }
-                                    }
-                            }
                         }
                     }).attachToRecyclerView(recview)
 
                 fun listaBorrada(position: Int) {
                     FirestoreRecyclerAdapter.snapshots.getSnapshot(position).reference.delete()
-                }
-
-                private fun listaEditada(
-                    position: Int,
-                    texto: String,
-                    oldNom: String
-                ) {
-                    db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
-                        .collection("listas").document(oldNom).update("nombre", texto)
-                    FirestoreRecyclerAdapter.snapshots.getSnapshot(position).reference.delete()
-
                 }
 
             }

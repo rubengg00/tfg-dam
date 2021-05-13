@@ -13,6 +13,8 @@ import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
 import com.example.tfg.R
 import com.example.tfg.pelicula.DetailPeliculaActivity
 import com.example.tfg.pelicula.Pelicula
@@ -24,6 +26,7 @@ class ListaFragment : Fragment() {
 
 
     lateinit var tvNombre: TextView
+    lateinit var tvEdit: TextView
     private val db = FirebaseFirestore.getInstance()
 
     lateinit var miAdapter: PeliculaListaAdapter
@@ -41,6 +44,7 @@ class ListaFragment : Fragment() {
         //Declaración de variables
         tvNombre = root.findViewById(R.id.tvNomLista)
         recview = root.findViewById(R.id.rcPelisLista)
+        tvEdit = root.findViewById(R.id.tvEditNom)
 
         //Recogemos los datos del Bundle
         var datos: Bundle? = this.arguments
@@ -49,6 +53,24 @@ class ListaFragment : Fragment() {
 
         crearAdapter()
         buscadoPelis(nombre)
+
+        tvEdit.setOnClickListener {
+            MaterialDialog(context as Context).title(null, "Editando lista")
+                .show {
+                    customView(R.layout.custom_dialog_lista)
+
+                    var texto: TextView =
+                        findViewById(R.id.edListaPersonalizada)
+                    texto.text = tvNombre.text
+                    var oldNom = texto.text.toString()
+
+                    positiveButton(R.string.modificar) { dialog ->
+                        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
+                            .collection("listas").document(oldNom).update("nombre", texto.text.toString())
+                    }
+
+                }
+        }
 
         return root
     }
