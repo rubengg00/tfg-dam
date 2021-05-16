@@ -13,7 +13,8 @@
         <activity android:name=".pelicula.DetailPeliculaActivity"></activity>
         <activity
             android:name=".login.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"

@@ -115,7 +115,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 val account = task.getResult(ApiException::class.java)!!
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
-                Toast.makeText(this, "Error al iniciar con Google: " + task.exception, Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Error al iniciar con Google", Toast.LENGTH_LONG).show()
             }
         }
         if (requestCode == REQ_INT_GOG && resultCode == RESULT_OK){

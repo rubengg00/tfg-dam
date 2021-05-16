@@ -4,18 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.LoginActivity">
+    android:background="@drawable/fondo"
+    tools:context=".login.LoginActivity"
+    android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="340dp"
         android:layout_height="59dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="228dp"
+        android:layout_marginTop="150dp"
         android:layout_marginEnd="40dp"
         android:text="Para continuar, es necesario iniciar sesión"
         android:textAlignment="center"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,22 +29,26 @@
         android:id="@+id/btnSignGoogle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
+        android:layout_marginBottom="20dp"
         android:backgroundTint="#FF5353"
         android:text="Continuar con Google"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/btnSignTel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        app:icon="@drawable/logo_google"/>
 
     <Button
         android:id="@+id/btnSignTel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
+        android:layout_marginBottom="100dp"
         android:backgroundTint="#9E9E9E"
         android:text="Continuar con teléfono"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSignGoogle" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
