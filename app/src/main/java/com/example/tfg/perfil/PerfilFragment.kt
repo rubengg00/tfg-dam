@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,11 +20,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.example.tfg.R
+import com.example.tfg.login.AgregadoInfoActivity
 import com.example.tfg.perfil.listas.Lista
 import com.example.tfg.perfil.listas.ListaAdapter
 import com.example.tfg.perfil.listas.ListaFragment
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.FacebookAuthCredential
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -39,7 +43,7 @@ class PerfilFragment : Fragment() {
     lateinit var miAdapter: ListaAdapter
     lateinit var FirestoreRecyclerAdapter: FirestoreRecyclerAdapter<Lista, PerfilFragment.ListaViewHolder>
 
-    
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,7 +63,7 @@ class PerfilFragment : Fragment() {
             Picasso.get().load(FirebaseAuth.getInstance().currentUser.photoUrl).into(fotoPerfil)
             db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).get()
                 .addOnSuccessListener {
-                    if (it.getString("nickname").toString() == "") {
+                    if (it.getString("nickname").toString() == "" || it.getString("nickname").isNullOrEmpty()) {
                         nombreUser.text = FirebaseAuth.getInstance().currentUser.displayName
                     } else {
                         nombreUser.text = it.getString("nickname").toString()
@@ -75,9 +79,21 @@ class PerfilFragment : Fragment() {
 
         btnEditPerfil.setOnClickListener { checkPerfil() }
 
-
+        agregarInfoUser()
 
         return root
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    private fun agregarInfoUser() {
+        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).get()
+            .addOnSuccessListener {
+                if (it.getString("nickname").isNullOrEmpty() || it.getString("biografia").isNullOrEmpty()) {
+                    val i: Intent =
+                        Intent(context as Context, AgregadoInfoActivity::class.java)
+                    startActivity(i)
+                }
+            }
     }
 
     //-----------------------------------------------------------------------------------------------

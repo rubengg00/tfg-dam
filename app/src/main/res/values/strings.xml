@@ -9,4 +9,6 @@
     <string name="recomendacion">Recomendar</string>
     <string name="crear">Crear</string>
     <string name="modificar">Guardar</string>
+    <string name="facebook_app_id">199646728649584</string>
+    <string name="fb_login_protocol_scheme">fb199646728649584</string>
 </resources>

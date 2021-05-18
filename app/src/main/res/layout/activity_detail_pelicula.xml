@@ -178,23 +178,30 @@
 
                 <Button
                     android:id="@+id/btnRecom"
+                    style="@style/Widget.MaterialComponents.Button.Icon"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     android:layout_weight="1"
                     android:backgroundTint="#42A5F6"
                     android:text="Recomendar"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    app:cornerRadius="20dp" />
 
                 <Button
                     android:id="@+id/btnAddLista"
+                    style="@style/Widget.MaterialComponents.Button.Icon"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     android:layout_weight="1"
                     android:backgroundTint="#EE534F"
-                    android:text="+ Guardar"
-                    android:textAllCaps="false" />
+                    android:text="Guardar"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    app:cornerRadius="20dp"
+                    app:icon="@android:drawable/ic_input_add" />
             </LinearLayout>
 
             <LinearLayout

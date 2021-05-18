@@ -1,8 +1,5 @@
 package com.example.tfg.pelicula
 
-import android.app.Activity
-import android.app.PendingIntent.getActivity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -11,9 +8,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
-import android.widget.AdapterView.OnItemClickListener
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.example.tfg.R
@@ -27,8 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import de.mrapp.android.bottomsheet.BottomSheet
 import kotlinx.android.synthetic.main.activity_detail_pelicula.*
-import kotlinx.android.synthetic.main.custom_dialog_recomendation.*
-import www.sanju.motiontoast.MotionToast
+
 
 
 class DetailPeliculaActivity : AppCompatActivity() {
@@ -48,8 +42,7 @@ class DetailPeliculaActivity : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
     private val nodoRaiz = FirebaseDatabase.getInstance()
-    lateinit var reference: DatabaseReference
-    lateinit var btnAddRecom: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,12 +124,12 @@ class DetailPeliculaActivity : AppCompatActivity() {
                 reseña = findViewById<TextView>(R.id.edComentario).text.toString()
                 email = FirebaseAuth.getInstance().currentUser.email
 
-                if (reseña.trim().isEmpty() || radioGrupo.checkedRadioButtonId == -1){
+                if (reseña.trim().isEmpty() || radioGrupo.checkedRadioButtonId == -1) {
                     Toast.makeText(context, "Rellene los campos", Toast.LENGTH_LONG).show()
-                }else{
+                } else {
                     db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
                         .get().addOnSuccessListener {
-                            if (it.getString("nickname").toString() == "") {
+                            if (it.getString("nickname").isNullOrEmpty()) {
                                 nomUsuario = FirebaseAuth.getInstance().currentUser.displayName
                                 Log.d("email", email)
                                 var recomendacion: Recomendacion = Recomendacion(
@@ -180,11 +173,9 @@ class DetailPeliculaActivity : AppCompatActivity() {
                 }
 
 
-
             }
 
         }
-
 
     }
 
@@ -209,7 +200,7 @@ class DetailPeliculaActivity : AppCompatActivity() {
         var caratula = datos?.getString("caratula")
         var trailer = datos?.getString("trailer")
 
-        tvTrailer.setOnClickListener{
+        tvTrailer.setOnClickListener {
             val i: Intent = Intent(Intent.ACTION_VIEW)
             i.data = Uri.parse(trailer)
             startActivity(i)
