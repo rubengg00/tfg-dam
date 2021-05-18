@@ -40,7 +40,6 @@ class PerfilFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
     lateinit var numListas: TextView
     lateinit var recview: RecyclerView
-    lateinit var miAdapter: ListaAdapter
     lateinit var FirestoreRecyclerAdapter: FirestoreRecyclerAdapter<Lista, PerfilFragment.ListaViewHolder>
 
 
@@ -72,6 +71,7 @@ class PerfilFragment : Fragment() {
             establecerBio()
             establecerListas()
             cargarRecyclerView()
+            agregarInfoUser()
         } else {
             nombreUser.visibility = View.GONE
             tvBio.visibility = View.GONE
@@ -79,7 +79,6 @@ class PerfilFragment : Fragment() {
 
         btnEditPerfil.setOnClickListener { checkPerfil() }
 
-        agregarInfoUser()
 
         return root
     }
@@ -111,7 +110,6 @@ class PerfilFragment : Fragment() {
 
         FirestoreRecyclerAdapter =
             object : FirestoreRecyclerAdapter<Lista, ListaViewHolder>(options) {
-
 
                 override fun onCreateViewHolder(
                     parent: ViewGroup,
@@ -148,50 +146,6 @@ class PerfilFragment : Fragment() {
                             ?.commit();
                     }
                 }
-
-                val mIth = ItemTouchHelper(
-                    object : ItemTouchHelper.SimpleCallback(
-                        0,
-                        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-                    ) {
-                        override fun onMove(
-                            recyclerView: RecyclerView,
-                            viewHolder: RecyclerView.ViewHolder,
-                            target: RecyclerView.ViewHolder
-                        ): Boolean {
-                            return false
-                        }
-
-                        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
-                            if (direction == ItemTouchHelper.RIGHT) {
-                                MaterialDialog(context as Context).show {
-                                    title(null, "Borrando lista")
-                                    message(null, "¿Deseas borrar la lista?")
-                                    negativeButton(R.string.opcion_positivia) { dialog ->
-                                        listaBorrada(viewHolder.adapterPosition)
-                                        MotionToast.createToast(activity as Activity,
-                                            "Borrada 👍",
-                                            "Lista borrada correctamente",
-                                            MotionToast.TOAST_SUCCESS,
-                                            MotionToast.GRAVITY_BOTTOM,
-                                            MotionToast.LONG_DURATION,
-                                            ResourcesCompat.getFont(context,R.font.helvetica_regular))
-                                        establecerListas()
-                                    }
-                                    positiveButton(R.string.opcion_negativa) { dialog ->
-                                        FirestoreRecyclerAdapter.notifyItemChanged(viewHolder.adapterPosition);
-                                        dialog.dismiss()
-                                    }
-                                }
-                            }
-                        }
-                    }).attachToRecyclerView(recview)
-
-                fun listaBorrada(position: Int) {
-                    FirestoreRecyclerAdapter.snapshots.getSnapshot(position).reference.delete()
-                }
-
             }
 
         recview.setHasFixedSize(true)

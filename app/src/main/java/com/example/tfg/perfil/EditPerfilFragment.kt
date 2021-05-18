@@ -3,6 +3,7 @@ package com.example.tfg.perfil
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.ResourcesCompat
 import com.afollestad.materialdialogs.MaterialDialog
+import com.example.tfg.MainActivity
 import com.example.tfg.R
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -90,36 +92,57 @@ class EditPerfilFragment : Fragment(), View.OnClickListener {
     private fun actualizar() {
         if (!comprobar()) return
 
-        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).set(
-            hashMapOf("nickname" to nombreUsuario, "biografia" to biografiaUsuario)
-        )
+        val nomAnterior = arrayListOf<String>()
 
-        MotionToast.createToast(activity as Activity,
-            "Perfil actualizado 👍",
-            "Datos actualizados correctamente!",
-            MotionToast.TOAST_SUCCESS,
-            MotionToast.GRAVITY_BOTTOM,
-            MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(context as Context,R.font.helvetica_regular))
+        db.collection("usuarios").get().addOnSuccessListener {
+            for (doc in it) {
+                nomAnterior.add(doc.getString("nickname").toString())
+            }
+            if (nomAnterior.contains(nombreUsuario)) {
+                MotionToast.darkToast(activity as Activity,
+                    "Error",
+                    "Usuario ya existente",
+                    MotionToast.TOAST_ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    ResourcesCompat.getFont(context as Context,R.font.helvetica_regular))
 
-        val perfilFragment = PerfilFragment()
-        activity?.getSupportFragmentManager()?.beginTransaction()
-            ?.replace(R.id.container,perfilFragment)
-            ?.addToBackStack(null)
-            ?.commit();
+            } else {
+                db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
+                    .set(
+                        hashMapOf("nickname" to nombreUsuario, "biografia" to biografiaUsuario)
+                    )
 
+                MotionToast.darkToast(activity as Activity,
+                    "Perfil actualizado 👍",
+                    "Datos agregados correctamente!",
+                    MotionToast.TOAST_SUCCESS,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    ResourcesCompat.getFont(context as Context,R.font.helvetica_regular))
+
+                val perfilFragment = PerfilFragment()
+                activity?.supportFragmentManager?.beginTransaction()
+                    ?.replace(R.id.container,perfilFragment)
+                    ?.addToBackStack(null)
+                    ?.commit();
+            }
+        }
     }
 
     private fun comprobar(): Boolean {
         nombreUsuario = etNombreAct.text.toString().trim()
         biografiaUsuario = etBioAct.text.toString().trim()
 
-        if (nombreUsuario.length == 0){
-            etNombreAct.setError("Este campo es obligatorio!")
-            return false
-        }
-        if (biografiaUsuario.length == 0){
-            etBioAct.setError("Este campo es obligatorio!")
+        if (nombreUsuario.isEmpty() || biografiaUsuario.isEmpty()){
+            MotionToast.darkToast(activity as Activity,
+                "Error",
+                "Ambos campos son obligatorios",
+                MotionToast.TOAST_ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                ResourcesCompat.getFont(context as Context,R.font.helvetica_regular))
+
             return false
         }
         return true

@@ -60,13 +60,13 @@ class PelisPorCatFragment : Fragment() {
         miAdapter.setOnClickListener(View.OnClickListener {
             val i: Intent = Intent(context as Context, DetailPeliculaActivity::class.java)
             var bundle: Bundle = Bundle()
-            i.putExtra("titulo", listaPelis.get(recview.getChildAdapterPosition(it)).titulo)
-            i.putExtra("fecha", listaPelis.get(recview.getChildAdapterPosition(it)).fecha)
-            i.putExtra("duracion", listaPelis.get(recview.getChildAdapterPosition(it)).duracion)
-            i.putExtra("categoria", listaPelis.get(recview.getChildAdapterPosition(it)).categoria)
-            i.putExtra("sinopsis", listaPelis.get(recview.getChildAdapterPosition(it)).sinopsis)
-            i.putExtra("caratula", listaPelis.get(recview.getChildAdapterPosition(it)).caratula)
-            i.putExtra("trailer", listaPelis.get(recview.getChildAdapterPosition(it)).trailer)
+            i.putExtra("titulo", listaPelis[recview.getChildAdapterPosition(it)].titulo)
+            i.putExtra("fecha", listaPelis[recview.getChildAdapterPosition(it)].fecha)
+            i.putExtra("duracion", listaPelis[recview.getChildAdapterPosition(it)].duracion)
+            i.putExtra("categoria", listaPelis[recview.getChildAdapterPosition(it)].categoria)
+            i.putExtra("sinopsis", listaPelis[recview.getChildAdapterPosition(it)].sinopsis)
+            i.putExtra("caratula", listaPelis[recview.getChildAdapterPosition(it)].caratula)
+            i.putExtra("trailer", listaPelis[recview.getChildAdapterPosition(it)].trailer)
             startActivity(i)
         })
     }
@@ -117,7 +117,7 @@ class PelisPorCatFragment : Fragment() {
                     MotionToast.createToast(
                         activity as Activity,
                         "No hay resultados!",
-                        "No hay peliculas de " + nombreCat,
+                        "No hay peliculas de $nombreCat",
                         MotionToast.TOAST_WARNING,
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.LONG_DURATION,

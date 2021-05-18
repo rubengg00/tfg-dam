@@ -141,15 +141,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         val i = Intent(this, MainActivity::class.java)
         i.putExtra(datos.MAIL, mail)
         startActivityForResult(i, REQ_INT_GOG)
-        MotionToast.createToast(
-            this,
+
+        MotionToast.darkToast(this,
             "Inicio completo 😍",
             "Has iniciado sesión correctamente!",
             MotionToast.TOAST_SUCCESS,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(this, R.font.helvetica_regular)
-        )
+            ResourcesCompat.getFont(this,R.font.helvetica_regular))
 
         db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
             .collection("listas").document("💜 Películas favoritas").set(

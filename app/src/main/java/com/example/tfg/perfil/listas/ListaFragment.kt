@@ -18,6 +18,7 @@ import com.afollestad.materialdialogs.customview.customView
 import com.example.tfg.R
 import com.example.tfg.pelicula.DetailPeliculaActivity
 import com.example.tfg.pelicula.Pelicula
+import com.example.tfg.perfil.PerfilFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import www.sanju.motiontoast.MotionToast
@@ -26,7 +27,7 @@ class ListaFragment : Fragment() {
 
 
     lateinit var tvNombre: TextView
-    lateinit var tvEdit: TextView
+    lateinit var tvDelete: TextView
     private val db = FirebaseFirestore.getInstance()
 
     lateinit var miAdapter: PeliculaListaAdapter
@@ -44,7 +45,7 @@ class ListaFragment : Fragment() {
         //Declaración de variables
         tvNombre = root.findViewById(R.id.tvNomLista)
         recview = root.findViewById(R.id.rcPelisLista)
-        tvEdit = root.findViewById(R.id.tvEditNom)
+        tvDelete = root.findViewById(R.id.tvDelLista)
 
         //Recogemos los datos del Bundle
         var datos: Bundle? = this.arguments
@@ -54,19 +55,34 @@ class ListaFragment : Fragment() {
         crearAdapter()
         buscadoPelis(nombre)
 
-        tvEdit.setOnClickListener {
-            MaterialDialog(context as Context).title(null, "Editando lista")
+        tvDelete.setOnClickListener {
+            MaterialDialog(context as Context)
                 .show {
-                    customView(R.layout.custom_dialog_lista)
+                    title(null, "Borrar lista")
+                    message(null, "¿Deseas borrar la lista?")
+                    negativeButton(R.string.opcion_positivia) { dialog ->
+                        db.collection("usuarios")
+                            .document(FirebaseAuth.getInstance().currentUser.email)
+                            .collection("listas").document(tvNombre.text.toString()).delete()
 
-                    var texto: TextView =
-                        findViewById(R.id.edListaPersonalizada)
-                    texto.text = tvNombre.text
-                    var oldNom = texto.text.toString()
+                        MotionToast.darkToast(activity as Activity,
+                            "Lista borrada 👍",
+                            "Lista borrada correctamente!",
+                            MotionToast.TOAST_SUCCESS,
+                            MotionToast.GRAVITY_BOTTOM,
+                            MotionToast.LONG_DURATION,
+                            ResourcesCompat.getFont(context as Context,R.font.helvetica_regular))
 
-                    positiveButton(R.string.modificar) { dialog ->
-                        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
-                            .collection("listas").document(oldNom).update("nombre", texto.text.toString())
+                        val perfilFragment = PerfilFragment()
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.replace(R.id.container,perfilFragment)
+                            ?.addToBackStack(null)
+                            ?.commit();
+                    }
+                    positiveButton(R.string.opcion_negativa) { dialog ->
+                        {
+                            dialog.dismiss()
+                        }
                     }
 
                 }
