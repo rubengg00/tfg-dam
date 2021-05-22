@@ -1,6 +1,5 @@
 package com.example.tfg.perfil
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,37 +8,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.customview.customView
 import com.example.tfg.R
 import com.example.tfg.login.AgregadoInfoActivity
+import com.example.tfg.pelicula.recomendaciones.Recomendacion
 import com.example.tfg.perfil.listas.Lista
-import com.example.tfg.perfil.listas.ListaAdapter
 import com.example.tfg.perfil.listas.ListaFragment
+import com.example.tfg.perfil.reseñas.MisRecomenFragment
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.auth.FacebookAuthCredential
-import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_perfil.*
-import www.sanju.motiontoast.MotionToast
+import kotlin.collections.ArrayList
 
 class PerfilFragment : Fragment() {
 
     private val db = FirebaseFirestore.getInstance()
     lateinit var numListas: TextView
     lateinit var recview: RecyclerView
+    lateinit var edit: TextView
     lateinit var FirestoreRecyclerAdapter: FirestoreRecyclerAdapter<Lista, PerfilFragment.ListaViewHolder>
 
 
@@ -51,10 +49,11 @@ class PerfilFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_perfil, container, false)
 
         /* Declaración de varibles */
-        val btnEditPerfil: Button = root.findViewById(R.id.editPerfil)
+        val btnMisResenas: Button = root.findViewById(R.id.misReseñas)
         var fotoPerfil: ImageView = root.findViewById(R.id.userFoto)
         var nombreUser: TextView = root.findViewById(R.id.tvUserName)
         var tvBio: TextView = root.findViewById(R.id.tvBio)
+        edit = root.findViewById(R.id.tvEditPerfil)
         numListas = root.findViewById(R.id.tvNumListas)
         recview = root.findViewById(R.id.recListas)
 
@@ -62,7 +61,9 @@ class PerfilFragment : Fragment() {
             Picasso.get().load(FirebaseAuth.getInstance().currentUser.photoUrl).into(fotoPerfil)
             db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).get()
                 .addOnSuccessListener {
-                    if (it.getString("nickname").toString() == "" || it.getString("nickname").isNullOrEmpty()) {
+                    if (it.getString("nickname").toString() == "" || it.getString("nickname")
+                            .isNullOrEmpty()
+                    ) {
                         nombreUser.text = FirebaseAuth.getInstance().currentUser.displayName
                     } else {
                         nombreUser.text = it.getString("nickname").toString()
@@ -72,22 +73,98 @@ class PerfilFragment : Fragment() {
             establecerListas()
             cargarRecyclerView()
             agregarInfoUser()
+            funcionPruebaRetrieveRTDB()
         } else {
             nombreUser.visibility = View.GONE
             tvBio.visibility = View.GONE
+            edit.visibility = View.GONE
+            btnMisResenas.text = "Iniciar Sesión"
         }
 
-        btnEditPerfil.setOnClickListener { checkPerfil() }
+        edit.setOnClickListener { checkPerfil() }
 
+
+        btnMisResenas.setOnClickListener {
+
+            if (btnMisResenas.text == "Iniciar Sesión") {
+                val i: Intent =
+                    Intent(context as Context, com.example.tfg.login.LoginActivity::class.java)
+                startActivity(i)
+            } else {
+                var nickname = ""
+
+                db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
+                    .get().addOnSuccessListener {
+                    nickname = it.getString("nickname").toString()
+                    val misRecomenFragment = MisRecomenFragment()
+                    var bundle: Bundle = Bundle()
+                    bundle.putString("nickname", nickname)
+                    misRecomenFragment.arguments = bundle
+
+                    activity?.supportFragmentManager?.beginTransaction()
+                        ?.setCustomAnimations(
+                            R.anim.slide_bottom_up,
+                            R.anim.slide_bottom_down
+                        )
+                        ?.replace(R.id.container, misRecomenFragment)
+                        ?.addToBackStack(null)
+                        ?.commit();
+                }
+            }
+
+        }
 
         return root
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    private fun funcionPruebaRetrieveRTDB() {
+
+        var nickname = ""
+
+        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).get()
+            .addOnSuccessListener {
+                nickname = it.getString("nickname").toString()
+                Log.d("nombre", nickname)
+
+                var query: com.google.firebase.database.Query =
+                    FirebaseDatabase.getInstance().getReference("recomendaciones")
+                        .orderByChild("nomUsuario").equalTo(nickname)
+
+                var lista = ArrayList<Recomendacion>()
+
+                query.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            for (snap: DataSnapshot in snapshot.children) {
+                                var rec: Recomendacion? = snap.getValue(Recomendacion::class.java)
+                                if (rec != null) {
+                                    lista.add(rec)
+                                }
+                            }
+                            for (i in lista) {
+                                println(i)
+                            }
+                        }
+                    }
+                })
+
+            }
+
+
     }
 
     //-----------------------------------------------------------------------------------------------
     private fun agregarInfoUser() {
         db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).get()
             .addOnSuccessListener {
-                if (it.getString("nickname").isNullOrEmpty() || it.getString("biografia").isNullOrEmpty()) {
+                if (it.getString("nickname").isNullOrEmpty() || it.getString("biografia")
+                        .isNullOrEmpty()
+                ) {
                     val i: Intent =
                         Intent(context as Context, AgregadoInfoActivity::class.java)
                     startActivity(i)

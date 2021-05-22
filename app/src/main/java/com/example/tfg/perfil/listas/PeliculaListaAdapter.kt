@@ -1,6 +1,5 @@
 package com.example.tfg.perfil.listas
 
-import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.tfg.R
 import com.example.tfg.pelicula.Pelicula
-import com.example.tfg.perfil.PerfilFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

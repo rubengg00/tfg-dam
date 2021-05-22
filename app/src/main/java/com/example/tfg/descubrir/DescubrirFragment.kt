@@ -3,7 +3,6 @@ package com.example.tfg.descubrir
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +10,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.tfg.R
 import com.example.tfg.descubrir.busqueda.BusquedaFragment
-import com.example.tfg.pelicula.PeliculaAdapter
 import com.example.tfg.descubrir.recomendaciones.Recomendacion
 import com.example.tfg.pelicula.DetailPeliculaActivity
 import com.example.tfg.pelicula.Pelicula
@@ -27,7 +24,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.custom_grid_recomendacion_layout.view.*
 
 
 class DescubrirFragment : Fragment() {
@@ -143,7 +139,7 @@ class DescubrirFragment : Fragment() {
 
     class RecomendacionViewHolder(var v: View) : RecyclerView.ViewHolder(v) {
         val tvTitulo: TextView = v.findViewById(R.id.tvMovRec)
-        val tvFecha: TextView = v.findViewById(R.id.tvFechaRec)
+        val tvFecha: TextView = v.findViewById(R.id.tvFechaRec1)
         val imagen: ImageView = v.findViewById(R.id.ivMovRec)
         val reseña: TextView = v.findViewById(R.id.tvReseRec)
         val emoji: TextView = v.findViewById(R.id.tvEmojiRec)

@@ -18,6 +18,9 @@ import androidx.core.content.res.ResourcesCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.tfg.MainActivity
 import com.example.tfg.R
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -36,6 +39,8 @@ class EditPerfilFragment : Fragment(), View.OnClickListener {
     lateinit var etBio: EditText
     private var nombreUsuario: String = ""
     private var biografiaUsuario: String = ""
+    lateinit var gso: GoogleSignInOptions
+    lateinit var mGoogleApiClient: GoogleApiClient
 
     override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_edit_perfil, container, false)
@@ -57,6 +62,10 @@ class EditPerfilFragment : Fragment(), View.OnClickListener {
                 etBio.setText(it.get("biografia") as String?)
             }
         }
+
+        gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
+        mGoogleApiClient = GoogleApiClient.Builder(context!!).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build()
+        mGoogleApiClient.connect()
 
 
         btnCambiarTema.setOnClickListener(this)
@@ -219,6 +228,8 @@ class EditPerfilFragment : Fragment(), View.OnClickListener {
 
     private fun logOut() {
         FirebaseAuth.getInstance().signOut()
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient)
+
         val perfilFragment = PerfilFragment()
         activity?.getSupportFragmentManager()?.beginTransaction()
             ?.replace(R.id.container,perfilFragment)

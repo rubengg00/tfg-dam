@@ -12,17 +12,16 @@ import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.example.tfg.R
+import com.example.tfg.login.AgregadoInfoActivity
 import com.example.tfg.login.LoginActivity
 import com.example.tfg.pelicula.recomendaciones.Recomendacion
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import de.mrapp.android.bottomsheet.BottomSheet
 import kotlinx.android.synthetic.main.activity_detail_pelicula.*
-
 
 
 class DetailPeliculaActivity : AppCompatActivity() {
@@ -53,7 +52,7 @@ class DetailPeliculaActivity : AppCompatActivity() {
         * en pantalla completa
         * */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().setFlags(
+            window.setFlags(
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
             );
@@ -82,10 +81,17 @@ class DetailPeliculaActivity : AppCompatActivity() {
                 val i: Intent = Intent(this, LoginActivity::class.java)
                 startActivity(i)
             } else {
-                añadirReseña()
+                db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
+                    .get().addOnSuccessListener {
+                        if (it.getString("nickname").isNullOrEmpty()) {
+                            val i: Intent = Intent(this, AgregadoInfoActivity::class.java)
+                            startActivity(i)
+                        } else {
+                            añadirReseña()
+                        }
+                    }
             }
         }
-
     }
 
     private fun añadirReseña() {
@@ -105,79 +111,64 @@ class DetailPeliculaActivity : AppCompatActivity() {
 
         var nomUsuario = ""
 
-
-
         MaterialDialog(this).show {
             customView(R.layout.custom_dialog_recomendation)
             positiveButton(R.string.recomendacion) { dialog ->
 
-                var radioGrupo: RadioGroup = findViewById<RadioGroup>(R.id.rGroup)
+                var emojiSeleccionado: RadioButton? = null
+
+                var radioGrupo: RadioGroup = this.findViewById(R.id.rGroup)
                 var seleccionado = radioGrupo.checkedRadioButtonId
-                var emojiSeleccionado: RadioButton = findViewById(seleccionado)
+                if (seleccionado != null){
+                    emojiSeleccionado = findViewById(seleccionado)
+                }
 
                 fotoUsuario = FirebaseAuth.getInstance().currentUser.photoUrl.toString()
                 caratul = datos?.getString("caratula").toString()
                 titul = datos?.getString("titulo").toString()
                 categori = datos?.getString("categoria").toString()
                 fech = datos?.getString("fecha").toString()
-                emoji = emojiSeleccionado.text.toString()
+                if (seleccionado != null){
+                    emoji = emojiSeleccionado?.text.toString()
+                }
                 reseña = findViewById<TextView>(R.id.edComentario).text.toString()
                 email = FirebaseAuth.getInstance().currentUser.email
 
-                if (reseña.trim().isEmpty() || radioGrupo.checkedRadioButtonId == -1) {
+                if (reseña.trim().isNullOrEmpty() || emojiSeleccionado == null) {
                     Toast.makeText(context, "Rellene los campos", Toast.LENGTH_LONG).show()
+                    return@positiveButton
                 } else {
                     db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
                         .get().addOnSuccessListener {
-                            if (it.getString("nickname").isNullOrEmpty()) {
-                                nomUsuario = FirebaseAuth.getInstance().currentUser.displayName
-                                Log.d("email", email)
-                                var recomendacion: Recomendacion = Recomendacion(
-                                    nomUsuario,
-                                    fotoUsuario,
-                                    email,
-                                    caratul,
-                                    titul,
-                                    categori,
-                                    fech,
-                                    reseña,
-                                    emoji
-                                )
-                                nodoRaiz.reference.child("recomendaciones")
-                                    .child(id_recomendacion.toString()).setValue(recomendacion)
-                                Log.d("nombre", nomUsuario)
-                            } else {
-                                nomUsuario = it.getString("nickname").toString()
-                                var recomendacion: Recomendacion = Recomendacion(
-                                    nomUsuario,
-                                    fotoUsuario,
-                                    email,
-                                    caratul,
-                                    titul,
-                                    categori,
-                                    fech,
-                                    reseña,
-                                    emoji
-                                )
-                                nodoRaiz.reference.child("recomendaciones")
-                                    .child(id_recomendacion.toString()).setValue(recomendacion)
-                                Log.d("nombre", nomUsuario)
-                            }
+                            nomUsuario = it.getString("nickname").toString()
+                            var recomendacion: Recomendacion = Recomendacion(
+                                nomUsuario,
+                                fotoUsuario,
+                                email,
+                                caratul,
+                                titul,
+                                categori,
+                                fech,
+                                reseña,
+                                emoji
+                            )
+                            nodoRaiz.reference.child("recomendaciones")
+                                .child(id_recomendacion.toString()).setValue(recomendacion)
+                            Log.d("nombre", nomUsuario)
                         }
-
-                    Snackbar.make(
-                        contextView,
-                        "¡Película recomendada!",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
                 }
 
-
+                Snackbar.make(
+                    contextView,
+                    "¡Película recomendada!",
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
 
         }
 
     }
+
 
     private fun setUpDetallePelicula() {
 
@@ -191,14 +182,14 @@ class DetailPeliculaActivity : AppCompatActivity() {
         tvTrailer = findViewById(R.id.ivTrailer)
 
         //Recogemos los datos del Intent
-        var datos = intent.extras
-        var titulo = datos?.getString("titulo")
-        var fecha = datos?.getString("fecha")
-        var duracion = datos?.getString("duracion")
-        var categoria = datos?.getString("categoria")
-        var sinopsis = datos?.getString("sinopsis")
-        var caratula = datos?.getString("caratula")
-        var trailer = datos?.getString("trailer")
+        val datos = intent.extras
+        val titulo = datos?.getString("titulo")
+        val fecha = datos?.getString("fecha")
+        val duracion = datos?.getString("duracion")
+        val categoria = datos?.getString("categoria")
+        val sinopsis = datos?.getString("sinopsis")
+        val caratula = datos?.getString("caratula")
+        val trailer = datos?.getString("trailer")
 
         tvTrailer.setOnClickListener {
             val i: Intent = Intent(Intent.ACTION_VIEW)

@@ -12,9 +12,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 class CategoriaAdapter(private val miLista: ArrayList<Categoria>, val c: Context):
     RecyclerView.Adapter<CategoriaAdapter.MiViewHolder>(), View.OnClickListener{
 
-    private val db = FirebaseFirestore.getInstance()
-
-    //Listener
     lateinit var listener: View.OnClickListener
 
     class MiViewHolder(v: View): RecyclerView.ViewHolder(v) {

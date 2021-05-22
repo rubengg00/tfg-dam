@@ -51,22 +51,24 @@ class HomeFragment : Fragment() {
 
     private fun cargarSaludos() {
         val c: Calendar = Calendar.getInstance()
+        //Obtenemos la hora del día
         val timeOfDay: Int = c.get(Calendar.HOUR_OF_DAY)
+        //Obtenemos la referencia al usuario actual
         var usu = FirebaseAuth.getInstance().currentUser
 
-        if(timeOfDay >= 6 && timeOfDay < 12){
+        if(timeOfDay in 6..11){
             if (usu != null){
                 tvSaludos.text = "Buenos días ${usu.displayName}"
             }else{
                 tvSaludos.text = "Buenos días"
             }
-        }else if(timeOfDay >= 12 && timeOfDay < 19){
+        }else if(timeOfDay in 12..19){
             if (usu != null){
                 tvSaludos.text = "Buenas tardes ${usu.displayName}"
             }else{
                 tvSaludos.text = "Buenas tardes"
             }
-        }else if(timeOfDay >= 19 && timeOfDay < 24){
+        }else if(timeOfDay in 20..23){
             if (usu != null){
                 tvSaludos.text = "Buenas noches ${usu.displayName}"
             }else{

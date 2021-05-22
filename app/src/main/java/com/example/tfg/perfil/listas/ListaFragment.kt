@@ -170,6 +170,7 @@ class ListaFragment : Fragment() {
             i.putExtra("categoria", listaPelis.get(recview.getChildAdapterPosition(it)).categoria)
             i.putExtra("sinopsis", listaPelis.get(recview.getChildAdapterPosition(it)).sinopsis)
             i.putExtra("caratula", listaPelis.get(recview.getChildAdapterPosition(it)).caratula)
+            i.putExtra("trailer", listaPelis.get(recview.getChildAdapterPosition(it)).trailer)
             startActivity(i)
         })
     }

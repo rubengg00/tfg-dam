@@ -113,17 +113,6 @@ class PelisPorCatFragment : Fragment() {
                     )
                     listaPelis.add(peli)
                 }
-                if (listaPelis.isEmpty()) {
-                    MotionToast.createToast(
-                        activity as Activity,
-                        "No hay resultados!",
-                        "No hay peliculas de $nombreCat",
-                        MotionToast.TOAST_WARNING,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(context as Context, R.font.helvetica_regular)
-                    )
-                }
                 crearAdapter()
             }
 
