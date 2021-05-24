@@ -31,13 +31,7 @@ class DescubrirFragment : Fragment() {
     lateinit var btnBuscar: Button
     lateinit var recview: RecyclerView
     lateinit var mDatabase: DatabaseReference
-    lateinit var tvTitulo: TextView
-    lateinit var tvFecha: TextView
-    lateinit var imagen: ImageView
-    lateinit var reseña: TextView
-    lateinit var emoji: TextView
     lateinit var FirebaseRecyclerAdapter: FirebaseRecyclerAdapter<Recomendacion, RecomendacionViewHolder>
-    var listaPelis = ArrayList<Pelicula>()
     private val db = FirebaseFirestore.getInstance()
 
 

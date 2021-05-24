@@ -258,8 +258,6 @@ class DetailPeliculaActivity : AppCompatActivity() {
         builder.setOnItemClickListener { parent, view, position, id ->
 
             if (id.toString() == "4") {
-                Log.d("Es la lista", "para crear otras listas")
-
                 MaterialDialog(this).title(null, "Agregue el nombre de la lista")
                     .show {
                         customView(R.layout.custom_dialog_lista)

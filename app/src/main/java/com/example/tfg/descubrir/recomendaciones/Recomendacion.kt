@@ -13,16 +13,7 @@ class Recomendacion {
 
     constructor(){}
 
-    constructor(
-        nomUsuario: String?,
-        fotoUsuario: String?,
-        caratula: String?,
-        titulo: String?,
-        categoria: String?,
-        fecha: String?,
-        reseña: String?,
-        emoticono: String?
-    ) {
+    constructor(nomUsuario: String?,fotoUsuario: String?,caratula: String?,titulo: String?,categoria: String?,fecha: String?,reseña: String?,emoticono: String?) {
         this.nomUsuario = nomUsuario
         this.fotoUsuario = fotoUsuario
         this.caratula = caratula
