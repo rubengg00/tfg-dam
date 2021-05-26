@@ -1,10 +1,8 @@
 package com.example.tfg.descubrir.busqueda
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.speech.tts.TextToSpeech
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -13,8 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.SearchView
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.R
@@ -22,7 +18,8 @@ import com.example.tfg.pelicula.DetailPeliculaActivity
 import com.example.tfg.pelicula.Pelicula
 import com.example.tfg.pelicula.PeliculaAdapter
 import com.google.firebase.firestore.FirebaseFirestore
-import www.sanju.motiontoast.MotionToast
+import java.util.*
+import kotlin.collections.ArrayList
 
 class BusquedaFragment : Fragment() {
     lateinit var search: EditText
@@ -50,10 +47,28 @@ class BusquedaFragment : Fragment() {
 
 
         search.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
+            private var temporizador: Timer = Timer()
+            private val delay: Long = 450
+
+            override fun afterTextChanged(s: Editable) {
+                temporizador.cancel()
+                temporizador = Timer()
+                temporizador.schedule(
+                    object : TimerTask() {
+                        override fun run() {
+                            if ((s.toString().isBlank() || s.toString().isEmpty())) {
+                                listaPelis.clear()
+                                cargadoDatos("")
+                            }
+                        }
+                    },
+                    delay
+                )
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                listaPelis.clear()
+                recview.adapter?.notifyDataSetChanged()
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -63,7 +78,7 @@ class BusquedaFragment : Fragment() {
                     listaPelis.clear()
                     cargadoDatos(texto)
                 }
-                if (s.toString().isEmpty() || s.toString().isBlank() || s.toString() == ""){
+                if (s.toString().isEmpty() || s.toString().isBlank()){
                     listaPelis.clear()
                     cargadoDatos("")
                 }

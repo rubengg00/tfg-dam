@@ -3,38 +3,36 @@ package com.example.tfg.perfil.reseñas
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.PopupMenu
-import android.widget.TextView
+import android.widget.*
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.getInputField
+import com.afollestad.materialdialogs.input.input
 import com.example.tfg.R
-import com.example.tfg.descubrir.DescubrirFragment
 import com.example.tfg.descubrir.recomendaciones.Recomendacion
 import com.example.tfg.pelicula.DetailPeliculaActivity
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
+
 
 class MisRecomenFragment : Fragment() {
 
     lateinit var recview: RecyclerView
     private val db = FirebaseFirestore.getInstance()
-    lateinit var mDatabase: DatabaseReference
+    private val nodoRaiz = FirebaseDatabase.getInstance()
     lateinit var FirebaseRecyclerAdapter: FirebaseRecyclerAdapter<Recomendacion, RecomendacionViewHolder>
     var nickname = ""
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +42,6 @@ class MisRecomenFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_mis_recomen, container, false)
 
         recview = root.findViewById(R.id.rcReseñas)
-
 
         var datos: Bundle? = this.arguments
 
@@ -121,63 +118,25 @@ class MisRecomenFragment : Fragment() {
 
                     })
 
-                    holder.v.findViewById<TextView>(R.id.tvOpciones1).setOnClickListener(object : View.OnClickListener {
-                        override fun onClick(v: View?) {
-                            //Creamos el menu Popup
-                            var popupMenu: PopupMenu = PopupMenu(context, holder.v.findViewById<TextView>(R.id.tvOpciones1))
-                            //Inflamos el menu con el recurso XML
-                            popupMenu.inflate(R.menu.options_menu)
-                            //Añadimos un evento Click
-                            popupMenu.setOnMenuItemClickListener(object :
-                                PopupMenu.OnMenuItemClickListener {
-                                override fun onMenuItemClick(item: MenuItem?): Boolean {
-                                    when (item?.itemId) {
-                                        R.id.menu1 -> {
-                                            MaterialDialog(context as Context).show {
-                                                title(null, "Eliminar reseña")
-                                                message(
-                                                    null,
-                                                    "¿Deseas eliminar esta reseña?"
-                                                )
-                                                negativeButton(R.string.opcion_positivia) { dialog ->
-                                                    var query: Query =
-                                                        FirebaseDatabase.getInstance().getReference("recomendaciones")
-                                                            .orderByChild("nomUsuario").equalTo(holder.reseña.toString())
-                                                    query.addListenerForSingleValueEvent(object :
-                                                        ValueEventListener {
-                                                        override fun onCancelled(error: DatabaseError) {
-                                                        }
-
-                                                        override fun onDataChange(snapshot: DataSnapshot) {
-                                                            if (snapshot.exists()){
-                                                                snapshot.ref.removeValue()
-                                                            }
-                                                        }
-                                                    })
-
-                                                    if (v != null) {
-                                                        Snackbar.make(
-                                                            v,
-                                                            "Reseña borrada",
-                                                            Snackbar.LENGTH_SHORT
-                                                        ).show()
-                                                    }
-                                                }
-                                                positiveButton(R.string.opcion_negativa) { dialog ->
-                                                    {
-                                                        dialog.dismiss()
-                                                    }
-                                                }
-                                            }
-
-                                        }
-                                    }
-                                    return false
+                    holder.tvOpciones.setOnClickListener { v ->
+                        //Creamos el menu Popup
+                        var popupMenu: PopupMenu = PopupMenu(context, holder.tvOpciones)
+                        //Inflamos el menu con el recurso XML
+                        popupMenu.inflate(R.menu.options_menu1)
+                        //Añadimos un evento Click
+                        popupMenu.setOnMenuItemClickListener { item ->
+                            when (item?.itemId) {
+                                R.id.menu -> {
+                                    dialogoEditarReseña(holder)
                                 }
-                            })
+                                R.id.menu2 -> {
+                                    dialogoEliminarReseña(holder)
+                                }
+                            }
+                            false
                         }
-
-                    })
+                        popupMenu.show()
+                    }
 
                 }
             }
@@ -189,6 +148,79 @@ class MisRecomenFragment : Fragment() {
         recview.adapter = FirebaseRecyclerAdapter
     }
 
+    private fun dialogoEliminarReseña(holder: RecomendacionViewHolder) {
+        MaterialDialog(context as Context).show {
+            title(null, "Eliminar reseña")
+            message(
+                null,
+                "¿Deseas eliminar esta reseña?"
+            )
+            negativeButton(R.string.opcion_positivia) {
+                var clave = ""
+                var query: Query =
+                    FirebaseDatabase.getInstance().getReference("recomendaciones")
+                        .orderByChild("reseña").equalTo(holder.reseña.text.toString())
+                query.addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for (resultado in snapshot.getChildren()) {
+                            clave = resultado.key.toString()
+//                            resultado.ref.removeValue()
+                            nodoRaiz.reference.child("recomendaciones")
+                        }
+                    }
+                })
+
+                getView()?.let { it1 ->
+                    Snackbar.make(
+                        it1,
+                        "¡Reseña borrada!",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            positiveButton(R.string.opcion_negativa) { dialog ->
+                {
+                    dialog.dismiss()
+                }
+            }
+        }
+    }
+
+    private fun dialogoEditarReseña(holder: RecomendacionViewHolder) {
+        MaterialDialog(context as Context).title(null, "Editando reseña").show() {
+            input(maxLength = 30)
+            val inputField: EditText = this.getInputField()
+            inputField.setText(holder.reseña.text)
+            positiveButton(R.string.modificar) {
+                var clave = ""
+                var query: Query =
+                    FirebaseDatabase.getInstance().getReference("recomendaciones")
+                        .orderByChild("reseña").equalTo(holder.reseña.text.toString())
+                query.addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for (resultado in snapshot.getChildren()) {
+                            clave = resultado.key.toString()
+                        }
+                        Log.d("clave", clave)
+                    }
+                })
+                var update = hashMapOf<String, Any>(
+                    "reseña" to inputField.text.toString()
+                )
+                nodoRaiz.reference.child("recomendaciones/$clave/reseña").setValue(inputField.text.toString())
+
+            }
+        }
+    }
+
     class RecomendacionViewHolder(var v: View) : RecyclerView.ViewHolder(v) {
         val tvTitulo: TextView = v.findViewById(R.id.tvMovRec)
         val tvFecha: TextView = v.findViewById(R.id.tvFechaRec)
@@ -197,6 +229,7 @@ class MisRecomenFragment : Fragment() {
         val emoji: TextView = v.findViewById(R.id.tvEmojiRec)
         val nomusu: TextView = v.findViewById(R.id.tvNomUsu)
         val imUsu: ImageView = v.findViewById(R.id.ivUsuPerfil)
+        val tvOpciones: TextView = v.findViewById(R.id.tvOpciones1)
     }
 
     override fun onStart() {

@@ -3,7 +3,6 @@ package com.example.tfg.perfil
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,22 +14,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.R
 import com.example.tfg.login.AgregadoInfoActivity
-import com.example.tfg.pelicula.recomendaciones.Recomendacion
 import com.example.tfg.perfil.listas.Lista
 import com.example.tfg.perfil.listas.ListaFragment
 import com.example.tfg.perfil.reseñas.MisRecomenFragment
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_perfil.*
-import kotlin.collections.ArrayList
 
 class PerfilFragment : Fragment() {
 
@@ -38,8 +31,7 @@ class PerfilFragment : Fragment() {
     lateinit var numListas: TextView
     lateinit var recview: RecyclerView
     lateinit var edit: TextView
-    lateinit var FirestoreRecyclerAdapter: FirestoreRecyclerAdapter<Lista, PerfilFragment.ListaViewHolder>
-
+    lateinit var FirestoreRecyclerAdapter: FirestoreRecyclerAdapter<Lista, ListaViewHolder>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,10 +62,9 @@ class PerfilFragment : Fragment() {
                     }
                 }
             establecerBio()
-            establecerListas()
+            numeroListas()
             cargarRecyclerView()
             agregarInfoUser()
-            funcionPruebaRetrieveRTDB()
         } else {
             nombreUser.visibility = View.GONE
             tvBio.visibility = View.GONE
@@ -115,47 +106,6 @@ class PerfilFragment : Fragment() {
         }
 
         return root
-    }
-
-    //-----------------------------------------------------------------------------------------------
-    private fun funcionPruebaRetrieveRTDB() {
-
-        var nickname = ""
-
-        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).get()
-            .addOnSuccessListener {
-                nickname = it.getString("nickname").toString()
-                Log.d("nombre", nickname)
-
-                var query: com.google.firebase.database.Query =
-                    FirebaseDatabase.getInstance().getReference("recomendaciones")
-                        .orderByChild("nomUsuario").equalTo(nickname)
-
-                var lista = ArrayList<Recomendacion>()
-
-                query.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
-                    }
-
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.exists()) {
-                            for (snap: DataSnapshot in snapshot.children) {
-                                var rec: Recomendacion? = snap.getValue(Recomendacion::class.java)
-                                if (rec != null) {
-                                    lista.add(rec)
-                                }
-                            }
-                            for (i in lista) {
-                                println(i)
-                            }
-                        }
-                    }
-                })
-
-            }
-
-
     }
 
     //-----------------------------------------------------------------------------------------------
@@ -254,78 +204,14 @@ class PerfilFragment : Fragment() {
             super.onStop()
         }
     }
+    //-----------------------------------------------------------------------------------------------
 
 
-    //    /*
-//    * Función rellenadoDatos()
-//    *   Rellena el RecyclerView con las listas del usuario
-//    * */
-//    private fun rellenadoDatos() {
-//
-//        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
-//            .collection("listas").orderBy("nombre").get().addOnSuccessListener {
-//                for (doc in it) {
-//                    var titulo = doc.getString("nombre").toString()
-//                    db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
-//                        .collection("listas").document(titulo).collection("peliculas").get()
-//                        .addOnSuccessListener {
-//                            var contador = it.size().toString()
-//                            var lista = Lista(
-//                                titulo,
-//                                contador
-//                            )
-//                            añadidoLista(lista)
-//                        }
-//                }
-//            }
-//
-//    }
-//    /*
-//    * Función añadidoLista(lista: Lista)
-//    *   Recibe el objeto de tipo Lista, y lo agrega a la lista, llamando luego a la función
-//    *   crearAdapter()
-//    * */
-//    private fun añadidoLista(lista: Lista) {
-//        listaListas.add(lista)
-//        crearAdapter()
-//    }
-//
-//
-//    //-----------------------------------------------------------------------------------------------
-//
-//    /*
-//    * Función crearAdapter()
-//    *   Crear el adapter para el RecyclerView y establece el evento onClick sobre los elementos
-//    * */
-//    private fun crearAdapter() {
-//        recview.setHasFixedSize(true)
-//        miAdapter = ListaAdapter(listaListas, context as Context)
-//        recview.layoutManager = LinearLayoutManager(context as Context)
-//        recview.adapter = miAdapter
-//
-//        miAdapter.setOnClickListener(View.OnClickListener {
-//            val listaFragment = ListaFragment()
-//
-//            var bundle: Bundle = Bundle()
-//            bundle.putString("nombre", listaListas.get(recview.getChildAdapterPosition(it)).nombre)
-//            listaFragment.arguments = bundle
-//
-//            activity?.getSupportFragmentManager()?.beginTransaction()
-//                ?.setCustomAnimations(
-//                    R.anim.slide_bottom_up,
-//                    R.anim.slide_bottom_down
-//                )
-//                ?.replace(R.id.container,listaFragment)
-//                ?.addToBackStack(null)
-//                ?.commit();
-//        })
-//    }
-//
-//    /*
-//    * Función establecerListas()
-//    *   Esta función devuelve el total de listas del usuario
-//    * */
-    private fun establecerListas() {
+    /*
+    * Función numeroListas()
+    *   Esta función devuelve el total de listas del usuario
+    * */
+    private fun numeroListas() {
         db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
             .collection("listas").get().addOnSuccessListener {
                 numListas.text = it.size().toString()

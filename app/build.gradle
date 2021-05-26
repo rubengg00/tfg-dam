@@ -77,8 +77,9 @@ dependencies {
     implementation 'com.github.Cielsk:clearable-edittext:0.0.5'
     //Librería Material Dialogs
     implementation 'com.afollestad.material-dialogs:core:3.3.0'
-    implementation 'com.google.firebase:firebase-database:19.7.0'
+    implementation 'com.afollestad.material-dialogs:input:3.3.0'
     //Librería Firebase UI Realtime Database
+    implementation 'com.google.firebase:firebase-database:19.7.0'
     implementation 'com.firebaseui:firebase-ui-database:7.1.1'
     //Librería Firebase UI Firestore
     implementation 'com.firebaseui:firebase-ui-firestore:7.1.1'

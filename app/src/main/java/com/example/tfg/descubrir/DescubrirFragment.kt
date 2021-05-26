@@ -16,7 +16,6 @@ import com.example.tfg.R
 import com.example.tfg.descubrir.busqueda.BusquedaFragment
 import com.example.tfg.descubrir.recomendaciones.Recomendacion
 import com.example.tfg.pelicula.DetailPeliculaActivity
-import com.example.tfg.pelicula.Pelicula
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
@@ -31,7 +30,7 @@ class DescubrirFragment : Fragment() {
     lateinit var btnBuscar: Button
     lateinit var recview: RecyclerView
     lateinit var mDatabase: DatabaseReference
-    lateinit var FirebaseRecyclerAdapter: FirebaseRecyclerAdapter<Recomendacion, RecomendacionViewHolder>
+    lateinit var firebaseRecyclerAdapter: FirebaseRecyclerAdapter<Recomendacion, RecomendacionViewHolder>
     private val db = FirebaseFirestore.getInstance()
 
 
@@ -44,7 +43,10 @@ class DescubrirFragment : Fragment() {
 
         btnBuscar = root.findViewById(R.id.btnBus)
         recview = root.findViewById(R.id.rcRecomendaciones)
+
         mDatabase = FirebaseDatabase.getInstance().getReference("recomendaciones")
+        cargarRecyclerView()
+
 
         btnBuscar.setOnClickListener {
             val busquedaFragment = BusquedaFragment()
@@ -58,7 +60,6 @@ class DescubrirFragment : Fragment() {
                 ?.commit();
         }
 
-        cargarRecyclerView()
         return root
     }
 
@@ -74,7 +75,7 @@ class DescubrirFragment : Fragment() {
                 .setQuery(query, Recomendacion::class.java)
                 .build()
 
-        FirebaseRecyclerAdapter =
+        firebaseRecyclerAdapter =
             object : FirebaseRecyclerAdapter<Recomendacion, RecomendacionViewHolder>(options) {
 
                 override fun onCreateViewHolder(
@@ -126,7 +127,7 @@ class DescubrirFragment : Fragment() {
         var manager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         manager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
         recview.layoutManager = manager
-        recview.adapter = FirebaseRecyclerAdapter
+        recview.adapter = firebaseRecyclerAdapter
 
     }
 
@@ -143,12 +144,12 @@ class DescubrirFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        FirebaseRecyclerAdapter.startListening()
+        firebaseRecyclerAdapter.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-        FirebaseRecyclerAdapter.stopListening()
+        firebaseRecyclerAdapter.stopListening()
     }
 
 }

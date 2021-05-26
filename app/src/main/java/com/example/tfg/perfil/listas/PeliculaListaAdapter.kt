@@ -26,7 +26,6 @@ class PeliculaListaAdapter(
     RecyclerView.Adapter<PeliculaListaAdapter.MiViewHolder>(), View.OnClickListener {
 
     private val db = FirebaseFirestore.getInstance()
-    private val storage = FirebaseStorage.getInstance()
 
     //Listener
     lateinit var listener: View.OnClickListener
@@ -65,29 +64,7 @@ class PeliculaListaAdapter(
                     override fun onMenuItemClick(item: MenuItem?): Boolean {
                         when (item?.itemId) {
                             R.id.menu1 -> {
-                                MaterialDialog(c).show {
-                                    title(null, "Eliminar de la lista")
-                                    message(null, "¿Deseas eliminar la película de la lista?")
-                                    negativeButton(R.string.opcion_positivia) { dialog ->
-                                        db.collection("usuarios")
-                                            .document(FirebaseAuth.getInstance().currentUser.email)
-                                            .collection("listas").document(listaNom)
-                                            .collection("peliculas")
-                                            .document(holder.tvTitulo.text.toString()).delete()
-
-                                        if (v != null) {
-                                            Snackbar.make(
-                                                v,
-                                                "Borrado de ${listaNom}",
-                                                Snackbar.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                    }
-                                    positiveButton(R.string.opcion_negativa){dialog->{
-                                        dialog.dismiss()
-                                    }}
-                                }
-
+                                eliminacionPelicula(holder)
                             }
                         }
                         return false
@@ -97,8 +74,36 @@ class PeliculaListaAdapter(
                 popupMenu.show()
             }
         })
+    }
 
+    /*
+    * Función eliminacionPelicula(holder: MiViewHolder)
+    *   Muestra cuadro de diálogo para la eliminación de la película de la lista del usuario
+    * */
 
+    private fun eliminacionPelicula(holder: PeliculaListaAdapter.MiViewHolder) {
+        MaterialDialog(c).show {
+            title(null, "Eliminar de la lista")
+            message(null, "¿Deseas eliminar la película de la lista?")
+            negativeButton(R.string.opcion_positivia) { dialog ->
+                db.collection("usuarios")
+                    .document(FirebaseAuth.getInstance().currentUser.email)
+                    .collection("listas").document(listaNom)
+                    .collection("peliculas")
+                    .document(holder.tvTitulo.text.toString()).delete()
+
+                if (holder.itemView != null) {
+                    Snackbar.make(
+                        holder.itemView,
+                        "Borrada de ${listaNom}",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            positiveButton(R.string.opcion_negativa){dialog->{
+                dialog.dismiss()
+            }}
+        }
     }
 
     fun setOnClickListener(listener: View.OnClickListener) {

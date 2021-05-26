@@ -5,6 +5,7 @@ class Recomendacion {
     var nomUsuario: String? = null
     var fotoUsuario: String? = null
     var caratula: String? = null
+    var email: String? = null
     var titulo: String? = null
     var categoria: String? = null
     var fecha: String? = null
@@ -13,10 +14,11 @@ class Recomendacion {
 
     constructor(){}
 
-    constructor(nomUsuario: String?,fotoUsuario: String?,caratula: String?,titulo: String?,categoria: String?,fecha: String?,reseña: String?,emoticono: String?) {
+    constructor(nomUsuario: String?,fotoUsuario: String?,caratula: String?,email: String?,titulo: String?,categoria: String?,fecha: String?,reseña: String?,emoticono: String?) {
         this.nomUsuario = nomUsuario
         this.fotoUsuario = fotoUsuario
         this.caratula = caratula
+        this.email = email
         this.titulo = titulo
         this.categoria = categoria
         this.fecha = fecha

@@ -55,40 +55,50 @@ class ListaFragment : Fragment() {
         crearAdapter()
         buscadoPelis(nombre)
 
+        if (nombre == "⏰ Películas pendientes" || nombre == "👁 Películas vistas" || nombre == "💜 Películas favoritas") {
+            tvDelete.visibility = View.GONE
+        }
+
         tvDelete.setOnClickListener {
-            MaterialDialog(context as Context)
-                .show {
-                    title(null, "Borrar lista")
-                    message(null, "¿Deseas borrar la lista?")
-                    negativeButton(R.string.opcion_positivia) { dialog ->
-                        db.collection("usuarios")
-                            .document(FirebaseAuth.getInstance().currentUser.email)
-                            .collection("listas").document(tvNombre.text.toString()).delete()
-
-                        MotionToast.darkToast(activity as Activity,
-                            "Lista borrada 👍",
-                            "Lista borrada correctamente!",
-                            MotionToast.TOAST_SUCCESS,
-                            MotionToast.GRAVITY_BOTTOM,
-                            MotionToast.LONG_DURATION,
-                            ResourcesCompat.getFont(context as Context,R.font.helvetica_regular))
-
-                        val perfilFragment = PerfilFragment()
-                        activity?.supportFragmentManager?.beginTransaction()
-                            ?.replace(R.id.container,perfilFragment)
-                            ?.addToBackStack(null)
-                            ?.commit();
-                    }
-                    positiveButton(R.string.opcion_negativa) { dialog ->
-                        {
-                            dialog.dismiss()
-                        }
-                    }
-
-                }
+            eliminacionLista()
         }
 
         return root
+    }
+
+    private fun eliminacionLista() {
+        MaterialDialog(context as Context)
+            .show {
+                title(null, "Borrar lista")
+                message(null, "¿Deseas borrar la lista?")
+                negativeButton(R.string.opcion_positivia) { dialog ->
+                    db.collection("usuarios")
+                        .document(FirebaseAuth.getInstance().currentUser.email)
+                        .collection("listas").document(tvNombre.text.toString()).delete()
+
+                    MotionToast.darkToast(
+                        activity as Activity,
+                        "Lista borrada 👍",
+                        "Lista borrada correctamente!",
+                        MotionToast.TOAST_SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(context as Context, R.font.helvetica_regular)
+                    )
+
+                    val perfilFragment = PerfilFragment()
+                    activity?.supportFragmentManager?.beginTransaction()
+                        ?.replace(R.id.container, perfilFragment)
+                        ?.addToBackStack(null)
+                        ?.commit();
+                }
+                positiveButton(R.string.opcion_negativa) { dialog ->
+                    {
+                        dialog.dismiss()
+                    }
+                }
+
+            }
     }
 
     fun buscadoPelis(nombre: String?) {
