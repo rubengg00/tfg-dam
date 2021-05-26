@@ -36,7 +36,6 @@ class HomeFragment : Fragment() {
         recview = root.findViewById(R.id.rvListas)
         tvSaludos = root.findViewById(R.id.tvSaludos)
 
-        EditPerfilFragment().comprobarTema(activity as Activity, context as Context)
 
         if (!flag){
             flag = true

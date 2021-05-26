@@ -16,14 +16,15 @@
         android:id="@+id/bottomBar"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginStart="0dp"
-        android:background="?android:attr/windowBackground"
+        android:background="@drawable/nav_background"
+        android:elevation="20dp"
+        app:itemHorizontalTranslationEnabled="false"
+        app:itemIconTint="@color/fondo_seleccionado"
+        app:itemTextColor="@color/fondo_seleccionado"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:itemIconTint="@color/fondo_seleccionado"
-        app:itemTextColor="@color/fondo_seleccionado"
-        app:menu="@menu/navegacion"/>
+        app:menu="@menu/navegacion"
+        app:elevation="20dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
