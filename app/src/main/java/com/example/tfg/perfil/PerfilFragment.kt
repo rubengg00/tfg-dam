@@ -226,7 +226,7 @@ class PerfilFragment : Fragment() {
         db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).get()
             .addOnSuccessListener {
                 if (it.exists()) {
-                    tvBio.setText(it.get("biografia") as String?)
+                    tvBio.text = it.get("biografia").toString()
                 } else {
                     tvBio.visibility = View.GONE
                 }

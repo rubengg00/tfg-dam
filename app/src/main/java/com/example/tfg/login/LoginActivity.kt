@@ -1,5 +1,6 @@
 package com.example.tfg.login
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -80,21 +81,26 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
 
         LoginManager.getInstance()
-            .registerCallback(callbackManager, object: FacebookCallback<LoginResult>{
+            .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
 
                 override fun onSuccess(result: LoginResult?) {
                     result?.let {
                         val token = it.accessToken
                         val account = FacebookAuthProvider.getCredential(token.token)
 
-                        FirebaseAuth.getInstance().signInWithCredential(account).addOnCompleteListener{
-                            if (it.isSuccessful){
-                                it.result?.user?.email?.let { it1 -> irPerfil(it1) }
-                            }else{
-                                Toast.makeText(applicationContext, "Ya existe un usuario con ese correo", Toast.LENGTH_LONG).show()
-                                Log.d("error", it.exception.toString())
+                        FirebaseAuth.getInstance().signInWithCredential(account)
+                            .addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    it.result?.user?.email?.let { it1 -> irPerfil(it1) }
+                                } else {
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "Ya existe un usuario con ese correo",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    Log.d("error", it.exception.toString())
+                                }
                             }
-                        }
 
                     }
                 }
@@ -104,7 +110,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 }
 
                 override fun onError(error: FacebookException?) {
-                    Toast.makeText(applicationContext, "Error inicio Facebook: $error", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        applicationContext,
+                        "Error inicio Facebook: $error",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
 
             })
@@ -138,30 +148,57 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     //----------------------------------------------------------------------------------------------
     private fun irPerfil(mail: String) {
-        val i = Intent(this, MainActivity::class.java)
-        i.putExtra(datos.MAIL, mail)
-        startActivityForResult(i, REQ_INT_GOG)
 
-        MotionToast.darkToast(this,
-            "Inicio completo 😍",
-            "Has iniciado sesión correctamente!",
-            MotionToast.TOAST_SUCCESS,
-            MotionToast.GRAVITY_BOTTOM,
-            MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(this,R.font.helvetica_regular))
+        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email).get()
+            .addOnSuccessListener {
+                if (it.getString("nickname") == null || it.getString("biografia") == null) {
+                    val i: Intent =
+                        Intent(this, AgregadoInfoActivity::class.java)
+                    startActivity(i)
 
-        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
-            .collection("listas").document("💜 Películas favoritas").set(
-            hashMapOf("nombre" to "💜 Películas favoritas")
-        )
-        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
-            .collection("listas").document("⏰ Películas pendientes").set(
-            hashMapOf("nombre" to "⏰ Películas pendientes")
-        )
-        db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
-            .collection("listas").document("👁 Películas vistas").set(
-            hashMapOf("nombre" to "👁 Películas vistas")
-        )
+                    db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
+                        .collection("listas").document("💜 Películas favoritas").set(
+                            hashMapOf("nombre" to "💜 Películas favoritas")
+                        )
+                    db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
+                        .collection("listas").document("⏰ Películas pendientes").set(
+                            hashMapOf("nombre" to "⏰ Películas pendientes")
+                        )
+                    db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
+                        .collection("listas").document("👁 Películas vistas").set(
+                            hashMapOf("nombre" to "👁 Películas vistas")
+                        )
+
+                } else {
+                    val i = Intent(this, MainActivity::class.java)
+                    i.putExtra(datos.MAIL, mail)
+                    startActivityForResult(i, REQ_INT_GOG)
+
+                    MotionToast.darkToast(
+                        this,
+                        "Inicio completo 😍",
+                        "Has iniciado sesión correctamente!",
+                        MotionToast.TOAST_SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(this, R.font.helvetica_regular)
+                    )
+
+                    db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
+                        .collection("listas").document("💜 Películas favoritas").set(
+                            hashMapOf("nombre" to "💜 Películas favoritas")
+                        )
+                    db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
+                        .collection("listas").document("⏰ Películas pendientes").set(
+                            hashMapOf("nombre" to "⏰ Películas pendientes")
+                        )
+                    db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
+                        .collection("listas").document("👁 Películas vistas").set(
+                            hashMapOf("nombre" to "👁 Películas vistas")
+                        )
+                }
+            }
+
     }
 
     //----------------------------------------------------------------------------------------------
