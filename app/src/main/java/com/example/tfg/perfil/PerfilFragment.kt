@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.R
 import com.example.tfg.login.AgregadoInfoActivity
+import com.example.tfg.pelicula.PelisPorCatFragment
+import com.example.tfg.perfil.admin.AdminFragment
 import com.example.tfg.perfil.listas.Lista
 import com.example.tfg.perfil.listas.ListaFragment
 import com.example.tfg.perfil.reseñas.MisRecomenFragment
@@ -24,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_perfil.*
+import org.w3c.dom.Text
 
 class PerfilFragment : Fragment() {
 
@@ -32,6 +35,9 @@ class PerfilFragment : Fragment() {
     lateinit var recview: RecyclerView
     lateinit var edit: TextView
     lateinit var FirestoreRecyclerAdapter: FirestoreRecyclerAdapter<Lista, ListaViewHolder>
+    lateinit var tvAdmin: TextView
+    lateinit var btnMisResenas: Button
+    lateinit var nombreUser: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,10 +47,12 @@ class PerfilFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_perfil, container, false)
 
         /* Declaración de varibles */
-        val btnMisResenas: Button = root.findViewById(R.id.misReseñas)
+        btnMisResenas = root.findViewById(R.id.misReseñas)
         var fotoPerfil: ImageView = root.findViewById(R.id.userFoto)
-        var nombreUser: TextView = root.findViewById(R.id.tvUserName)
+        nombreUser = root.findViewById(R.id.tvUserName)
         var tvBio: TextView = root.findViewById(R.id.tvBio)
+        tvAdmin = root.findViewById(R.id.tvAdmin)
+        tvAdmin.visibility = View.GONE
         edit = root.findViewById(R.id.tvEditPerfil)
         numListas = root.findViewById(R.id.tvNumListas)
         recview = root.findViewById(R.id.recListas)
@@ -65,6 +73,11 @@ class PerfilFragment : Fragment() {
             numeroListas()
             cargarRecyclerView()
             agregarInfoUser()
+
+            if (FirebaseAuth.getInstance().currentUser.email.equals("xykaxkillercc@gmail.com")){
+                tvAdmin.visibility = View.VISIBLE
+            }
+
         } else {
             nombreUser.visibility = View.GONE
             tvBio.visibility = View.GONE
@@ -74,18 +87,45 @@ class PerfilFragment : Fragment() {
 
         edit.setOnClickListener { checkPerfil() }
 
+        btnMisResenas.setOnClickListener {checkReseñas()}
 
-        btnMisResenas.setOnClickListener {
+        if (tvAdmin.visibility == View.VISIBLE){
+            tvAdmin.setOnClickListener {
+                goAdmin()
+            }
+        }
 
-            if (btnMisResenas.text == "Iniciar Sesión") {
-                val i: Intent =
-                    Intent(context as Context, com.example.tfg.login.LoginActivity::class.java)
-                startActivity(i)
-            } else {
-                var nickname = ""
+        return root
+    }
 
-                db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
-                    .get().addOnSuccessListener {
+    private fun goAdmin() {
+        val adminFragment = AdminFragment()
+
+        var bundle: Bundle = Bundle()
+        bundle.putString("nickname", nombreUser.text.toString())
+        adminFragment.arguments = bundle
+
+        activity?.getSupportFragmentManager()?.beginTransaction()
+            ?.setCustomAnimations(
+                R.anim.slide_bottom_up,
+                R.anim.slide_bottom_down
+            )
+            ?.replace(R.id.container,adminFragment)
+            ?.addToBackStack(null)
+            ?.commit();
+    }
+
+    private fun checkReseñas() {
+
+        if (btnMisResenas.text == "Iniciar Sesión") {
+            val i: Intent =
+                Intent(context as Context, com.example.tfg.login.LoginActivity::class.java)
+            startActivity(i)
+        } else {
+            var nickname = ""
+
+            db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
+                .get().addOnSuccessListener {
                     nickname = it.getString("nickname").toString()
                     val misRecomenFragment = MisRecomenFragment()
                     var bundle: Bundle = Bundle()
@@ -101,11 +141,8 @@ class PerfilFragment : Fragment() {
                         ?.addToBackStack(null)
                         ?.commit();
                 }
-            }
-
         }
 
-        return root
     }
 
     //-----------------------------------------------------------------------------------------------

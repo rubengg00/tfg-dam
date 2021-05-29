@@ -9,6 +9,8 @@
     <string name="recomendacion">Recomendar</string>
     <string name="crear">Crear</string>
     <string name="modificar">Guardar</string>
+    <string name="descripcion">Desarrollador de Aplicaciones Web y Multiplataformas</string>
+    <string name="adminDesc">En esta sección tendrás un visionado general de las categorías, películas y reseñas disponibles en la plataforma</string>
     <string name="facebook_app_id">199646728649584</string>
     <string name="fb_login_protocol_scheme">fb199646728649584</string>
 </resources>

@@ -12,18 +12,16 @@
 
         <TextView
             android:id="@+id/tvEditPerfil"
-            android:layout_width="336dp"
+            android:layout_width="50dp"
             android:layout_height="28dp"
-            android:layout_marginStart="20dp"
             android:layout_marginTop="29dp"
-            android:layout_marginEnd="20dp"
-            android:text="✏"
+            android:layout_marginEnd="27dp"
+            android:text="🖊"
             android:textAlignment="textEnd"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -153,5 +151,19 @@
             app:layout_constraintHorizontal_bias="0.523"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/misReseñas" />
+
+        <TextView
+            android:id="@+id/tvAdmin"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="27dp"
+            android:text="👷🏽‍♂️"
+            android:textAlignment="textEnd"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvEditPerfil" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
