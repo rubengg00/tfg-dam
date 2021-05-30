@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.tfg.R
+import com.example.tfg.perfil.admin.peliculas.AllPeliculasFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 
@@ -42,16 +43,28 @@ class AdminFragment : Fragment() {
         return root
     }
 
-    private fun todasResenas() {
-        
+    private fun todasPeliculas() {
+        val allPeliculas = AllPeliculasFragment()
+
+        var bundle: Bundle = Bundle()
+        allPeliculas.arguments = bundle
+
+        activity?.getSupportFragmentManager()?.beginTransaction()
+            ?.setCustomAnimations(
+                R.anim.slide_bottom_up,
+                R.anim.slide_bottom_down
+            )
+            ?.replace(R.id.container,allPeliculas)
+            ?.addToBackStack(null)
+            ?.commit();
     }
 
     private fun todasCategorias() {
 
     }
 
-    private fun todasPeliculas() {
-
+    private fun todasResenas() {
+        
     }
 
     private fun llevarRepositorio() {
