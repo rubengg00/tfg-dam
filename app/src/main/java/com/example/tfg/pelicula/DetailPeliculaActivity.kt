@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
@@ -22,6 +23,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import de.mrapp.android.bottomsheet.BottomSheet
 import kotlinx.android.synthetic.main.activity_detail_pelicula.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class DetailPeliculaActivity : AppCompatActivity() {
@@ -43,6 +46,7 @@ class DetailPeliculaActivity : AppCompatActivity() {
     private val nodoRaiz = FirebaseDatabase.getInstance()
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_pelicula)
@@ -94,6 +98,7 @@ class DetailPeliculaActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun añadirReseña() {
         var datos = intent.extras
 
@@ -106,6 +111,11 @@ class DetailPeliculaActivity : AppCompatActivity() {
         var emoji = ""
         var email = ""
         var id_recomendacion = System.currentTimeMillis()
+
+        val current = LocalDateTime.now()
+
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+        val formatted = current.format(formatter).toString()
 
         val contextView = findViewById<View>(R.id.btnAddLista)
 
@@ -150,7 +160,8 @@ class DetailPeliculaActivity : AppCompatActivity() {
                                 categori,
                                 fech,
                                 reseña,
-                                emoji
+                                emoji,
+                                formatted
                             )
                             nodoRaiz.reference.child("recomendaciones")
                                 .child(id_recomendacion.toString()).setValue(recomendacion)

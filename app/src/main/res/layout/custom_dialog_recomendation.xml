@@ -89,7 +89,7 @@
         android:layout_marginEnd="50dp"
         android:orientation="horizontal"
         app:counterEnabled="true"
-        app:counterMaxLength="30"
+        app:counterMaxLength="60"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +103,7 @@
             android:ems="10"
             android:hint="Escriba un comentario..."
             android:inputType="textPersonName"
-            android:maxLength="30" />
+            android:maxLength="60" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

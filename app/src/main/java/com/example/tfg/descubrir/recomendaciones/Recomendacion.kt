@@ -11,10 +11,22 @@ class Recomendacion {
     var fecha: String? = null
     var reseña: String? = null
     var emoticono: String? = null
+    var fechaSubida: String? = null
 
-    constructor(){}
+    constructor() {}
 
-    constructor(nomUsuario: String?,fotoUsuario: String?,caratula: String?,email: String?,titulo: String?,categoria: String?,fecha: String?,reseña: String?,emoticono: String?) {
+    constructor(
+        nomUsuario: String?,
+        fotoUsuario: String?,
+        caratula: String?,
+        email: String?,
+        titulo: String?,
+        categoria: String?,
+        fecha: String?,
+        reseña: String?,
+        emoticono: String?,
+        fechaSubida: String?
+    ) {
         this.nomUsuario = nomUsuario
         this.fotoUsuario = fotoUsuario
         this.caratula = caratula
@@ -24,6 +36,7 @@ class Recomendacion {
         this.fecha = fecha
         this.reseña = reseña
         this.emoticono = emoticono
+        this.fechaSubida = fechaSubida
     }
 
 

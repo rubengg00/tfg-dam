@@ -13,6 +13,7 @@ import android.widget.TextView
 import com.example.tfg.R
 import com.example.tfg.perfil.admin.categorias.AllCategoriasFragment
 import com.example.tfg.perfil.admin.peliculas.AllPeliculasFragment
+import com.example.tfg.perfil.admin.recomendaciones.AllRecFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 
@@ -77,7 +78,19 @@ class AdminFragment : Fragment() {
     }
 
     private fun todasResenas() {
-        
+        val allRecomen = AllRecFragment()
+
+        var bundle: Bundle = Bundle()
+        allRecomen.arguments = bundle
+
+        activity?.getSupportFragmentManager()?.beginTransaction()
+            ?.setCustomAnimations(
+                R.anim.slide_bottom_up,
+                R.anim.slide_bottom_down
+            )
+            ?.replace(R.id.container,allRecomen)
+            ?.addToBackStack(null)
+            ?.commit();
     }
 
     private fun llevarRepositorio() {
