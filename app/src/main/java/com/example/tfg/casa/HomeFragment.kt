@@ -57,27 +57,27 @@ class HomeFragment : Fragment() {
 
         if(timeOfDay in 6..11){
             if (usu != null){
-                tvSaludos.text = "Buenos días ${usu.displayName}"
+                tvSaludos.text = "¡Buenos días ${usu.displayName}!"
             }else{
-                tvSaludos.text = "Buenos días"
+                tvSaludos.text = "¡Buenos días!"
             }
         }else if(timeOfDay in 12..19){
             if (usu != null){
-                tvSaludos.text = "Buenas tardes ${usu.displayName}"
+                tvSaludos.text = "¡Buenas tardes ${usu.displayName}!"
             }else{
-                tvSaludos.text = "Buenas tardes"
+                tvSaludos.text = "¡Buenas tardes!"
             }
         }else if(timeOfDay in 20..23){
             if (usu != null){
-                tvSaludos.text = "Buenas noches ${usu.displayName}"
+                tvSaludos.text = "¡Buenas noches ${usu.displayName}!"
             }else{
-                tvSaludos.text = "Buenas noches"
+                tvSaludos.text = "¡Buenas noches!"
             }
         }else{
             if (usu != null){
-                tvSaludos.text = "Buenas noches ${usu.displayName}"
+                tvSaludos.text = "¡Buenas noches ${usu.displayName}!"
             }else{
-                tvSaludos.text = "Buenas noches"
+                tvSaludos.text = "¡Buenas noches!"
             }
         }
     }

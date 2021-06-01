@@ -129,7 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:backgroundTint="#C65151"
+            android:backgroundTint="#FF5353"
             android:text="Eliminar"
             android:textAllCaps="false"
             app:cornerRadius="20dp"

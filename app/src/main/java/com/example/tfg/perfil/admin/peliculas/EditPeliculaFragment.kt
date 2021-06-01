@@ -83,12 +83,12 @@ class EditPeliculaFragment : Fragment() {
 
         db.collection("usuarios").get().addOnSuccessListener {
             for (doc in it) {
-                correo = doc.id.toString()
+                correo = doc.id
                 Log.d("correo", correo)
                 db.collection("usuarios").document(correo).collection("listas").get()
                     .addOnSuccessListener {
                         for (doc in it) {
-                            lista = doc.id.toString()
+                            lista = doc.id
                             Log.d("lista", lista)
                             db.collection("usuarios").document(correo).collection("listas")
                                 .document(lista).collection("peliculas").get()

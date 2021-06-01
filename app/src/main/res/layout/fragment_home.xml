@@ -28,121 +28,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout3"
-            android:layout_width="403dp"
-            android:layout_height="137dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvSaludos">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cvNovedades"
-                android:layout_width="181dp"
-                android:layout_height="113dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/fuego"
-                        android:layout_width="32dp"
-                        android:layout_height="28dp"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="10dp"
-                        android:text="🔥"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textSize="20sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView10"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="15dp"
-                        android:text="Novedades"
-                        android:textColor="#7C33F6"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/fuego" />
-
-                    <TextView
-                        android:id="@+id/textView14"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="5dp"
-                        android:text="de las plataformas"
-                        android:textColor="?android:attr/textColorPrimary"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView10" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cvLoMejor"
-                android:layout_width="181dp"
-                android:layout_height="113dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/trofeo"
-                        android:layout_width="32dp"
-                        android:layout_height="28dp"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="10dp"
-                        android:text="🏆"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textSize="20sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/lo_mejor"
-                        android:layout_width="65dp"
-                        android:layout_height="16dp"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="15dp"
-                        android:text="Lo mejor"
-                        android:textColor="#7C33F6"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/trofeo" />
-
-                    <TextView
-                        android:id="@+id/en_tus_plataformas"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="7dp"
-                        android:text="de las plataformas"
-                        android:textColor="?android:attr/textColorPrimary"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lo_mejor" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-
         <TextView
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
@@ -153,7 +38,7 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+            app:layout_constraintTop_toBottomOf="@+id/tvSaludos" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvListas"
@@ -173,14 +58,14 @@
             android:id="@+id/tvSaludos"
             android:layout_width="337dp"
             android:layout_height="51dp"
+            android:layout_marginStart="18dp"
             android:layout_marginTop="19dp"
             android:gravity="center_horizontal|center_vertical"
             android:maxLines="1"
             android:text="TextView"
+            android:textAlignment="textStart"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
