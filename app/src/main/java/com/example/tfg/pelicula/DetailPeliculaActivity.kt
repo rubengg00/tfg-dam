@@ -203,6 +203,7 @@ class DetailPeliculaActivity : AppCompatActivity() {
         val trailer = datos?.getString("trailer")
 
         tvTrailer.setOnClickListener {
+            Log.d("trailer", "trailer es $trailer")
             val i: Intent = Intent(Intent.ACTION_VIEW)
             i.data = Uri.parse(trailer)
             startActivity(i)

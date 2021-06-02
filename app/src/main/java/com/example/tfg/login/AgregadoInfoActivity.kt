@@ -48,9 +48,25 @@ class AgregadoInfoActivity : AppCompatActivity(), View.OnClickListener {
                 nomAnterior.add(doc.getString("nickname").toString())
             }
             if (nomAnterior.contains(nombre)) {
-                MotionToast.darkToast(this,
+                MotionToast.createColorToast(this,
                     "Error",
                     "Usuario ya existente",
+                    MotionToast.TOAST_ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    ResourcesCompat.getFont(this,R.font.helvetica_regular))
+            } else if (nombre.length < 6){
+                MotionToast.createColorToast(this,
+                    "Error",
+                    "Longitud del nickname mínima: 6 caracteres",
+                    MotionToast.TOAST_ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    ResourcesCompat.getFont(this,R.font.helvetica_regular))
+            }else if (biografia.length < 10){
+                MotionToast.createColorToast(this,
+                    "Error",
+                    "Longitud de la biografía mínima: 10 caracteres",
                     MotionToast.TOAST_ERROR,
                     MotionToast.GRAVITY_BOTTOM,
                     MotionToast.LONG_DURATION,
@@ -61,7 +77,7 @@ class AgregadoInfoActivity : AppCompatActivity(), View.OnClickListener {
                         hashMapOf("nickname" to nombre, "biografia" to biografia)
                     )
 
-                MotionToast.darkToast(this,
+                MotionToast.createColorToast(this,
                     "Perfil actualizado 👍",
                     "Datos agregados correctamente!",
                     MotionToast.TOAST_SUCCESS,
@@ -76,11 +92,11 @@ class AgregadoInfoActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun comprobar(): Boolean {
-        nombre = etNombre.text.toString().trim()
+        nombre = etNombre.text.toString().trim().toLowerCase()
         biografia = etBio.text.toString().trim()
 
         if (nombre.isEmpty() || biografia.isEmpty()){
-            MotionToast.darkToast(this,
+            MotionToast.createColorToast(this,
                 "Error",
                 "Ambos campos son obligatorios",
                 MotionToast.TOAST_ERROR,

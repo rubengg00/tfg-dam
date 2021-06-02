@@ -105,7 +105,8 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Nickname"
-                    android:inputType="textPersonName"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_"
+                    android:inputType="textFilter"
                     android:maxLength="15" />
 
             </com.google.android.material.textfield.TextInputLayout>

@@ -15,8 +15,6 @@ import com.squareup.picasso.Picasso
 class PeliculaAdapter(private val miLista: ArrayList<Pelicula>, val c: Context):
     RecyclerView.Adapter<PeliculaAdapter.MiViewHolder>(), View.OnClickListener{
 
-    private val db = FirebaseFirestore.getInstance()
-    private val storage = FirebaseStorage.getInstance()
 
     //Listener
     lateinit var listener: View.OnClickListener

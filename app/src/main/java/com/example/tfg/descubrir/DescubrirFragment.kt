@@ -113,6 +113,7 @@ class DescubrirFragment : Fragment() {
                                     i.putExtra("categoria", it.getString("categoria"))
                                     i.putExtra("sinopsis", it.getString("sinopsis"))
                                     i.putExtra("caratula", it.getString("caratula"))
+                                    i.putExtra("trailer", it.getString("trailer"))
                                     startActivity(i)
                                 }
                         }

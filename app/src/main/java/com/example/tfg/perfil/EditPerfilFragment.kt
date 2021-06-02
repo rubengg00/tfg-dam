@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.ResourcesCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.tfg.R
+import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
@@ -158,6 +159,22 @@ class EditPerfilFragment : Fragment(), View.OnClickListener {
                         MotionToast.LONG_DURATION,
                         ResourcesCompat.getFont(context as Context,R.font.helvetica_regular))
 
+                }else if (nombreUsuario.length < 6){
+                    MotionToast.darkToast(activity as Activity,
+                        "Error",
+                        "Longitud del nickname mínima: 6 caracteres",
+                        MotionToast.TOAST_ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(context as Context,R.font.helvetica_regular))
+                }else if (biografiaUsuario.length < 10){
+                    MotionToast.darkToast(activity as Activity,
+                        "Error",
+                        "Longitud de la biografía mínima: 10 caracteres",
+                        MotionToast.TOAST_ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(context as Context,R.font.helvetica_regular))
                 }else if (nombreUsuario == nicknameActual){
                     db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
                         .set(
@@ -204,7 +221,7 @@ class EditPerfilFragment : Fragment(), View.OnClickListener {
     }
 
     private fun comprobar(): Boolean {
-        nombreUsuario = etNombreAct.text.toString().trim()
+        nombreUsuario = etNombreAct.text.toString().trim().toLowerCase()
         biografiaUsuario = etBioAct.text.toString().trim()
 
         if (nombreUsuario.isEmpty() || biografiaUsuario.isEmpty()){
@@ -226,6 +243,7 @@ class EditPerfilFragment : Fragment(), View.OnClickListener {
     private fun logOut() {
         FirebaseAuth.getInstance().signOut()
         Auth.GoogleSignInApi.signOut(mGoogleApiClient)
+        LoginManager.getInstance().logOut()
 
         MotionToast.darkToast(activity as Activity,
             "Sesión cerrada 👍",
