@@ -196,7 +196,9 @@ class PerfilFragment : Fragment() {
                 ) {
                     holder.tvLista.text = model.nombre
 
-                    if (holder.tvLista.text == "⏰ Películas pendientes" || holder.tvLista.text == "👁 Películas vistas" || holder.tvLista.text == "💜 Películas favoritas"){
+                    if (holder.tvLista.text == "⏰ Películas pendientes" ||
+                        holder.tvLista.text == "👁 Películas vistas" ||
+                        holder.tvLista.text == "💜 Películas favoritas"){
                         holder.tvOpciones.visibility = View.GONE
                     }
 

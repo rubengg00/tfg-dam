@@ -58,8 +58,6 @@ class BusquedaFragment : Fragment() {
         }
 
         search.addTextChangedListener(object : TextWatcher {
-            private var temporizador: Timer = Timer()
-            private val delay: Long = 450
 
             override fun afterTextChanged(s: Editable) {
                 if (search.text.trim().toString().isNullOrBlank()){
