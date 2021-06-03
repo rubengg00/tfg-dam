@@ -5,6 +5,7 @@
     android:id="@+id/ConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#7D51A6"
     tools:context=".perfil.EditPerfilFragment">
 
     <TextView
@@ -14,7 +15,7 @@
         android:layout_marginTop="30dp"
         android:fontFamily="@font/notosans_bold"
         android:text="Editando Perfil"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="?android:attr/textColorPrimaryInverse"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +53,7 @@
             android:layout_marginBottom="60dp"
             android:text="Eliminar cuenta"
             android:textAllCaps="false"
-            android:textColor="#FF5353"
+            android:textColor="@color/black"
             android:textStyle="bold" />
 
         <Button
@@ -64,7 +65,7 @@
             android:layout_marginBottom="60dp"
             android:text="Cerrar sesión"
             android:textAllCaps="false"
-            android:textColor="#FF5353"
+            android:textColor="@color/black"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -96,6 +97,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
+                app:counterTextColor="?android:attr/textColorPrimaryInverse"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -103,9 +105,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_"
                     android:ems="10"
                     android:hint="Nickname"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_"
                     android:inputType="textFilter"
                     android:maxLength="15" />
 
@@ -119,6 +121,7 @@
                 android:orientation="horizontal"
                 app:counterEnabled="true"
                 app:counterMaxLength="60"
+                app:counterTextColor="?android:attr/textColorPrimaryInverse"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toStartOf="parent"

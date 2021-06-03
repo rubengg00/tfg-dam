@@ -1,5 +1,6 @@
 package com.example.tfg.perfil
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,9 +10,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
 import com.example.tfg.R
 import com.example.tfg.login.AgregadoInfoActivity
 import com.example.tfg.pelicula.PelisPorCatFragment
@@ -27,6 +30,7 @@ import com.google.firebase.firestore.Query
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_perfil.*
 import org.w3c.dom.Text
+import www.sanju.motiontoast.MotionToast
 
 class PerfilFragment : Fragment() {
 
@@ -74,7 +78,7 @@ class PerfilFragment : Fragment() {
             cargarRecyclerView()
             agregarInfoUser()
 
-            if (FirebaseAuth.getInstance().currentUser.email.equals("xykaxkillercc@gmail.com")){
+            if (FirebaseAuth.getInstance().currentUser.email.equals("xykaxkillercc@gmail.com")) {
                 tvAdmin.visibility = View.VISIBLE
             }
 
@@ -87,9 +91,9 @@ class PerfilFragment : Fragment() {
 
         edit.setOnClickListener { checkPerfil() }
 
-        btnMisResenas.setOnClickListener {checkReseñas()}
+        btnMisResenas.setOnClickListener { checkReseñas() }
 
-        if (tvAdmin.visibility == View.VISIBLE){
+        if (tvAdmin.visibility == View.VISIBLE) {
             tvAdmin.setOnClickListener {
                 goAdmin()
             }
@@ -110,7 +114,7 @@ class PerfilFragment : Fragment() {
                 R.anim.slide_bottom_up,
                 R.anim.slide_bottom_down
             )
-            ?.replace(R.id.container,adminFragment)
+            ?.replace(R.id.container, adminFragment)
             ?.addToBackStack(null)
             ?.commit();
     }
@@ -165,7 +169,7 @@ class PerfilFragment : Fragment() {
 
         val query: Query =
             db.collection("usuarios").document(FirebaseAuth.getInstance().currentUser.email)
-                .collection("listas").orderBy("nombre")
+                .collection("listas")
 
         val options: FirestoreRecyclerOptions<Lista> =
             FirestoreRecyclerOptions.Builder<Lista>()
@@ -191,23 +195,30 @@ class PerfilFragment : Fragment() {
                     model: Lista
                 ) {
                     holder.tvLista.text = model.nombre
-                    holder.tvContador.text = model.total
 
-                    holder.itemView.setOnClickListener {
-                        val listaFragment = ListaFragment()
+                    if (holder.tvLista.text == "⏰ Películas pendientes" || holder.tvLista.text == "👁 Películas vistas" || holder.tvLista.text == "💜 Películas favoritas"){
+                        holder.tvOpciones.visibility = View.GONE
+                    }
 
-                        var bundle: Bundle = Bundle()
-                        bundle.putString("nombre", holder.tvLista.text.toString())
-                        listaFragment.arguments = bundle
+                        holder.itemView.setOnClickListener {
+                            val listaFragment = ListaFragment()
 
-                        activity?.getSupportFragmentManager()?.beginTransaction()
-                            ?.setCustomAnimations(
-                                R.anim.slide_bottom_up,
-                                R.anim.slide_bottom_down
-                            )
-                            ?.replace(R.id.container, listaFragment)
-                            ?.addToBackStack(null)
-                            ?.commit();
+                            var bundle: Bundle = Bundle()
+                            bundle.putString("nombre", holder.tvLista.text.toString())
+                            listaFragment.arguments = bundle
+
+                            activity?.getSupportFragmentManager()?.beginTransaction()
+                                ?.setCustomAnimations(
+                                    R.anim.slide_bottom_up,
+                                    R.anim.slide_bottom_down
+                                )
+                                ?.replace(R.id.container, listaFragment)
+                                ?.addToBackStack(null)
+                                ?.commit();
+                        }
+
+                    holder.tvOpciones.setOnClickListener {
+                        eliminacionLista(holder)
                     }
                 }
             }
@@ -218,10 +229,44 @@ class PerfilFragment : Fragment() {
 
     }
 
+    private fun eliminacionLista(holder: ListaViewHolder) {
+        MaterialDialog(context as Context)
+            .show {
+                var titulo = ""
+                title(null, "Borrando lista")
+                message(null, "¿Deseas borrar la lista ${holder.tvLista.text}?")
+                negativeButton(R.string.opcion_positivia) { dialog ->
+                    db.collection("usuarios")
+                        .document(FirebaseAuth.getInstance().currentUser.email)
+                        .collection("listas").document(holder.tvLista.text.toString()).delete()
+
+                    MotionToast.darkToast(
+                        activity as Activity,
+                        "Lista eliminada 👍",
+                        "Lista eliminada correctamente!",
+                        MotionToast.TOAST_SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(context as Context, R.font.helvetica_regular)
+                    )
+                    numListas.text = ""
+                    numeroListas()
+
+
+                }
+                positiveButton(R.string.opcion_negativa) { dialog ->
+                    {
+                        dialog.dismiss()
+                    }
+                }
+
+            }
+    }
+
 
     class ListaViewHolder(var v: View) : RecyclerView.ViewHolder(v) {
         val tvLista: TextView = v.findViewById(R.id.tvNombreLista)
-        val tvContador: TextView = v.findViewById(R.id.tvTotalPelis)
+        val tvOpciones: TextView = v.findViewById(R.id.tvOpciones3)
     }
 
     override fun onStart() {

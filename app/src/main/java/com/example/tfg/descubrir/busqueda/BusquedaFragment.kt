@@ -56,7 +56,7 @@ class BusquedaFragment : Fragment() {
                 temporizador.schedule(
                     object : TimerTask() {
                         override fun run() {
-                            if ((s.toString().isBlank() || s.toString().isEmpty())) {
+                            if ((s.toString().isNullOrEmpty())) {
                                 listaPelis.clear()
                                 cargadoDatos("")
                             }
@@ -169,6 +169,7 @@ class BusquedaFragment : Fragment() {
             i.putExtra("categoria", listaPelis.get(recview.getChildAdapterPosition(it)).categoria)
             i.putExtra("sinopsis", listaPelis.get(recview.getChildAdapterPosition(it)).sinopsis)
             i.putExtra("caratula", listaPelis.get(recview.getChildAdapterPosition(it)).caratula)
+            i.putExtra("busqueda", "busqueda")
             startActivity(i)
         })
     }

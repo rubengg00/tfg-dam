@@ -11,6 +11,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
+        android:backgroundTint="#9A68C7"
         app:cardCornerRadius="10dp"
         app:cardElevation="7dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,6 +23,21 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/tvOpciones3"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="6dp"
+                android:text="✖"
+                android:textAlignment="center"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="?android:attr/textColorPrimaryInverse"
+                app:layout_constraintBottom_toBottomOf="@+id/tvNombreLista"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvNombreLista" />
+
+            <TextView
                 android:id="@+id/tvNombreLista"
                 android:layout_width="253dp"
                 android:layout_height="30dp"
@@ -29,22 +45,12 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="TextView"
-                android:textColor="?android:attr/textColorPrimary"
+                android:textColor="?android:attr/textColorPrimaryInverse"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tvTotalPelis"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="17dp"
-                android:text="TextView"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tvNombreLista"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tvNombreLista" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

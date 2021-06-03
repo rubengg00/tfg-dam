@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#7D51A6">
 
         <com.cielyang.android.clearableedittext.ClearableEditText
             android:id="@+id/search"
@@ -18,8 +19,10 @@
             android:layout_marginTop="39dp"
             android:layout_marginEnd="20dp"
             android:ems="10"
-            android:hint="Busca películas"
+            android:hint="Introduzca el título de la película"
             android:inputType="textPersonName"
+            android:textColor="?android:attr/textColorPrimaryInverse"
+            android:textColorHint="?android:attr/textColorPrimaryInverse"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

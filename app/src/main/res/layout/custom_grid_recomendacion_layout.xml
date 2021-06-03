@@ -10,6 +10,7 @@
         android:layout_height="320dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
+        android:backgroundTint="#9A68C7"
         app:cardCornerRadius="10dp"
         app:cardElevation="7dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +38,8 @@
                     android:maxLines="2"
                     android:text="Hola"
                     android:textAlignment="viewStart"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <ImageView
@@ -65,7 +67,8 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textColor="?android:attr/textColorPrimaryInverse" />
 
             </LinearLayout>
 
@@ -95,6 +98,7 @@
                         android:layout_weight="1"
                         android:maxLines="3"
                         android:text="TextView"
+                        android:textColor="?android:attr/textColorPrimaryInverse"
                         android:textStyle="italic"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -128,7 +132,7 @@
                     android:layout_weight="1"
                     android:maxLines="1"
                     android:text="TextView"
-                    android:textColor="#7C33F6"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
                     android:textStyle="bold" />
 
                 <TextView

@@ -64,12 +64,9 @@ class ListaFragment : Fragment() {
         comprobarPeliculaDisponible()
         listaPelis.clear()
 
-        if (nombre == "⏰ Películas pendientes" || nombre == "👁 Películas vistas" || nombre == "💜 Películas favoritas") {
-            tvDelete.visibility = View.GONE
-        }
 
         tvDelete.setOnClickListener {
-            eliminacionLista()
+            limpiadoLista()
         }
 
         cargarRecyclerView()
@@ -162,7 +159,10 @@ class ListaFragment : Fragment() {
                 private fun eliminacionPelicula(holder: ListaViewHolder) {
                     MaterialDialog(context!!).show {
                         title(null, "Eliminar de la lista")
-                        message(null, "¿Deseas eliminar la película ${holder.tvTitulo.text} de la lista?")
+                        message(
+                            null,
+                            "¿Deseas eliminar la película ${holder.tvTitulo.text} de la lista?"
+                        )
                         negativeButton(R.string.opcion_positivia) { dialog ->
                             db.collection("usuarios")
                                 .document(FirebaseAuth.getInstance().currentUser.email)
@@ -178,9 +178,11 @@ class ListaFragment : Fragment() {
                                 ).show()
                             }
                         }
-                        positiveButton(R.string.opcion_negativa){dialog->{
-                            dialog.dismiss()
-                        }}
+                        positiveButton(R.string.opcion_negativa) { dialog ->
+                            {
+                                dialog.dismiss()
+                            }
+                        }
                     }
                 }
             }
@@ -190,8 +192,6 @@ class ListaFragment : Fragment() {
         recview.adapter = FirestoreRecyclerAdapter
 
     }
-
-
 
 
     class ListaViewHolder(var v: View) : RecyclerView.ViewHolder(v) {
@@ -250,31 +250,36 @@ class ListaFragment : Fragment() {
 
     }
 
-    private fun eliminacionLista() {
+    private fun limpiadoLista() {
         MaterialDialog(context as Context)
             .show {
-                title(null, "Borrar lista")
-                message(null, "¿Deseas borrar la lista?")
+                var titulo = ""
+                title(null, "Limpiado de lista")
+                message(null, "¿Deseas borrar todas las películas guardadas en esta lista?")
                 negativeButton(R.string.opcion_positivia) { dialog ->
                     db.collection("usuarios")
                         .document(FirebaseAuth.getInstance().currentUser.email)
-                        .collection("listas").document(tvNombre.text.toString()).delete()
+                        .collection("listas").document(tvNombre.text.toString())
+                        .collection("peliculas").get().addOnSuccessListener {
+                            for (doc in it){
+                                titulo = doc.getString("titulo").toString()
+                                db.collection("usuarios")
+                                    .document(FirebaseAuth.getInstance().currentUser.email)
+                                    .collection("listas").document(tvNombre.text.toString())
+                                    .collection("peliculas").document(titulo).delete()
+                            }
+                        }
 
                     MotionToast.darkToast(
                         activity as Activity,
-                        "Lista borrada 👍",
-                        "Lista borrada correctamente!",
+                        "Lista vaciada 👍",
+                        "Lista vaciada correctamente!",
                         MotionToast.TOAST_SUCCESS,
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.LONG_DURATION,
                         ResourcesCompat.getFont(context as Context, R.font.helvetica_regular)
                     )
 
-                    val perfilFragment = PerfilFragment()
-                    activity?.supportFragmentManager?.beginTransaction()
-                        ?.replace(R.id.container, perfilFragment)
-                        ?.addToBackStack(null)
-                        ?.commit();
                 }
                 positiveButton(R.string.opcion_negativa) { dialog ->
                     {

@@ -13,9 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.example.tfg.R
+import com.example.tfg.descubrir.busqueda.BusquedaFragment
 import com.example.tfg.login.AgregadoInfoActivity
 import com.example.tfg.login.LoginActivity
 import com.example.tfg.pelicula.recomendaciones.Recomendacion
+import com.example.tfg.perfil.EditPerfilFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -41,6 +43,7 @@ class DetailPeliculaActivity : AppCompatActivity() {
     lateinit var btnRecom: Button
     var platNombre: String = ""
     var enlace: String = ""
+    var busqueda = ""
 
     private val db = FirebaseFirestore.getInstance()
     private val nodoRaiz = FirebaseDatabase.getInstance()
@@ -325,4 +328,5 @@ class DetailPeliculaActivity : AppCompatActivity() {
 
         }
     }
+
 }

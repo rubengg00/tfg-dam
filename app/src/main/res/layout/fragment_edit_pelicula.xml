@@ -9,7 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#7D51A6">
 
         <me.grantland.widget.AutofitTextView
             android:id="@+id/tvMovEdit"
@@ -18,7 +19,7 @@
             android:layout_marginTop="26dp"
             android:fontFamily="@font/notosans_bold"
             android:text="Titulo"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,6 +33,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintBottom_toBottomOf="@+id/textView22"
             app:layout_constraintEnd_toEndOf="@+id/edSinopsis"
             app:layout_constraintTop_toTopOf="@+id/textView22"
@@ -44,6 +46,7 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="108dp"
             android:text="Duración"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,6 +56,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintBottom_toBottomOf="@+id/textView24"
             app:layout_constraintEnd_toEndOf="@+id/edFecha"
             app:layout_constraintTop_toTopOf="@+id/textView24"
@@ -65,6 +69,7 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="60dp"
             android:text="Fecha"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
@@ -74,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
             android:text="Trailer"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintBottom_toBottomOf="@+id/edTrailer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/edTrailer"
@@ -87,6 +93,7 @@
             android:layout_marginEnd="24dp"
             android:ems="10"
             android:inputType="textPersonName"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edFecha" />
 
@@ -96,6 +103,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintBottom_toBottomOf="@+id/textView25"
             app:layout_constraintEnd_toEndOf="@+id/edTrailer"
             app:layout_constraintTop_toTopOf="@+id/textView25"
@@ -108,6 +116,7 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="64dp"
             android:text="Sinópsis"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView22" />
 

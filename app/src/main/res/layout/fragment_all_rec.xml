@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#7D51A6">
 
         <TextView
             android:id="@+id/textView14"
@@ -17,7 +18,7 @@
             android:layout_marginTop="30dp"
             android:fontFamily="@font/notosans_bold"
             android:text="💬 Reseñas"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

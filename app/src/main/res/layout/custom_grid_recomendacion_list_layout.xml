@@ -37,13 +37,13 @@
 
                 <TextView
                     android:id="@+id/tvOpciones1"
-                    android:layout_width="39dp"
-                    android:layout_height="33dp"
+                    android:layout_width="55dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="20dp"
-                    android:text="&#8942;"
-                    android:textAlignment="textEnd"
+                    android:text="     &#8942;"
+                    android:textAlignment="center"
                     android:textAppearance="?android:textAppearanceLarge" />
             </LinearLayout>
 

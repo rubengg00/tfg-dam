@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#7D51A6">
 
         <TextView
             android:id="@+id/tvEditPerfil"
@@ -18,7 +19,7 @@
             android:layout_marginEnd="27dp"
             android:text="🖊"
             android:textAlignment="textEnd"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +44,7 @@
             android:layout_marginTop="30dp"
             android:fontFamily="@font/notosans_bold"
             android:text="Perfil"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +72,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
             android:textAlignment="center"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -98,6 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="listas"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -111,7 +113,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:text="0"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -129,7 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:textAlignment="center"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
@@ -160,7 +162,7 @@
             android:layout_marginEnd="27dp"
             android:text="👷🏽‍♂️"
             android:textAlignment="textEnd"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

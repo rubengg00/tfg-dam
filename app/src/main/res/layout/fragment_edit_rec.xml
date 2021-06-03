@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#7D51A6">
 
         <me.grantland.widget.AutofitTextView
             android:id="@+id/tvNomPeliRese"
@@ -17,7 +18,7 @@
             android:layout_marginTop="26dp"
             android:fontFamily="@font/notosans_bold"
             android:text="Titulo"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,10 +34,11 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="84dp"
             android:ems="10"
-            android:gravity="start|top"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:inputType="none"
             android:enabled="false"
+            android:gravity="start|top"
+            android:inputType="none"
+            android:textColor="?android:attr/textColorPrimaryInverse"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView30" />
 
@@ -50,6 +52,7 @@
             android:ems="10"
             android:enabled="false"
             android:inputType="none"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView31" />
@@ -62,6 +65,7 @@
             android:layout_marginTop="100dp"
             android:layout_marginEnd="291dp"
             android:text="Autor"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -76,6 +80,7 @@
             android:ems="10"
             android:enabled="false"
             android:inputType="none"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView28" />
@@ -88,6 +93,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="250dp"
             android:text="Comentario"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edUserComent" />
@@ -100,6 +106,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="289dp"
             android:text="Fecha"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edComenUser" />

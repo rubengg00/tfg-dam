@@ -9,6 +9,7 @@
         android:layout_width="386dp"
         android:layout_height="113dp"
         android:layout_marginTop="8dp"
+        android:backgroundTint="#9A68C7"
         app:cardCornerRadius="10dp"
         app:cardElevation="7dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,6 +49,7 @@
                     android:maxLines="1"
                     android:text="TextView"
                     android:textAlignment="center"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -59,6 +61,7 @@
                     android:maxLength="110"
                     android:maxLines="3"
                     android:text="TextView"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
                     android:textSize="13sp"
                     android:textStyle="italic" />
 
@@ -67,7 +70,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textColor="?android:attr/textColorPrimaryInverse" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
