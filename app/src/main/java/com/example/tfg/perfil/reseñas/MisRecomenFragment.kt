@@ -1,5 +1,6 @@
 package com.example.tfg.perfil.reseñas
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -24,6 +26,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
+import www.sanju.motiontoast.MotionToast
 
 
 class MisRecomenFragment : Fragment() {
@@ -192,31 +195,55 @@ class MisRecomenFragment : Fragment() {
 
     private fun dialogoEditarReseña(holder: RecomendacionViewHolder) {
         MaterialDialog(context as Context).title(null, "Editando reseña").show() {
-            input(maxLength = 30)
+            input(maxLength = 60)
             val inputField: EditText = this.getInputField()
             inputField.setText(holder.reseña.text)
             positiveButton(R.string.modificar) {
-                var clave = ""
-                var query: Query =
-                    FirebaseDatabase.getInstance().getReference("recomendaciones")
-                        .orderByChild("reseña").equalTo(holder.reseña.text.toString())
-                query.addListenerForSingleValueEvent(object :
-                    ValueEventListener {
-                    override fun onCancelled(error: DatabaseError) {
-                    }
-
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        for (resultado in snapshot.getChildren()) {
-                            clave = resultado.key.toString()
+                if (inputField.text.isNullOrBlank()) {
+                    MotionToast.darkToast(
+                        activity as Activity,
+                        "Error",
+                        "Debes escribir una reseña",
+                        MotionToast.TOAST_ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(context as Context, R.font.helvetica_regular)
+                    )
+                } else {
+                    var clave = ""
+                    var query: Query =
+                        FirebaseDatabase.getInstance().getReference("recomendaciones")
+                            .orderByChild("reseña").equalTo(holder.reseña.text.toString())
+                    query.addListenerForSingleValueEvent(object :
+                        ValueEventListener {
+                        override fun onCancelled(error: DatabaseError) {
                         }
-                        Log.d("clave", clave)
-                    }
-                })
-                var update = hashMapOf<String, Any>(
-                    "reseña" to inputField.text.toString()
-                )
-                nodoRaiz.reference.child("recomendaciones/$clave/reseña").setValue(inputField.text.toString())
 
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            for (resultado in snapshot.getChildren()) {
+                                clave = resultado.key.toString()
+                            }
+                            var update = hashMapOf<String, Any>(
+                                "reseña" to inputField.text.toString()
+                            )
+                            nodoRaiz.reference.child("recomendaciones/$clave/reseña")
+                                .setValue(inputField.text.toString())
+                            Log.d("clave", clave)
+                        }
+
+
+                    })
+
+                    MotionToast.darkToast(
+                        activity as Activity,
+                        "Reseña actualizada 👍",
+                        "Reseña actualizada correctamente!",
+                        MotionToast.TOAST_SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(context as Context, R.font.helvetica_regular)
+                    )
+                }
             }
         }
     }

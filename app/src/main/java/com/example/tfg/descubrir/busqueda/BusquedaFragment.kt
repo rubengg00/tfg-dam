@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,7 @@ import kotlin.collections.ArrayList
 
 class BusquedaFragment : Fragment() {
     lateinit var search: EditText
+    lateinit var btnBusqueda: Button
 
     private val db = FirebaseFirestore.getInstance()
 
@@ -38,6 +40,7 @@ class BusquedaFragment : Fragment() {
 
         search = root.findViewById(R.id.search)
         recview = root.findViewById(R.id.rcBusqueda)
+        btnBusqueda = root.findViewById(R.id.btnBusqueda)
 
         if (!flag) {
             flag = true
@@ -45,44 +48,31 @@ class BusquedaFragment : Fragment() {
         }
         crearAdapter()
 
+        btnBusqueda.setOnClickListener {
+            if (!(search.text.trim().toString().isNullOrBlank())){
+                val texto = search.text.toString().capitalize().trim()
+                cargadoDatos(texto)
+            }else{
+                cargadoDatos("")
+            }
+        }
 
         search.addTextChangedListener(object : TextWatcher {
             private var temporizador: Timer = Timer()
             private val delay: Long = 450
 
             override fun afterTextChanged(s: Editable) {
-                temporizador.cancel()
-                temporizador = Timer()
-                temporizador.schedule(
-                    object : TimerTask() {
-                        override fun run() {
-                            if ((s.toString().isNullOrEmpty())) {
-                                listaPelis.clear()
-                                cargadoDatos("")
-                            }
-                        }
-                    },
-                    delay
-                )
+                if (search.text.trim().toString().isNullOrBlank()){
+                    cargadoDatos("")
+                }
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                listaPelis.clear()
-                recview.adapter?.notifyDataSetChanged()
+
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-                if (s.toString() != null) {
-                    val texto = s.toString().capitalize().trim()
-                    listaPelis.clear()
-                    cargadoDatos(texto)
-                }
-                if (s.toString().isEmpty() || s.toString().isBlank()){
-                    listaPelis.clear()
-                    cargadoDatos("")
-                }
-                Log.d("adios", "hola")
             }
 
 

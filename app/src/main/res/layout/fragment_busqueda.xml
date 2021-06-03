@@ -13,19 +13,18 @@
 
         <com.cielyang.android.clearableedittext.ClearableEditText
             android:id="@+id/search"
-            android:layout_width="332dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="39dp"
-            android:layout_marginEnd="20dp"
+            android:layout_width="290dp"
+            android:layout_height="50dp"
             android:ems="10"
             android:hint="Introduzca el título de la película"
             android:inputType="textPersonName"
             android:textColor="?android:attr/textColorPrimaryInverse"
             android:textColorHint="?android:attr/textColorPrimaryInverse"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/btnBusqueda"
+            app:layout_constraintEnd_toStartOf="@+id/btnBusqueda"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/btnBusqueda" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcBusqueda"
@@ -38,5 +37,20 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search" />
+
+        <Button
+            android:id="@+id/btnBusqueda"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp"
+            android:backgroundTint="#9A68C7"
+            android:text=""
+            android:textAlignment="center"
+            app:cornerRadius="20dp"
+            app:icon="@drawable/ic_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/search"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
