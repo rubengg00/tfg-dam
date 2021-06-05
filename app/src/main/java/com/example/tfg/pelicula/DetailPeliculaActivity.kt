@@ -132,7 +132,7 @@ class DetailPeliculaActivity : AppCompatActivity() {
 
                 var radioGrupo: RadioGroup = this.findViewById(R.id.rGroup)
                 var seleccionado = radioGrupo.checkedRadioButtonId
-                if (seleccionado != null){
+                if (seleccionado != null) {
                     emojiSeleccionado = findViewById(seleccionado)
                 }
 
@@ -141,7 +141,7 @@ class DetailPeliculaActivity : AppCompatActivity() {
                 titul = datos?.getString("titulo").toString()
                 categori = datos?.getString("categoria").toString()
                 fech = datos?.getString("fecha").toString()
-                if (seleccionado != null){
+                if (seleccionado != null) {
                     emoji = emojiSeleccionado?.text.toString()
                 }
                 reseña = findViewById<TextView>(R.id.edComentario).text.toString()
@@ -279,31 +279,56 @@ class DetailPeliculaActivity : AppCompatActivity() {
                         positiveButton(R.string.crear) { dialog ->
                             var nombreLista = ""
                             var texto: EditText = findViewById(R.id.edListaPersonalizada)
-                            nombreLista = texto.text.toString()
+                            nombreLista = texto.text.toString().capitalize()
                             Log.d("nombre de la lista", nombreLista)
 
-                            val dataListaPersonalizada = hashMapOf(
-                                "nombre" to nombreLista
-                            )
+                            if (nombreLista.trim().isNullOrBlank()) {
+                                Toast.makeText(
+                                    context,
+                                    "Rellene el nombre de la lista",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                return@positiveButton
+                            } else {
+                                val dataListaPersonalizada = hashMapOf(
+                                    "nombre" to nombreLista
+                                )
 
-                            db.collection("usuarios")
-                                .document(FirebaseAuth.getInstance().currentUser.email)
-                                .collection("listas").document(nombreLista)
-                                .set(dataListaPersonalizada)
+                                var listas = ArrayList<String>()
 
-                            db.collection("usuarios")
-                                .document(FirebaseAuth.getInstance().currentUser.email)
-                                .collection("listas").document(nombreLista)
-                                .collection("peliculas")
-                                .document(tvTitulo.text.toString())
-                                .set(data)
+                                db.collection("usuarios")
+                                    .document(FirebaseAuth.getInstance().currentUser.email)
+                                    .collection("listas").get().addOnSuccessListener {
+                                        for (doc in it) {
+                                            listas.add(doc.getString("nombre").toString())
+                                        }
+                                        if (listas.contains(nombreLista)) {
+                                            Toast.makeText(
+                                                context,
+                                                "Ya existe una lista con este nombre",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        } else {
+                                            db.collection("usuarios")
+                                                .document(FirebaseAuth.getInstance().currentUser.email)
+                                                .collection("listas").document(nombreLista)
+                                                .set(dataListaPersonalizada)
 
-                            Snackbar.make(
-                                contextView,
-                                "Agregado a ${nombreLista}",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
+                                            db.collection("usuarios")
+                                                .document(FirebaseAuth.getInstance().currentUser.email)
+                                                .collection("listas").document(nombreLista)
+                                                .collection("peliculas")
+                                                .document(tvTitulo.text.toString())
+                                                .set(data)
 
+                                            Snackbar.make(
+                                                contextView,
+                                                "Agregado a ${nombreLista}",
+                                                Snackbar.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
+                            }
                         }
                     }
             } else {
